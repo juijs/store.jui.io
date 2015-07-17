@@ -17,7 +17,7 @@ $db = $m->store;
 
 $components = $db->components;
 
-
+$_POST = array_filter($_POST, 'strip_tags');
 
 $document = array(
 	'login_type' => $_SESSION['login_type'],

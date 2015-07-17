@@ -158,7 +158,9 @@ body { overflow: hidden; }
 					<div class="editor-tool" style="font-size:13px;">
 						<a class="label" data-view="result">Result</a>
                         <div style="float:right">
-                            Output : png, svg, pdf
+                            <?php if ($_GET['id']) { ?>
+							<a href="share.php?id=<?php echo $_GET['id'] ?>" class='btn btn-small'>Share</a>
+							<?php } ?>
                         </div>
 					</div>
 

@@ -64,7 +64,7 @@ jui.ready(function() {
 
 	setTimeout(function() { 
 		createSampleImage();
-	}, 1000);
+	}, 2000);
 
 
 });

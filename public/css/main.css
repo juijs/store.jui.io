@@ -254,6 +254,12 @@ header a {
 	text-align: left;
 	padding: 0 20px 0px 20px;
 	color: #a2a2a2;
+	max-height:30px;
+	text-overflow:ellipsis;
+	white-space:normal;
+	word-wrap:normal;
+	max-width:100%;
+	overflow:hidden;
 }
 
 .summary-normal:hover .imagesfield > img {
