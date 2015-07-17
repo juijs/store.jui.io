@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="charset=utf-8;"/>
+    <link rel="stylesheet" href="../../jui.css" />
+    <script src="../../lib/jquery-1.8.0.min.js"></script>
+    <script src="../../jui.js"></script>
+</head>
+<body >
+
+<div id="chart"></div>
+
+<script id="script_code">
+    var chart = jui.include("chart.builder");
+    var time = jui.include("util.time");
+
+    chart("#chart", {
+        width: 400,
+        height: 500,
+        axis : {
+            x : {
+                type : "dateblock",
+                domain : [new Date(2015, 0, 1), new Date(2015, 0, 2)],
+                interval : 6 * 1000 * 60 * 60,
+                format : "HH:mm",
+                line : 'gradient'
+            },
+            y : {
+                type : "range",
+                domain : function(d) { return [d.sales, d.profit, 0 ]; },
+                step : 10,
+                line : true,
+                orient : "right"
+            },
+            data : [
+                { quarter : "1Q", sales : 50, profit : 35 },
+                { quarter : "2Q", sales : 20, profit : 30 },
+                { quarter : "3Q", sales : 10, profit : 10 },
+                { quarter : "4Q", sales : 30, profit : 25 }
+            ]
+        },
+        brush : {
+            type : "column",
+            target : [ "sales" ]
+        },
+        widget : [
+            { type : "title", text : "Column Sample" },
+            { type : "tooltip" },
+            { type : "legend" }
+        ]
+    });
+
+</script>
+
+
+</body>
+</html>

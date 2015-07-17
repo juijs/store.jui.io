@@ -1,0 +1,253 @@
+.editor-container {
+	position:absolute;
+	left:0px;
+    top:63px;
+	right:0px;
+	bottom:0px;
+}
+
+.editor-content {
+	position:relative;
+	width:100%;
+	height:100%;
+}
+
+.editor-menu {
+	position:absolute;
+	left:0px;
+	top:0px;
+	bottom:0px;
+	width:200px;
+}
+
+.editor-toolbar {
+	position:absolute;
+	left:0px;
+	top:0px;
+	height:50px;
+	right:0px;
+}
+
+.editor-area {
+	position:absolute;
+	left:0px;
+	top:0px;
+	bottom:0px;
+	right:0px;
+}
+
+.editor-code {
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:50%;
+	bottom:0px;
+}
+
+.editor-data {
+	position:absolute;
+	left:0px;
+	top:0px;
+	right:1px;
+	height:50%;
+    border-right:1px solid #ddd;
+}
+
+.editor-data.fullscreen {
+	position: fixed;
+	height:auto;
+	left:10px;
+	top:70px;
+	right:10px;
+	bottom:10px;
+    border:1px solid #ddd;
+}
+
+.editor-data2 {
+	position:absolute;
+	left:0px;
+	top:0px;
+	right:1px;
+	bottom : 0px;
+    border-right:1px solid #ddd;
+}
+
+.editor-component {
+	position:absolute;
+	left:0px;
+	bottom:0px;
+	right:1px;
+	top:50%;
+    border-right:1px solid #ddd;
+}
+
+.editor-component.fullscreen {
+	position:absolute;
+	left:10px;
+	bottom:10px;
+	right:10px;
+	top:70px;
+	border:1px solid black;
+}
+
+.editor-meta {
+	position:absolute;
+	right:0px;
+	top:0px;
+	left:0px;
+    height:50%;
+    background:white;
+}
+.editor-meta.fullscreen {
+	position: fixed;
+	height:auto;
+	left:10px;
+	top:70px;
+	right:10px;
+	bottom:10px;
+    border:1px solid #ddd;
+}
+.editor-result-frame {
+	position:absolute;
+	right:0px;
+	top:50%;
+	left:0px;
+    bottom:0px;
+    background:white;
+}
+.editor-result-frame.fullscreen {
+	position:absolute;
+	left:10px;
+	bottom:10px;
+	right:10px;
+	top:70px;
+	border:1px solid black;
+}
+.editor-result {
+	position:absolute;
+	right:0px;
+	top:0px;
+	left:50%;
+	bottom:0px;
+}
+.editor-result:before {
+    border-left:1px solid #ddd;
+}
+
+.fullscreen {
+	border:5px solid black !important;
+}
+
+.editor-tool {
+	position:absolute;
+	height:30px;
+	top:0px;
+	left:0px;
+	right:0px;
+    border-top:1px solid #ddd;
+    border-bottom:1px solid #ddd;
+    padding:10px;
+
+}
+
+.editor-tool2 {
+	position:absolute;
+	height:30px;
+	top:50px;
+	left:0px;
+	right:0px;
+    border-top:1px solid #ddd;
+    border-bottom:1px solid #ddd;
+    padding:10px;
+
+}
+
+.editor-info{
+	position:absolute;
+	top:52px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+}
+
+.editor-codemirror {
+	position:absolute;
+	top:52px;
+	left:0px;
+	right:0px;
+	bottom:37px;
+}
+
+.editor-codemirror.editor-bottom-full {
+	position:absolute;
+	top:104px;
+	left:0px;
+	right:0px;
+	bottom:37px;
+}
+
+
+
+.editor-statusbar {
+	border-top:1px solid #ddd;
+	position:absolute;
+	height: 30px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+	padding:3px;
+	padding-left:10px;
+}
+
+.select-chart {
+	position:absolute;
+	top : 200px;
+	left : 200px;
+	right : 200px;
+	bottom : 200px;
+	background: cyan;
+}
+
+@media (max-width: 600px) {
+  .select-chart {
+    left:50px;
+	right:50px;
+  }
+}
+
+@media (max-width: 900px) {
+  .select-chart {
+    left:100px;
+	right:100px;
+  }
+}
+
+@media (max-height: 600px) {
+  .select-chart {
+    top:50px;
+	bottom:50px;
+  }
+}
+
+@media (max-height: 900px) {
+  .select-chart {
+    top:100px;
+	bottom:100px;
+  }
+}
+
+.color-picker {
+    width:20px;
+    height:20px;
+    display:inline-block;
+    margin-bottom:5px !important;
+    border:2px solid black;
+}
+
+.color-picker.color-plus {
+    text-align:center;
+}
+
+.cp-color-picker {
+	z-index: 1;
+}
