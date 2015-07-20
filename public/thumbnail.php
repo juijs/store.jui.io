@@ -20,5 +20,9 @@ if ($row['access'] == 'private') {
 
 header("Content-Type: image/png");
 
-echo base64_decode(str_replace("data:image/png;base64,", "", $row['sample']));
+if ($row['sample']) {
+	echo base64_decode(str_replace("data:image/png;base64,", "", $row['sample']));
+} else {
+	readfile("images/chart-sample.jpg");
+}
 ?>

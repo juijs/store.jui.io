@@ -44,7 +44,7 @@ body { overflow: hidden; }
 				<div class="editor-data view-component" style="background:#ffffff">
 
 					<div class="editor-tool" style="font-size:13px;">
-						<a class="label" data-view="component">Component</a>
+						<a class="label" data-view="component"><span class="simbol simbol-component">C</span>omponent</a>
 						<span style="padding-left:20px">Load <input type="file" accept=".js" id="component_load" style="width:200px;"/></span>
 
 
@@ -179,11 +179,6 @@ var chart = jui.create("chart.builder", '#result', {
 
 					<div class="editor-tool" style="font-size:13px;">
 						<a class="label" data-view="result">Result</a>
-                        <div style="float:right">
-                            <?php if ($_GET['id']) { ?>
-							<a href="share.php?id=<?php echo $_GET['id'] ?>" class='btn btn-small'>Share</a>
-							<?php } ?>
-                        </div>
 					</div>
 
 					<div id="tab_contents_1" class="tab-contents editor-info">

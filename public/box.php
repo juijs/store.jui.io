@@ -14,6 +14,14 @@ $color = $type_colors[$first];
 <div class="summary-box"><div class="summary-normal">
 		<div class="name">
 			<span><img src="<?php echo $data['avatar'] ?>" width="30" height="30" class='avatar' align='absmiddle'/>&nbsp;<?php echo $data['username'] ?></span>
+
+			<?php
+				$share_text = urlencode($description)." #store #jui #js" ;
+				$share_url = urlencode("http://".$_SERVER['HTTP_HOST']."/view.php?id=".$id);
+
+				include "sns.button.php" 
+			?>
+
 			<span class="good" style="float:right;overflow:auto;display:inline-block;">
 				<a href="javascript:void(good('<?php echo $id?>'))"><img src="images/good.png" /></a> 
 				<span id="good_count_<?php echo $id?>"><?php echo $data['good'] ? $data['good'] : 0 ?></span>

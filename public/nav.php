@@ -3,13 +3,13 @@
         <span class="gallery">Gallery</span>
 
             <?php if ($page_id != 'manager') { ?>
-		    <span class="nav-loadchart">내가 만든 차트를 공유해보세요.
-			    <a id="btn-chart-upload" class="form-btn form-btn-dpurple form-btn-small" href="<?php echo !$_SESSION['login'] ? "/login_form.php?url=".urlencode($_SERVER['PHP_SELF']) : "/mylist.php" ?>">Share a chart!</a>
+		    <span class="nav-loadchart">Sharing a component.
+			    <a id="btn-chart-upload" class="form-btn form-btn-dpurple form-btn-small" href="<?php echo !$_SESSION['login'] ? "/login_form.php?url=".urlencode($_SERVER['PHP_SELF']) : "/mylist.php" ?>">Go!</a>
 		    </span>
             <?php } else { ?>
 
-		    <span class="nav-loadchart">내가 만든 차트를 공유해보세요.
-			    <a id="btn-chart-upload" class="form-btn form-btn-dpurple form-btn-small" href="<?php echo !$_SESSION['login'] ? "/login_form.php?url=".urlencode($_SERVER['PHP_SELF']) : "/mylist.php" ?>">Share a chart!</a>
+		    <span class="nav-loadchart">Sharing a component.
+			    <a id="btn-chart-upload" class="form-btn form-btn-dpurple form-btn-small" href="<?php echo !$_SESSION['login'] ? "/login_form.php?url=".urlencode($_SERVER['PHP_SELF']) : "/mylist.php" ?>">Go!</a>
 		    </span>
             <?php } ?>
 
@@ -23,7 +23,7 @@
         <span class="gallery">Login</span>
 
 		<span class="nav-loadchart">
-			You can use chart with your sns account.
+			You can use a component with your sns account.
 		</span>
 
         <span class="logo-link">

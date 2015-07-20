@@ -4,7 +4,7 @@ include_once '../bootstrap.php';
 // connect
 $m = new MongoClient();
 
-// select a database
+// select a rowbase
 $db = $m->store;
 
 $components = $db->components;
@@ -65,55 +65,71 @@ $color = $type_colors[$first];
 <div id="content-container" style="padding:20px;">
 
 	<div style="width:950px;margin:0 auto;padding-top:50px;">
-	
-		<div style="text-align:left;padding:5px;">
-			<span><img src="<?php echo $row['avatar'] ?>" width="30" height="30" class="avatar" align="absmiddle">&nbsp;<?php echo $username ?></span>
 
-			<span style="float:right">
-				<?php
-					$share_text = urlencode($description)." #store #jui #js" ;
-					$share_url = urlencode("http://".$_SERVER['HTTP_HOST']."/view.php?id=".$id);
-				?>
-				<div style="float:right">
-					<a href="http://www.facebook.com/sharer/sharer.php?u=<?php echo $share_url ?>" target="_blank">Facebook</a>
-					&nbsp;
-					<a href="https://twitter.com/intent/tweet?url=<?php echo $share_url ?>&text=<?php echo $share_text ?>" target="_blank">Twitter</a>
+		<?php
+		$id = (string)$row['_id'];
+		$link = "view.php?id=".($id);
+
+		$type = $row['type'];
+		if (!$type) $type = 'component';
+
+		$first = strtoupper(substr($type, 0, 1));
+
+		if (!$first) $first = "C";
+		$color = $type_colors[$first];
+
+		?>
+		<div class="summary-box large"><div class="summary-normal">
+				<div class="name">
+					<span><img src="<?php echo $row['avatar'] ?>" width="30" height="30" class='avatar' align='absmiddle'/>&nbsp;<?php echo $row['username'] ?></span>
+
+					<?php
+						$share_text = urlencode($description)." #store #jui #js" ;
+						$share_url = urlencode("http://".$_SERVER['HTTP_HOST']."/view.php?id=".$id);
+
+						include "sns.button.php" 
+					?>
+
+					<span class="good" style="float:right;overflow:auto;display:inline-block;">
+						<a href="javascript:void(good('<?php echo $id?>'))"><img src="images/good.png" /></a> 
+						<span id="good_count_<?php echo $id?>"><?php echo $row['good'] ? $row['good'] : 0 ?></span>
+					</span>
 				</div>
-			</span>
+				<div class="imagesfield">
+					<div id="result" style="width:100%;height:100%;background:white;"><?php
+						$type = $row['type'];
+						$sample_type = $row['sample_type'];
+
+						if ($type == 'style') {
+
+							if (!$sample_type) {
+								$sample_type = 'button';
+							}
+							?>
+								<div style="padding:10px" class="jui-style">
+									<?php include __DIR__."/sample/ui/implements/{$sample_type}.html" ?>
+								</div>
+						<?php
+						}
+						
+						?></div>
+				</div>
+				<div class="summary-info">
+					<div class="title"><span class="simbol simbol-<?php echo $type ?>"><?php echo $first ?></span> <?php echo $row['title'] ? $row['title'] : '&nbsp;' ?></div>
+					<div class="content"><?php echo nl2br($row['description']) ?></div>
+				</div>
+
+				<div class="summary-buttons">
+					<?php if ($_SESSION['login'] && $row['login_type'] == $_SESSION['login_type'] && $row['userid'] == $_SESSION['userid']) { ?>
+						<a href="/<?php echo $row['type'] ?>.php?id=<?php echo $id ?>" class="btn-large">Edit</a>
+					<?php } else { ?>
+						<a href="/source.php?id=<?php echo $id ?>" class="btn-large">View Source</a>
+					<?php } ?>
+				</div>
+
+			</div>
 
 		</div>
-		<div style="margin-bottom:10px">
-			<div id="result" style="height:400px;background:white;"><?php
-			$type = $row['type'];
-			$sample_type = $row['sample_type'];
-
-			if ($type == 'style') {
-
-				if (!$sample_type) {
-					$sample_type = 'button';
-				}
-				?>
-					<div style="padding:10px" class="jui-style">
-						<?php include __DIR__."/sample/ui/implements/{$sample_type}.html" ?>
-					</div>
-			<?php
-			}
-			
-			?></div>
-		</div>
-		<?php if ($title) { ?>
-		<div style="font-weight:bold;text-align:left; background:white;padding:5px;border-radius:5px;"><span class="simbol simbol-<?php echo $type ?>"><?php echo $first ?></span>  <?php echo $title ?></div>
-		<?php } ?>
-		<div style="text-align:left; background:white;padding:5px;border-radius:5px;"><?php echo nl2br($row['description']) ?></div>
-
-		<div style="margin-top:10px">
-			<?php if ($_SESSION['login'] && $row['login_type'] == $_SESSION['login_type'] && $row['userid'] == $_SESSION['userid']) { ?>
-				<a href="/<?php echo $row['type'] ?>.php?id=<?php echo $id ?>" class="btn btn-large">Edit</a>
-			<?php } else { ?>
-				<a href="/source.php?id=<?php echo $id ?>" class="btn btn-large">View Source</a>
-			<?php } ?>
-		</div>
-
 
 		<div id="disqus_thread"></div>
 		<script type="text/javascript">
@@ -134,6 +150,7 @@ $color = $type_colors[$first];
 </div>
 
 <?php if ($row['type'] == 'style') { ?>
+<link rel="stylesheet" href="sample/ui/css/jui.css" />
 <link rel="stylesheet" href="generate.css.php?id=<?php echo $_GET['id'] ?>" />
 
 <?php  } else { ?>

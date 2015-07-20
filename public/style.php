@@ -44,7 +44,7 @@ body { overflow: hidden; }
 				<div class="editor-data2 view-component" style="background:#ffffff">
 
 					<div class="editor-tool" style="font-size:13px;">
-						<a class="label" data-view="component">Style</a>
+						<a class="label" data-view="component"><span class="simbol simbol-style">S</span>tyle</a>
 						<span style="padding-left:20px">Load <input type="file" accept=".less" id="component_load" style="width:200px;"/></span>
 
 

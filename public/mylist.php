@@ -43,18 +43,13 @@ $rows = $components->find(array(
 		<div class="summary-box"><div class="summary-normal">
 
                 <div class="name">
-                    <span>Wow!</span>
+                    <span>Select Component!</span>
                 </div>
-                <div class="imagesfield" style="background:white;font-size:20px;text-align:left;">
+                <div class="imagesfield" style="background:white;font-size:20px;text-align:left;height:245.5px;">
 					<a href="component.php"><div style="padding-left:20px;"><i class='icon-plus' style="margin-top:20px;color:#ddd;" ></i> Chart</div></a>
 					<a href="theme.php"><div style="padding-left:20px;"><i class='icon-plus' style="margin-top:20px;color:#ddd;" ></i> Theme</div></a>
 					<a href="style.php"><div style="padding-left:20px;"><i class='icon-plus' style="margin-top:20px;color:#ddd;" ></i> Style</div></a>
 				</div>
-                <div class="summary-info">
-                    <div class="title">&nbsp;</div>
-                    <div class="content">&nbsp;</div>
-                </div>
-
             </div>
         </div>
 
