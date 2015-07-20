@@ -5,6 +5,8 @@ http://store.jui.io
 
 # Requirment 
 
+* php 5.3.x 
+* MongoDB 
 * composer
 * bower 
 
