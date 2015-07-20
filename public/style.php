@@ -54,7 +54,7 @@ body { overflow: hidden; }
 						</select>
 						
 					</div>
-					<div class="editor-tool2" style="font-size:13px;">
+					<div class="editor-tool2" style="font-size:13px;border-top:0px;">
 						<a class="label" data-view="sample">Sample Code</a>
 						<span>
 							<select id="sample_list" class="input">
@@ -340,7 +340,7 @@ $(function() {
 		window.table_2 = jui.create("uix.table", "#table_style", {
 			fields: [ "key", "value" ],
             scroll : true,
-			scrollHeight : $(window).height() - 250,
+			scrollHeight : $(window).height() - 229,
 			resize: true,
 			tpl: {
 				row: "<tr><td style='font-size:15px;'><!= key !></td><td><!= value !></td></tr>"

@@ -31,10 +31,9 @@ function toggleSns(sns) {
 
 $(function() {
 	$(document).click(function(e) {
-					console.log(e.target);
 		if (e.target.tagName == 'A' && $(e.target).hasClass('share-button'))
 		{
-			console.log(e.target);
+
 		} else {
 			$(".share-buttons").hide();
 		}
