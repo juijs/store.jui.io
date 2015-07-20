@@ -96,7 +96,7 @@ $color = $type_colors[$first];
 					</span>
 				</div>
 				<div class="imagesfield">
-					<div id="result" style="width:100%;height:100%;background:white;"><?php
+					<div id="result" style="width:100%;height:400px;background:white;"><?php
 						$type = $row['type'];
 						$sample_type = $row['sample_type'];
 
@@ -169,6 +169,9 @@ jui.ready(function() {
 			obj.setTheme(theme.replace("chart.theme.", ""));
 		}
 	}
+
+	$("#result").height($("#result")[0].scrollHeight);
+
 
 });
 

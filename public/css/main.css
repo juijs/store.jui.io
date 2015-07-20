@@ -244,7 +244,7 @@ header a {
 .large .summary-normal .imagesfield {
 	width:100%;
 	max-width:100%;
-	min-height:400px;
+	height: inherit;
 }
 
 .summary-buttons {
