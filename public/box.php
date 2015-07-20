@@ -1,6 +1,15 @@
 <?php
 $id = (string)$data['_id'];
 $link = "view.php?id=".($id);
+
+$type = $data['type'];
+if (!$type) $type = 'component';
+
+$first = strtoupper(substr($type, 0, 1));
+
+if (!$first) $first = "C";
+$color = $type_colors[$first];
+
 ?>
 <div class="summary-box"><div class="summary-normal">
 		<div class="name">
@@ -14,7 +23,7 @@ $link = "view.php?id=".($id);
 			<a href="<?php echo $link ?>"><img class="chart-image" src="<?php echo $data['sample'] ? $data['sample'] : 'images/chart-sample.jpg' ?>"></a>
 		</div>
 		<div class="summary-info">
-			<div class="title"><?php echo $data['title'] ? $data['title'] : '&nbsp;' ?></div>
+			<div class="title"><span class="simbol simbol-<?php echo $type ?>"><?php echo $first ?></span> <?php echo $data['title'] ? $data['title'] : '&nbsp;' ?></div>
 			<div class="content"><?php echo $data['description'] ? str_replace("\r\n", "", $data['description']) : '&nbsp;' ?></div>
 		</div>
 	</div>

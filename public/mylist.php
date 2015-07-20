@@ -26,6 +26,8 @@ $rows = $components->find(array(
 	'update_time' => -1
 ));
 
+
+
 ?>
 
 <p>My List </p>
@@ -46,6 +48,7 @@ $rows = $components->find(array(
                 <div class="imagesfield" style="background:white;font-size:20px;text-align:left;">
 					<a href="component.php"><div style="padding-left:20px;"><i class='icon-plus' style="margin-top:20px;color:#ddd;" ></i> Chart</div></a>
 					<a href="theme.php"><div style="padding-left:20px;"><i class='icon-plus' style="margin-top:20px;color:#ddd;" ></i> Theme</div></a>
+					<a href="style.php"><div style="padding-left:20px;"><i class='icon-plus' style="margin-top:20px;color:#ddd;" ></i> Style</div></a>
 				</div>
                 <div class="summary-info">
                     <div class="title">&nbsp;</div>

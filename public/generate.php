@@ -52,7 +52,7 @@ function createSampleImage() {
 
 jui.ready(function() { 
 
-	// Å×¸¶ ¼³Á¤ 
+	// í…Œë§ˆ ì„¤ì • 
 	var theme = '<?php echo $_POST['name'] ?>';
 	if (theme.indexOf("chart.theme.") > -1) {
 		var obj = $("#result")[0].jui;

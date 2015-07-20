@@ -10,7 +10,6 @@ define("INC", ROOT."/public/inc");
 
 require_once ROOT."/vendor/autoload.php";
 
-
 $uriFactory = new \OAuth\Common\Http\Uri\UriFactory();
 $currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
 $currentUri->setQuery('');

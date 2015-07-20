@@ -1,6 +1,7 @@
 {
     "require": {
         "lusitanian/oauth": "^0.3.5",
-        "tedivm/jshrink": "^1.0"
+        "tedivm/jshrink": "^1.0",
+        "oyejorge/less.php": "~1.5"
     }
 }

@@ -5,7 +5,7 @@
 <?php echo $_POST['component_code'] ?>
 
 jui.ready(function() { 
-	// Å×¸¶ ¼³Á¤ 
+	// í…Œë§ˆ ì„¤ì • 
 	parent.setThemeObject(lastTheme());
 });
 

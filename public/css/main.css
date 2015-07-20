@@ -273,3 +273,22 @@ header a {
 	-o-transition:0.3s;
 	transition:0.3s;
 }
+
+.simbol {
+	border-radius:30px; 
+	color:white;
+	padding-left:6px;
+	padding-right:6px;
+}
+
+.simbol-component {
+	background: #4D97E7;
+}
+
+.simbol-style {
+	background: #C77326;
+}
+
+.simbol-theme {
+	background: #F06D97;
+}

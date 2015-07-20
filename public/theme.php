@@ -332,7 +332,7 @@ $(function() {
 			}
 		});
 
-		// Å×ÀÌºí ÃÊ±âÈ­
+		// í…Œì´ë¸” ì´ˆê¸°í™”
 		table_2.reset();
 
 		for(var key in obj) {

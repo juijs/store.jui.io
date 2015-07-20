@@ -31,6 +31,7 @@ $document = array(
 	'description' => $_POST['description'],
 	'component_code' => $_POST['component_code'],
 	'sample_code' => $_POST['sample_code'],
+	'sample_type' => $_POST['sample_type'],
 	'sample' => $_POST['sample'],
 	'update_time' => time()
 );

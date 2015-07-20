@@ -52,6 +52,15 @@ $meta =<<<EOD
 EOD;
 
 include_once "header.php";
+
+
+$type = $row['type'];
+if (!$type) $type = 'component';
+$first = strtoupper(substr($row['type'], 0, 1));
+
+if (!$first) $first = "C";
+$color = $type_colors[$first];
+
 ?>
 <div id="content-container" style="padding:20px;">
 
@@ -74,10 +83,26 @@ include_once "header.php";
 
 		</div>
 		<div style="margin-bottom:10px">
-			<div id="result" style="height:400px"></div>
+			<div id="result" style="height:400px;background:white;"><?php
+			$type = $row['type'];
+			$sample_type = $row['sample_type'];
+
+			if ($type == 'style') {
+
+				if (!$sample_type) {
+					$sample_type = 'button';
+				}
+				?>
+					<div style="padding:10px" class="jui-style">
+						<?php include __DIR__."/sample/ui/implements/{$sample_type}.html" ?>
+					</div>
+			<?php
+			}
+			
+			?></div>
 		</div>
 		<?php if ($title) { ?>
-		<div style="font-weight:bold;text-align:left; background:white;padding:5px;border-radius:5px;"><?php echo $title ?></div>
+		<div style="font-weight:bold;text-align:left; background:white;padding:5px;border-radius:5px;"><span class="simbol simbol-<?php echo $type ?>"><?php echo $first ?></span>  <?php echo $title ?></div>
 		<?php } ?>
 		<div style="text-align:left; background:white;padding:5px;border-radius:5px;"><?php echo nl2br($row['description']) ?></div>
 
@@ -108,9 +133,14 @@ include_once "header.php";
 
 </div>
 
+<?php if ($row['type'] == 'style') { ?>
+<link rel="stylesheet" href="generate.css.php?id=<?php echo $_GET['id'] ?>" />
+
+<?php  } else { ?>
+
+<script type="text/javascript" src="generate.js.php?id=<?php echo $_GET['id'] ?>"></script>
+<script type="text/javascript" src="generate.js.php?id=<?php echo $_GET['id'] ?>&code=sample"></script>
 <script type="text/javascript">
-<?php echo $row['component_code'] ?>
-<?php echo $row['sample_code'] ?>
 
 jui.ready(function() { 
 
@@ -126,4 +156,6 @@ jui.ready(function() {
 });
 
 </script>
+
+<?php } ?>
 <?php include_once "footer.php" ?>
