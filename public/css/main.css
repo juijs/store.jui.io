@@ -129,11 +129,11 @@ header a {
 /*content-container*/
 #content-container {
 	margin: 28px 0 0 0;
-	position: relative;
-	text-align: center;
-	padding:5%;
-	overflow:auto;
-	padding-top:1%;
+    box-sizing: border-box;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    text-align:center;
 }
 /*btn-simple*/
 .btn-simple{
@@ -189,19 +189,48 @@ header a {
 /*item summary*/
 .summary-box {
 	box-shadow: 0 5px 10px 0 rgba(0,0,0,0.22);
-	width: 236px;
-	height: 300px;
+	/*width: 236px;
+	height: 300px;*/
 	border-radius: 5px;
 	display: inline-block;
 	margin:7px 4px 7px 4px;
 	font-size:12px;
-	float:left;
+
+    width: 25%;
+    position: relative;
+}
+
+@media only screen and (max-width : 480px) {
+       /* Smartphone view: 1 tile */
+       .summary-box {
+          width: 90%;
+       }
+}
+@media only screen and (max-width : 650px) and (min-width : 481px) {
+       /* Tablet view: 2 tiles */
+       .summary-box {
+            width: 45%;
+        }
+}
+@media only screen and (max-width : 1050px) and (min-width : 651px) {
+       /* Small desktop / ipad view: 3 tiles */
+       .summary-box {
+            width: 30%;
+       }
+
+}
+@media only screen and (max-width : 1290px) and (min-width : 1051px) {
+       /* Medium desktop: 4 tiles */
+       .summary-box {
+            width: 20%;
+       }
 }
 
 .summary-box.large {
 	width:100%;
 	max-width:100%;
 	height:inherit;
+    margin:0px;
 }
 
 .summary-box a {
@@ -234,7 +263,7 @@ header a {
 }
 .summary-normal .imagesfield {
 	height: 164px;
-	width: 236px;
+	width: 100%;
 	background-color: black;
 	background-color: rgba(0,0,0,0.15);
 	background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0, 0, 0, 0.5)));

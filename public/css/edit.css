@@ -36,6 +36,44 @@
 	right:0px;
 }
 
+/** new layout **/
+
+.editor-left {
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:50%;
+	bottom:0px;
+}
+
+
+.editor-right {
+	position:absolute;
+	right:0px;
+	top:0px;
+	left:50%;
+	bottom:0px;
+}
+
+.editor-panel {
+	position:relative;
+	height:50%;
+	background:white;
+}
+
+.editor-panel-border {
+    border-right:1px solid #ddd;
+}
+
+.editor-panel-pull {
+	position:relative;
+	height:100%;
+	background:white;
+}
+
+/** new layout **/
+
+
 .editor-code {
 	position:absolute;
 	left:0px;
@@ -43,6 +81,7 @@
 	width:50%;
 	bottom:0px;
 }
+
 
 .editor-data {
 	position:absolute;
@@ -54,6 +93,25 @@
 }
 
 .editor-data.fullscreen {
+	position: fixed;
+	height:auto;
+	left:10px;
+	top:70px;
+	right:10px;
+	bottom:10px;
+    border:1px solid #ddd;
+}
+
+.editor-style {
+	position:absolute;
+	left:0px;
+	top:0px;
+	right:1px;
+	height:50%;
+    border-right:1px solid #ddd;
+}
+
+.editor-style.fullscreen {
 	position: fixed;
 	height:auto;
 	left:10px;
@@ -207,6 +265,14 @@
 	bottom : 200px;
 	background: cyan;
 }
+
+
+
+
+
+
+
+
 
 @media (max-width: 600px) {
   .select-chart {

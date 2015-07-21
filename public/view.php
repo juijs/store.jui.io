@@ -62,9 +62,9 @@ if (!$first) $first = "C";
 $color = $type_colors[$first];
 
 ?>
-<div id="content-container" style="padding:20px;">
+<div id="content-container" style="padding:10px;">
 
-	<div style="width:950px;margin:0 auto;padding-top:50px;">
+	<div style="width:100%;max-width:950px;;margin:0 auto;padding-top:50px;">
 
 		<?php
 		$id = (string)$row['_id'];
@@ -120,11 +120,7 @@ $color = $type_colors[$first];
 				</div>
 
 				<div class="summary-buttons">
-					<?php if ($_SESSION['login'] && $row['login_type'] == $_SESSION['login_type'] && $row['userid'] == $_SESSION['userid']) { ?>
-						<a href="/<?php echo $row['type'] ?>.php?id=<?php echo $id ?>" class="btn-large">Edit</a>
-					<?php } else { ?>
-						<a href="/source.php?id=<?php echo $id ?>" class="btn-large">View Source</a>
-					<?php } ?>
+				    <a href="/<?php echo $row['type'] ?>.php?id=<?php echo $id ?>" class="btn-large">Edit</a>
 				</div>
 
 			</div>

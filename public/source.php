@@ -75,13 +75,13 @@ body {
 
 					<div id="tab_contents_1" class="tab-contents editor-info" style="overflow-y:auto">
 					    <form style="padding:50px">
+                            <div class="row" style="padding:5px">
+                                <div class="col col-2"> * ID </div>
+                                <div class="col col-9"><input type="text" class="input" style="width:100%;" id="name" disabled/></div>
+                            </div>
                             <div class="row" style="padding:5px;">
                                 <div class="col col-2">Title </div>
-                                <div class="col col-9"><input type="text" class="input" style="width:100%;" id="title" disabled /></div>
-                            </div>
-                            <div class="row" style="padding:5px">
-                                <div class="col col-2">Name </div>
-                                <div class="col col-9"><input type="text" class="input" style="width:100%;" id="name" disabled /></div>
+                                <div class="col col-9"><input type="text" class="input" style="width:100%;" id="title"  disabled/></div>
                             </div>
                             <div class="row" style="padding:5px">
                                 <div class="col col-2">Description </div>
@@ -96,11 +96,6 @@ body {
 				<div class="editor-result-frame view-result" id="result">
 					<div class="editor-tool" style="font-size:13px;">
 						<a class="label" data-view="result">Result</a>
-                        <div style="float:right">
-                            <?php if ($_GET['id']) { ?>
-							<a href="share.php?id=<?php echo $_GET['id'] ?>" class='btn btn-small'>Share</a>
-							<?php } ?>
-                        </div>
 					</div>
 
 					<div id="tab_contents_1" class="tab-contents editor-info">

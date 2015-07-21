@@ -5,11 +5,6 @@
 <?php include_once "header.php";
 
 
-if (!$_SESSION['login']) {
-	echo "<script>alert('Please login.');history.go(-1);</script>";
-	exit;
-}
-
 
 // connect
 $m = new MongoClient();
@@ -21,9 +16,9 @@ $components = $db->components;
 
 $data = $components->findOne(array('_id' => new MongoId($_GET['id'])));
 
+$isMy = true;
 if ($_GET['id'] && ($data['login_type'] != $_SESSION['login_type'] || $data['userid'] != $_SESSION['userid']) ) {
-	echo "<script>alert('This component can not edit.');history.go(-1);</script>";
-	exit;
+    $isMy = false;
 }
 
 
@@ -47,15 +42,6 @@ body { overflow: hidden; }
 						<a class="label" data-view="component"><span class="simbol simbol-component">C</span>omponent</a>
 						<span style="padding-left:20px">Load <input type="file" accept=".js" id="component_load" style="width:200px;"/></span>
 
-
-						<select id="component_list" style="float:right;margin-left:2px;" class="input">
-							<option value="">Select component</option>
-							<option value="">--------------</option>
-						</select>
-						<select id="type_list" style="float:right" class="input" onChange="view_type_list()">
-							<option value="chart.brush" selected>Chart Brush</option>
-							<option value="chart.theme">Chart Theme</option>
-						</select>
 						
 					</div>
 
@@ -64,29 +50,12 @@ body { overflow: hidden; }
 					</div>
 
 					<div class="editor-statusbar">
-						Component Access 
-						<label><input type="radio" name="source" value="source" checked /> Source </label>
-						<label><input type="radio" name="source" value="minify" /> Minify</label>
 
-						<span style="float:right">
-							License : 
-							<select class="input" id="license">
-								<option value="None" selected>None</option>
-								<option value="Apache License 2.0">Apache License 2.0</option>
-								<option value="GNU General Public License v2.0">GNU General Public License v2.0</option>
-								<option value="MIT License">MIT License</option>
-							</select>
-						</span>
 					</div>
 				</div>
 				<div class="editor-component view-sample" style="background:#ffffff">
 					<div class="editor-tool" style="font-size:13px;">
 						<a class="label" data-view="sample">Sample Code</a>
-						<span>
-							<select id="sample_list" class="input">
-								<option value="">Select Sample</option>
-							</select>
-						</span>
                         <div style="float:right">
 							<label><input type="checkbox" id="autoRun" /> Auto </label>
 							<a class='btn' onclick="coderun()">Run <i class="icon-play"></i></a>
@@ -141,8 +110,12 @@ var chart = jui.create("chart.builder", '#result', {
 						<a class="label" data-view="information">Information</a>
 
                         <div style="float:right">
+                            <?php if ($isMy) { ?>
                             <a class="btn btn-small" onclick="savecode()">Save</a>
                             <a class="btn btn-small" onclick="deletecode()">Delete</a>
+                            <?php } else { ?>
+                            <a class="btn btn-small" onclick="forkcode()">Fork</a>
+                            <?php } ?>
                         </div>
 					</div>
 
@@ -156,18 +129,29 @@ var chart = jui.create("chart.builder", '#result', {
                                     <span id="access_message" style="font-size:11px"></span>
                                 </div>
                             </div>
+                            <div class="row" style="padding:5px">
+                                <div class="col col-2"> * ID </div>
+                                <div class="col col-9"><input type="text" class="input" style="width:100%;" id="name" require="true" <?php if (!$isMy) { ?>disabled<?php } ?> /></div>
+                            </div>
                             <div class="row" style="padding:5px;">
                                 <div class="col col-2">Title </div>
-                                <div class="col col-9"><input type="text" class="input" style="width:100%;" id="title"  /></div>
-                            </div>
-                            <div class="row" style="padding:5px">
-                                <div class="col col-2">Name </div>
-                                <div class="col col-9"><input type="text" class="input" style="width:100%;" id="name" /></div>
+                                <div class="col col-9"><input type="text" class="input" style="width:100%;" id="title"  <?php if (!$isMy) { ?>disabled<?php } ?>  /></div>
                             </div>
                             <div class="row" style="padding:5px">
                                 <div class="col col-2">Description </div>
                                 <div class="col col-9">
-                                    <textarea style="width:100%;height: 100px;" class="input" id="description"></textarea>
+                                    <textarea style="width:100%;height: 100px;" class="input" id="description" <?php if (!$isMy) { ?>disabled<?php } ?> ></textarea>
+                                </div>
+                            </div>
+                            <div class="row" style="padding:5px">
+                                <div class="col col-2">License </div>
+	                            <div class="col col-9">
+           							<select class="input" id="license" <?php if (!$isMy) { ?>disabled<?php } ?> >
+										<option value="None" selected>None</option>
+										<option value="Apache License 2.0">Apache License 2.0</option>
+										<option value="GNU General Public License v2.0">GNU General Public License v2.0</option>
+										<option value="MIT License">MIT License</option>
+									</select>
                                 </div>
                             </div>
 							<input type="hidden" id="sample" name="sample" value="" />
@@ -217,43 +201,6 @@ $(function() {
 
 	});
 
-	window.view_type_list = function view_type_list() {
-		var type = $("#type_list").val();
-		var arr = [];
-
-		if (type == 'chart.brush')
-		{
-			arr = ['area','bar','bar3d','bargauge','bubble','candlestick','circlegauge','clock','clusterbar3d','clustercolumn3d','clustercylinder3d','column','column3d','cylinder3d','donut','equalizer','fillgauge','focus','fullgauge','fullstackbar','fullstackbar3d','fullstackcolumn','fullstackcolumn3d','fullstackcylinder3d','gauge','imagebar','imagecolumn','line','map.bubble','map.comparebubble','map.core','map.flightroute','map.marker','map.note','map.selector','map.weather','ohlc','path','patternbar','patterncolumn','pie','pin','rangebar','rangecolumn','scatter','scatterpath','splitarea','splitline','stackarea','stackbar','stackbar3d','stackcolumn','stackcolumn3d','stackcylinder3d','stackgauge','stackline','stackscatter','topologynode','waterfall'];
-
-
-		} else if (type == 'chart.theme') 
-		{
-			arr = ['jennifer', 'dark', 'pastel', 'pattern', 'gradient'];
-		}
-
-		$component_list.empty();
-		$component_list.append("<option value=''>Select " + type + "</option>");
-		for(var i = 0, len = arr.length; i < len; i++) {
-			$component_list.append("<option value='" + type + "." + arr[i] + "'>" + type + "." + arr[i] + "</option>");
-		}
-	}
-
-	var $component_list = $("#component_list"); 
-
-
-	$component_list.on('change', function(e) {
-		var value = $(this).val();
-
-		if (value.length > 0) {
-            var path = value.replace(/\./g, '/');
-			$.get("/bower_components/jui/js/" + path + ".js").success(function(code) {
-				componentCode.setValue(code); 	
-			}).fail(function(code){
-				componentCode.setValue(code.responseText); 
-			});
-		}
-	});
-
 	window.coderun = function coderun () {
 		window.coderun.componentCodeText = componentCode.getValue();
 		window.coderun.sampleCodeText = sampleCode.getValue();
@@ -264,8 +211,13 @@ $(function() {
 
         $("#chart_form").submit();
 	}
+	window.forkcode = function savecode() {
 
-
+		var data = {
+            type : 'component',
+			id : '<?php echo $_GET['id'] ?>'
+		}
+	}
 	window.savecode = function savecode() {
 
 		var data = {
@@ -399,31 +351,6 @@ $(function() {
 		'cursor' : 'pointer',
 		'-webkit-user-select' : 'none'
 	}).on('dblclick', viewFullscreen);
-
-	view_type_list();
-
-
-	function load_sample_list() {
-		var $sample_list = $("#sample_list");
-		$.get("sample.php").success(function(arr) {
-			for(var i = 0, len = arr.length; i < len; i++) {
-				$sample_list.append("<option value='"+ arr[i] + "'>" + arr[i].replace(".js", "") + "</option>");
-			}
-		});
-	}
-	load_sample_list();
-
-	$("#sample_list").on('change', function() {
-		var file = $(this).val();
-		
-		$.get("/sample/" + file).success(function(code) {
-			code = code.replace("#chart\-content", "#result");
-			code = code.replace("#chart", "#result");
-			sampleCode.setValue(code); 	
-
-			coderun();
-		});
-	});
 });
 </script>
 <?php include_once "footer.php" ?>

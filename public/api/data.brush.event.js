@@ -1,7 +1,7 @@
 /**
  * Data Sample 2
  * 
- * chart play 에 있는 샘플 코드를 만들어봄. 
+ * chart play 에 있는 샘플 코드를 만들어봄. 큰 사이즈도 만들 수 있어요. 
  * 
  * @author 박진호
  */
