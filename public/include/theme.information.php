@@ -15,6 +15,7 @@
 
 	<div id="tab_contents_1" class="tab-contents editor-info" style="overflow-y:auto">
 		<div class="form-information" style="padding:10px">
+            <?php if ($isMy) { ?>
 			<div class="row" style="padding:5px">
 				<div class="col col-2">Access </div>
 				<div class="col col-9">
@@ -23,6 +24,7 @@
 					<span id="access_message" style="font-size:11px"></span>
 				</div>
 			</div>
+            <?php } ?>
 			<div class="row" style="padding:5px">
 				<div class="col col-2"> * ID </div>
 				<div class="col col-9"><input type="text" class="input" style="width:100%;" id="name" require="true" /></div>

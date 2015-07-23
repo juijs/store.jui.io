@@ -59,6 +59,7 @@ $(function() {
 		var type = "chart.theme";
 		$component_list.empty();
 		$component_list.append("<option value=''>Select Theme</option>");
+
 		for(var i = 0, len = arr.length; i < len; i++) {
 			$component_list.append("<option value='" + type + "." + arr[i] + "'>" + type + "." + arr[i] + "</option>");
 		}
@@ -159,28 +160,37 @@ $(function() {
 		// 테이블 초기화
 		table_2.reset();
 
+		var lastGroup = "";
+
 		for(var key in obj) {
+
+			if (lastGroup != obj[key].group)
+			{
+				//table_2.append({ key: " " , value: "", background : 'yellow'});
+				lastGroup = obj[key].group;
+			}
+
 			if(key == "colors") {
 
 				var list = [];
-				for(var i = 0, len = obj[key].length; i < len; i++) {
-					var value = obj[key][i];
+				for(var i = 0, len = obj[key].value.length; i < len; i++) {
+					var value = obj[key].value[i];
 					if (value.indexOf("linear") > -1 || value.indexOf("radial") > -1) {
-						list[i] = "<input type='text' class='input gradient-picker picker-value' style='width:200px;background:" + obj[key][i] + ";' data-key='" + key + "' value='" + (obj[key][i] || "") + "' /> ";			
+						list[i] = "<input type='text' class='input gradient-picker picker-value' style='width:200px;background:" + value + ";' data-key='" + key + "' value='" + (value || "") + "' /> ";			
 					} else if (value.indexOf("pattern") > -1) {
-						list[i] = "<input type='text' class='input pattern-picker picker-value' style='width:150px;background:" + obj[key][i] + ";' data-key='" + key + "' value='" + (obj[key][i] || "") + "' /> ";			
+						list[i] = "<input type='text' class='input pattern-picker picker-value' style='width:150px;background:" + value + ";' data-key='" + key + "' value='" + (value || "") + "' /> ";			
 					} else {
-						list[i] = "<input type='text' class='input color-picker picker-value' style='width:80px;background:" + obj[key][i] + ";' data-key='" + key + "' value='" + (obj[key][i] || "") + "' /> ";
+						list[i] = "<input type='text' class='input color-picker picker-value' style='width:80px;background:" + value + ";' data-key='" + key + "' value='" + (value || "") + "' /> ";
 					}
 
 				}
 
 				table_2.append({ key: key + " <a class='btn btn-mini'><i class='icon-plus'></i></a>", value: list.join(" ") });
 			} else {
-				var str = obj[key];
+				var str = obj[key].value;
 				if (key.indexOf("Color") > -1)
 				{
-					str = "<input type='text' class='color-picker input picker-value' style='width:80px;background:" + obj[key] + ";' data-key='" + key + "' value='" + (obj[key] || "") + "' /> ";
+					str = "<input type='text' class='color-picker input picker-value' style='width:80px;background:" + obj[key].value + ";' data-key='" + key + "' value='" + (obj[key].value || "") + "' /> ";
 				} else if (key.indexOf("FontSize") > -1) {
                     str = "<input type='text' value='"+str+"' class='font-size-range picker-value'  data-key='" + key + "'/>";
 				} else if (key.indexOf("BorderWidth") > -1) {
@@ -402,8 +412,8 @@ $(function() {
 
 	if ('<?php echo $_GET['id'] ?>')
 	{
-		loadContent();
 		view_type_list(false);
+		loadContent();
 	} else {
 		view_type_list(true);
 	}

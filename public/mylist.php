@@ -24,13 +24,16 @@ $rows = $components->find(array(
 	'userid' => $_SESSION['userid']
 ))->sort(array(
 	'update_time' => -1
-));
+))->limit(20);
 
 
 
 ?>
+	<div>
+		<span class="content-btn"><a href="?sort=update_time" class="btn-simple form-btn-<?php echo $_GET['sort'] != 'good' ? 'on' : 'off' ?>">최신순</a><a href="?sort=good" class="btn-simple form-btn-<?php echo $_GET['sort'] == 'good' ? 'on' : 'off' ?>">좋아요순</a></span>
+	</div>
 
-<p>My List </p>
+	<div style='margin-top:28px;'></div>
 
     <div id="content-container">
 
@@ -54,4 +57,15 @@ $rows = $components->find(array(
         </div>
 
     </div>
+
+<script type="text/javascript">
+$(function() {
+	$('#content-container').masonry({
+	  // options
+	  itemSelector: '.summary-box',
+	  isFitWidth: true
+	});
+});
+
+</script>
 <?php include_once "footer.php" ?>

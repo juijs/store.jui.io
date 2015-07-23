@@ -22,17 +22,41 @@ $sort['update_time'] = -1;
 
 $rows = $components->find(array(
     'access' => 'public'            
-))->sort($sort);
+))->sort($sort)->limit(10);
 
 ?>
 
-    <div id="content-container">
+<div style="margin-top:28px"></div>
+<div id="content-container">
 
 
-		<?php 
-		foreach ($rows as $data) { 
-			include "box.php"; 
-		} 
-		?>
-    </div>
+	<?php 
+	$lastId = "";
+	foreach ($rows as $data) { 
+		include "box.php"; 
+
+		$lastId = $data['id'];
+	} 
+	?>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	var lastId = '<?php echo (string)$lastData['id'] ?>';
+
+	var $container = $('#content-container');
+	
+	$container.masonry({
+	  // options
+	  itemSelector: '.summary-box',
+	  isFitWidth: true
+	});
+
+	  $(window).scroll(function(e) {
+		console.log(e);
+	  });
+	
+});
+
+</script>
 <?php include_once "footer.php" ?>

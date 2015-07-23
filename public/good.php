@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 include_once '../bootstrap.php';
 
 if (!$_SESSION['login']) {
-	echo json_encode(array("result"=> false, 'message' => 'Please login to create chart.'));
+	echo json_encode(array("result"=> false, 'message' => 'Please login.'));
 	exit;
 }
 

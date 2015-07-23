@@ -11,7 +11,7 @@ function define(key, juiObject) {
 	}
 }
 
-define.amd = true; 
+define.amd = false; 
 
 function good(id) {
 	$.post('/good.php', { id : id}, function(res) {
@@ -25,13 +25,16 @@ function good(id) {
 }
 
 function toggleSns(sns) {
-	$(".share-buttons").not(sns).hide();
 	$(sns).next().toggle();
+    $(".share-buttons").not($(sns).next()).hide();
 }
 
 $(function() {
 	$(document).click(function(e) {
 		if (e.target.tagName == 'A' && $(e.target).hasClass('share-button'))
+		{
+
+        } else if (e.target.tagName == 'I' && $(e.target).hasClass('icon-report-link'))
 		{
 
 		} else {

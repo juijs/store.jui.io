@@ -1,5 +1,10 @@
 <?php $page_id = "generate"; ?>
-<?php include_once "header.php" ?>
+<?php 
+
+$meta = "<script>define.amd=true;</script>";
+include_once "header.php" 
+
+?>
 <style type="text/css">
 html,body { 
     background:white;

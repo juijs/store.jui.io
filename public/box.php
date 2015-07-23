@@ -5,10 +5,7 @@ $link = "view.php?id=".($id);
 $type = $data['type'];
 if (!$type) $type = 'component';
 
-$first = strtoupper(substr($type, 0, 1));
-
-if (!$first) $first = "C";
-$color = $type_colors[$first];
+$first = $type_text[$type];
 
 ?>
 <div class="summary-box"><div class="summary-normal">

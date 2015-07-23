@@ -62,6 +62,7 @@ if (!$first) $first = "C";
 $color = $type_colors[$first];
 
 ?>
+<div style="margin-top:28px"></div>
 <div id="content-container" style="padding:10px;">
 
 	<div style="width:100%;max-width:950px;;margin:0 auto;padding-top:50px;">
@@ -73,10 +74,7 @@ $color = $type_colors[$first];
 		$type = $row['type'];
 		if (!$type) $type = 'component';
 
-		$first = strtoupper(substr($type, 0, 1));
-
-		if (!$first) $first = "C";
-		$color = $type_colors[$first];
+		$first = $type_text[$type];
 
 		?>
 		<div class="summary-box large"><div class="summary-normal">
@@ -96,7 +94,7 @@ $color = $type_colors[$first];
 					</span>
 				</div>
 				<div class="imagesfield">
-					<div id="result" style="width:100%;height:400px;background:white;"><?php
+					<div id="result" ><?php
 						$type = $row['type'];
 						$sample_type = $row['sample_type'];
 
@@ -166,7 +164,9 @@ jui.ready(function() {
 		}
 	}
 
-	$("#result").height($("#result")[0].scrollHeight);
+    var height = $("#result")[0].scrollHeight;
+
+	$("#result").height(height);
 
 
 });

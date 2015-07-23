@@ -128,11 +128,8 @@ header a {
 }
 /*content-container*/
 #content-container {
-	margin: 28px 0 0 0;
+	margin: 0 auto;
     box-sizing: border-box;
-    justify-content: center;
-    display: flex;
-    flex-wrap: wrap;
     text-align:center;
 }
 /*btn-simple*/
@@ -189,42 +186,14 @@ header a {
 /*item summary*/
 .summary-box {
 	box-shadow: 0 5px 10px 0 rgba(0,0,0,0.22);
-	/*width: 236px;
-	height: 300px;*/
+	width: 236px;
 	border-radius: 5px;
 	display: inline-block;
 	margin:7px 4px 7px 4px;
 	font-size:12px;
-
-    width: 25%;
     position: relative;
 }
 
-@media only screen and (max-width : 480px) {
-       /* Smartphone view: 1 tile */
-       .summary-box {
-          width: 90%;
-       }
-}
-@media only screen and (max-width : 650px) and (min-width : 481px) {
-       /* Tablet view: 2 tiles */
-       .summary-box {
-            width: 45%;
-        }
-}
-@media only screen and (max-width : 1050px) and (min-width : 651px) {
-       /* Small desktop / ipad view: 3 tiles */
-       .summary-box {
-            width: 30%;
-       }
-
-}
-@media only screen and (max-width : 1290px) and (min-width : 1051px) {
-       /* Medium desktop: 4 tiles */
-       .summary-box {
-            width: 20%;
-       }
-}
 
 .summary-box.large {
 	width:100%;
@@ -275,6 +244,63 @@ header a {
 	max-width:100%;
 	height: inherit;
 }
+
+.large .summary-normal .imagesfield #result {
+	width:100%;
+	height:400px;
+	background:white;
+}
+
+.login-menu-big {
+	display:inline-block;
+}
+
+.login-menu-small {
+	display:none;
+}
+
+@media only screen and (max-width : 480px) {
+
+	.login-menu-big {
+		display:none;
+	}
+
+	.login-menu-small {
+		display:inline-block;
+	}
+
+	.nav-loadchart {
+		display:none;
+	}
+
+	 .large .summary-normal .imagesfield #result {
+		height:300px;
+	}
+
+}
+@media only screen and (max-width : 650px) and (min-width : 481px) {
+
+
+	.nav-loadchart {
+		display:none;
+	}
+
+	 .large .summary-normal .imagesfield #result {
+		height:350px;
+	}
+}
+@media only screen and (max-width : 1050px) and (min-width : 651px) {
+	 .large .summary-normal .imagesfield #result {
+		height:400px;
+	}
+
+}
+@media only screen and (max-width : 1290px) and (min-width : 1051px) {
+	 .large .summary-normal .imagesfield #result {
+		height:500px;
+	}
+}
+
 
 .summary-buttons {
 	margin-top:10px;
@@ -329,6 +355,7 @@ header a {
 	color:white;
 	padding-left:6px;
 	padding-right:6px;
+	float:right;
 }
 
 .simbol-component {

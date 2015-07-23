@@ -1,4 +1,4 @@
-<div class="editor-panel view-component" style="background:#ffffff">
+<div class="editor-panel  editor-panel-border  view-component" style="background:#ffffff">
 
 	<div class="editor-tool" style="font-size:13px;">
 		<a class="label" data-view="component"><span class="simbol simbol-style">S</span>tyle</a>

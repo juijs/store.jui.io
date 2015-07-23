@@ -52,5 +52,5 @@ body { overflow: hidden; }
 		</div>
 	</div>
 </div>
-<?php include_once "theme.script.php" ?>
+<?php include_once "include/theme.script.php" ?>
 <?php include_once "footer.php" ?>
