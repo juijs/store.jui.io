@@ -34,10 +34,9 @@ body { overflow: hidden; }
 			<div class="editor-left">
 				 <?php include_once "include/style.editor.php" ?>
 
-				 <?php include_once "include/style.information.php" ?>
-
 			</div>
 			<div class="editor-right">
+ 				 <?php include_once "include/style.information.php" ?>
                
 				  <?php include_once "include/style.result.php" ?>
 			</div>

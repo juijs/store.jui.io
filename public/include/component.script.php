@@ -1,12 +1,12 @@
 
 <script type="text/javascript">
 $(function() {
-	var componentCode = CodeMirror.fromTextArea($("#component_code")[0], {
+	var componentCode = window.componentCode = CodeMirror.fromTextArea($("#component_code")[0], {
 	  mode:  "javascript",
 	  lineNumbers : true 
 	});
 
-	var sampleCode = CodeMirror.fromTextArea($("#sample_code")[0], {
+	var sampleCode = window.sampleCode = CodeMirror.fromTextArea($("#sample_code")[0], {
 	  mode:  "javascript",
 	  lineNumbers : true
 	});
@@ -116,65 +116,8 @@ $(function() {
 	}
 
 	loadContent();
-
-   window.viewAccessMessage = function viewAccessMessage() {
-        var access = $("[name=access]:checked").val();
-        if (access == 'private') {
-            $("#access_message").html('Only you can see this component.').css({
-                color : 'red'        
-            });
-        } else {
-            $("#access_message").html("Anyone can see this component.").css({color : 'blue'});
-        }
-   }
-
-   viewAccessMessage();
-
-	window.viewFullscreen = function viewFullscreen(e) {
-		var view = $(e.target).data('view');	
-		var $view = $(".view-" + view);
-
-		if ($view.data('clone'))
-		{
-			var $clone = $view.data('clone');
-			$view.data('clone').before($view);
-			$view.removeClass('fullscreen');
-			$view.data('clone', null);
-			$clone.remove();
-			$view.css({
-				'z-index' : 0
-			});
-
-			coderun();
-		} else {
-			var $clone = $view.clone();
-			$clone.removeClass('view-' + view).addClass('clone');
-			$clone.empty();
-
-			$view.after($clone);
-			$clone.css({ opacity : 0.8 });
-
-			$view.addClass('fullscreen').appendTo('body');
-			$view.data('clone', $clone);
-			$view.css({
-				'z-index' : 999999
-			});
-
-			if (view == 'component')
-			{
-				componentCode.refresh();
-			} else if (view == 'sample' ) {
-				sampleCode.refresh();
-			} 
-			
-			coderun();
-		}
-	}
-
-
-	$("a.label").css({
-		'cursor' : 'pointer',
-		'-webkit-user-select' : 'none'
-	}).on('dblclick', viewFullscreen);
 });
 </script>
+
+
+<?php include __DIR__."/script.php" ?>

@@ -9,9 +9,8 @@ var data = [
 chart("#chart-content", {
     axis : {
         x : {
-            type : "block",
+            type : "fullblock",
             domain : [ "Q1", "Q2", "Q3", "Q4" ],
-            full : true,
             line : true
         },
         y : {

@@ -1,13 +1,16 @@
-<div class="editor-panel view-information" style="top:50%;border-right:1px solid #ddd;">
+<div class="editor-panel view-information halfscreen" style="border-right:1px solid #ddd;">
 
 	<div class="editor-tool" style="font-size:13px;">
-		<a class="label" data-view="information">Information</a>
-		<div style="float:right">
+		<a  class="h2" style="display:inline-block"  data-view="information">Information</a>
+		<div style='float:right;cursor:pointer;display:none;' class='close'><i class='icon-close' style='font-size:20px'></i></div>
+		<div style="float:right;margin-right:10px;">
 			<?php if ($isMy) { ?>
-			<a class="btn btn-small" onclick="savecode()">Save</a>
-			<a class="btn btn-small" onclick="deletecode()">Delete</a>
+			<div class="group">
+				<a class="btn" onclick="savecode()">Save</a>
+				<a class="btn" onclick="deletecode()">Delete</a>
+			</div>
 			<?php } else { ?>
-			<a class="btn btn-small" onclick="forkcode()">Fork</a>
+			<a class="btn" onclick="forkcode()">Fork</a>
 			<?php } ?>
 		</div>
 
@@ -27,16 +30,16 @@
             <?php } ?>
 			<div class="row" style="padding:5px">
 				<div class="col col-2"> * ID </div>
-				<div class="col col-9"><input type="text" class="input" style="width:100%;" id="name" require="true" /></div>
+				<div class="col col-9"><input type="text" class="input" style="width:100%;" id="name" require="true" <?php if (!$isMy) { ?>disabled<?php } ?>  /></div>
 			</div>
 			<div class="row" style="padding:5px;">
 				<div class="col col-2">Title </div>
-				<div class="col col-9"><input type="text" class="input" style="width:100%;" id="title"  /></div>
+				<div class="col col-9"><input type="text" class="input" style="width:100%;" id="title" <?php if (!$isMy) { ?>disabled<?php } ?>   /></div>
 			</div>
 			<div class="row" style="padding:5px">
 				<div class="col col-2">Description </div>
 				<div class="col col-9">
-					<textarea style="width:100%;height: 100px;" class="input" id="description"></textarea>
+					<textarea style="width:100%;height: 100px;" class="input" id="description" <?php if (!$isMy) { ?>disabled<?php } ?> ></textarea>
 				</div>
 			</div>
 			<div class="row" style="padding:5px">

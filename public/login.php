@@ -3,7 +3,6 @@
 if ($_SESSION['login']) {
 ?>
 	<span class='login-menu-big'>
-		<a class='btn btn-small' href="/mylist.php"><i class='icon-menu'></i></a>
 
 		<?php if ($_SESSION['avatar']) { ?><img src='<?php echo $_SESSION['avatar'] ?>' width="30" height="30" align="absmiddle" /><?php } ?>
 		<?php echo $_SESSION['username'] ?> 

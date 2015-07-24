@@ -124,7 +124,7 @@ $color = $type_colors[$first];
 			</div>
 
 		</div>
-
+        <p>&nbsp;</p>
 		<div id="disqus_thread"></div>
 		<script type="text/javascript">
 			/* * * CONFIGURATION VARIABLES * * */

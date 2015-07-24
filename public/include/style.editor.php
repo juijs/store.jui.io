@@ -1,22 +1,18 @@
-<div class="editor-panel  editor-panel-border  view-component" style="background:#ffffff">
+<div class="editor-panel editor-panel-pull  editor-panel-border  view-component" style="background:#ffffff">
 
 	<div class="editor-tool" style="font-size:13px;">
-		<a class="label" data-view="component"><span class="simbol simbol-style">S</span>tyle</a>
+		<a  class="h2" style="display:inline-block"  data-view="component"><?php echo $type_text['style'] ?></a>
 		<span style="padding-left:20px">Load <input type="file" accept=".less" id="component_load" style="width:200px;"/></span>
+		<span style="float:right">
+			<a class="btn " onclick="select_theme(this)">Select Theme</a>
 
+		</span>
 
-		<select id="component_list" style="float:right;margin-left:2px;" class="input">
-			<option value="">Select component</option>
-			<option value="">--------------</option>
-		</select>
-		
+		<div style='float:right;cursor:pointer;display:none;' class='close'><i class='icon-close' style='font-size:20px'></i></div>
+
 	</div>
-	<div class="editor-tool2" style="font-size:13px;border-top:0px;">
-		<a class="label" data-view="sample">Sample Code</a>
-	
-		<div style="float:right">
-			<label><input type="checkbox" id="autoRun" /> Auto </label>
-			<a class='btn' onclick="coderun()">Run <i class="icon-play"></i></a>
+	<div id="tab_contents_2" class="tab-contents editor-codemirror" style="background:#ffffff">
+		<textarea id="component_code"></textarea>
 			<form id="result_form" action="generate.ui.php" method="post" target="result_frame" enctype="multipart/form-data" style="display:none">
 				<input type="hidden" name="component_code" value="" />
 				<input type="hidden" name="sample_code" value="" />
@@ -26,14 +22,13 @@
 			<form id="style_form" action="theme.check.php" method="post" target="style_frame" enctype="multipart/form-data" style="display:none">
 				<input type="hidden" name="component_code" value="" />
 			</form>
-		</div>
 	</div>
-
-	<div id="tab_contents_2" class="tab-contents editor-codemirror editor-bottom-full" style="background:#ffffff">
-		<textarea id="component_code"></textarea>
-	</div>
-	<div id="tab_contents_1" class="tab-contents editor-codemirror editor-bottom-full">
+	<div id="tab_contents_1" class="tab-contents editor-codemirror">
 		<table class="table table-simple" id="table_style">
+		<colgroup>
+			<col width="40%" />
+			<col width="60%" />
+		</colgroup>
 		<thead>
 			<tr>
 				<th width="40%">key</th>

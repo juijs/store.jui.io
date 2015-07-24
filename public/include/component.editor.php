@@ -1,9 +1,10 @@
 <div class="editor-panel  editor-panel-border  view-component" style="background:#ffffff">
 
 	<div class="editor-tool" style="font-size:13px;">
-		<a class="label" data-view="component"><span class="simbol simbol-component">C</span>omponent</a>
+		<a class="h2" data-view="component" style="display:inline-block"><?php echo $type_text['component'] ?></a>
 		<span style="padding-left:20px">Load <input type="file" accept=".js" id="component_load" style="width:200px;"/></span>
 
+		<div style='float:right;cursor:pointer;display:none;' class='close'><i class='icon-close' style='font-size:20px'></i></div>
 		
 	</div>
 

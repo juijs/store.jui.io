@@ -1,7 +1,8 @@
 <div class="editor-panel view-result" id="result">
 
 	<div class="editor-tool" style="font-size:13px;">
-		<a class="label" data-view="result">Result</a>
+		<a class="h2" style="display:inline-block"  data-view="result">Result</a>
+		<div style='float:right;cursor:pointer;display:none;' class='close'><i class='icon-close' style='font-size:20px'></i></div>
 	</div>
 
 	<div id="tab_contents_1" class="tab-contents editor-info">

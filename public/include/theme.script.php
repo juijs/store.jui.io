@@ -5,7 +5,7 @@
 
 <script type="text/javascript">
 $(function() {
-	var componentCode = CodeMirror.fromTextArea($("#component_code")[0], {
+	var componentCode = window.componentCode =  CodeMirror.fromTextArea($("#component_code")[0], {
 	  mode:  "javascript",
 	  lineNumbers : true,
 	  readOnly : true 
@@ -55,41 +55,48 @@ $(function() {
 	});
 
 	window.view_type_list = function view_type_list(themeName, isChange) {
-		var arr = ['jennifer', 'dark', 'pastel', 'pattern', 'gradient'];
-		var type = "chart.theme";
-		$component_list.empty();
-		$component_list.append("<option value=''>Select Theme</option>");
-
-		for(var i = 0, len = arr.length; i < len; i++) {
-			$component_list.append("<option value='" + type + "." + arr[i] + "'>" + type + "." + arr[i] + "</option>");
-		}
-
-
 		if (isChange)
 		{
-			$component_list.val("chart.theme.jennifer");
-			$component_list.change();
+			select_theme_list("chart.theme.jennifer");
 		}
-
 	}
 
-	var $component_list = $("#component_list"); 
+	window.select_theme_list = function(value) {
+		var path = value.replace(/\./g, '/');
+		$.get("/bower_components/jui/js/chart/theme/" + path + ".js").success(function(code) {
+			componentCode.setValue(code); 	
+
+			getThemeObject();
+
+			$("#name").val("chart.theme.mytheme");
+
+			coderun();
+		});
+	}
 
 
-	$component_list.on('change', function(e) {
-		var value = $(this).val();
+	window.select_theme = function(btn) {
+		var win = jui.create('uix.window', "#theme_select_win", {
+			width: 650,
+			height: 300,
+			modal : true
+		});
 
-		if (value.length > 0) {
-            var path = value.replace(/\./g, '/');
-			$.get("/bower_components/jui/js/" + path + ".js").success(function(code) {
-				componentCode.setValue(code); 	
+		$(win.root).find(".body .window-item").off().on('click', function() {
+			$(this).parent().find(".window-item.select").removeClass("select");
+			$(this).addClass('select');
+		});
 
-				getThemeObject();
+		$(win.root).find(".foot .select-btn").off().on('click', function() {
+			win.hide();
+			var file = $(win.root).find(".window-item.select").attr('data-theme');
+			select_theme_list(file);
 
-				$("#name").val("chart.theme.mytheme");
-			});
-		}
-	});
+			$(btn).html("Select Theme : " + file);
+		});
+
+		win.show();
+	}
 
 	window.coderun = function coderun () {
 		window.coderun.componentCodeText = componentCode.getValue();
@@ -111,7 +118,7 @@ $(function() {
 	}
 
 	var timer = null;
-	function convertTheme() {
+	function convertContent() {
 		clearTimeout(timer);
 
 		timer = setTimeout(function() { 
@@ -150,7 +157,7 @@ $(function() {
 		window.table_2 = jui.create("uix.table", "#table_theme", {
 			fields: [ "key", "value" ],
             scroll : true,
-			scrollHeight : $(window).height() - 229,
+			scrollHeight : $(window).height() - 144,
 			resize: true,
 			tpl: {
 				row: "<tr><td style='font-size:15px;'><!= key !></td><td><!= value !></td></tr>"
@@ -229,14 +236,10 @@ $(function() {
 		}
 
 		$(".picker-value").change(function() {
-			convertTheme();
+			convertContent();
 		});
 
-        $(".color-picker").colorPicker({
-            renderCallback : function ($elem, toggled) {
-				convertTheme();
-            }
-        });
+   		<?php include_once __DIR__."/color.picker.php" ?>
 
         $(".font-size-range").ionRangeSlider({
             min: 8,
@@ -273,7 +276,7 @@ $(function() {
             hide_min_max : true
         });
 
-		convertTheme();
+		convertContent();
 	}
 
 	window.savecode = function savecode() {
@@ -328,64 +331,6 @@ $(function() {
 		}
 	});
 
-   window.viewAccessMessage = function viewAccessMessage() {
-        var access = $("[name=access]:checked").val();
-        if (access == 'private') {
-            $("#access_message").html('Only you can see this component.').css({
-                color : 'red'        
-            });
-        } else {
-            $("#access_message").html("Anyone can see this component.").css({color : 'blue'});
-        }
-   }
-
-   viewAccessMessage();
-
-	window.viewFullscreen = function viewFullscreen(e) {
-		var view = $(e.target).data('view');	
-		var $view = $(".view-" + view);
-
-		if ($view.data('clone'))
-		{
-			var $clone = $view.data('clone');
-			$view.data('clone').before($view);
-			$view.removeClass('fullscreen');
-			$view.data('clone', null);
-			$clone.remove();
-			$view.css({
-				'z-index' : 0
-			});
-
-			coderun();
-		} else {
-			if (view == 'component' || view == 'sample') return;
-
-
-			var $clone = $view.clone();
-			$clone.removeClass('view-' + view).addClass('clone');
-			$clone.empty();
-
-			$view.after($clone);
-			$clone.css({ opacity : 0.8 });
-
-			$view.addClass('fullscreen').appendTo('body');
-			$view.data('clone', $clone);
-			$view.css({
-				'z-index' : 999999
-			});
-
-			if (view == 'result') {
-				coderun();
-			}
-		}
-	}
-
-
-	$("a.label").css({
-		'cursor' : 'pointer',
-		'-webkit-user-select' : 'none'
-	}).on('dblclick', viewFullscreen);
-
 	function loadContent() {
 		var id = '<?php echo $_GET['id'] ?>';
 
@@ -433,6 +378,13 @@ $(function() {
 	$("#sample_list").on('change', function() {
 		var file = $(this).val();
 		
+		if (file == '') {
+			return;
+		}
+		select_sample_list(file);
+	});
+
+	window.select_sample_list = function(file) {
 		$.get("/sample/" + file).success(function(code) {
 			code = code.replace("#chart\-content", "#result");
 			code = code.replace("#chart", "#result");
@@ -440,7 +392,46 @@ $(function() {
 
 			coderun();
 		});
-	});
+	}
+
 
 });
 </script>
+
+<div id="theme_select_win" class="window" style="display:none;">
+    <div class="head">
+        <div class="left">Select Theme</div>
+        <div class="right">
+            <a href="#" class="close"><i class="icon-exit"></i></a>
+        </div>
+    </div>
+    <div class="body" style="text-align:center">
+		<div class="window-item" data-theme="jennifer" >
+			<img src="" width="100px" height="100px" />
+			<a >Jennifer</a>
+		</div>
+		<div class="window-item" data-theme="dark" >
+			<img src="" width="100px" height="100px" />
+			<a >Dark</a>
+		</div>
+		<div class="window-item" data-theme="pastel" >
+			<img src="" width="100px" height="100px" />
+			<a >Pastel</a>
+		</div>
+		<div class="window-item" data-theme="gradient" >
+			<img src="" width="100px" height="100px" />
+			<a >Gradient</a>
+		</div>
+		<div class="window-item" data-theme="pattern" >
+			<img src="" width="100px" height="100px" />
+			<a >Pattern</a>
+		</div>
+    </div>
+	<div class="foot">
+		<a class="btn select-btn">Select</a>
+	</div>
+
+</div>
+
+
+<?php include __DIR__."/script.php" ?>

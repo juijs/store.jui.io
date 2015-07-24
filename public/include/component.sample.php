@@ -1,8 +1,8 @@
 <div class="editor-panel editor-panel-border view-sample" style="background:#ffffff">
 	<div class="editor-tool" style="font-size:13px;">
-		<a class="label" data-view="sample">Sample Code</a>
-		<div style="float:right">
-			<label><input type="checkbox" id="autoRun" /> Auto </label>
+		<a class="h2" style="display:inline-block" data-view="sample">Sample Code</a>
+		<div style='float:right;cursor:pointer;display:none;' class='close'><i class='icon-close' style='font-size:20px'></i></div>
+		<div style="float:right;margin-right:10px;">
 			<a class='btn' onclick="coderun()">Run <i class="icon-play"></i></a>
 			<form id="chart_form" action="generate.php" method="post" target="chart_frame" enctype="multipart/form-data" style="display:none">
 				<input type="hidden" name="component_code" value="" />

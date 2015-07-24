@@ -138,7 +138,6 @@ if ( typeof define === 'function' && define.amd ) {
 } else if ( typeof exports === 'object' ) {
   defineBridget( require('jquery') );
 } else {
-	console.log(window.jQuery);
   // get jquery from browser global
   defineBridget( window.jQuery );
 }

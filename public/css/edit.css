@@ -73,53 +73,19 @@
 
 /** new layout **/
 
+.editor-panel.halfscreen {
+	top:50%;
+}
 
-.editor-code {
-	position:absolute;
+.editor-panel.fullscreen {
+	position: absolute;
+	height:auto;
 	left:0px;
-	top:0px;
-	width:50%;
+	top:1px !important;
+	right:0px;
 	bottom:0px;
 }
 
-
-.editor-data {
-	position:absolute;
-	left:0px;
-	top:0px;
-	right:1px;
-	height:50%;
-    border-right:1px solid #ddd;
-}
-
-.editor-data.fullscreen {
-	position: fixed;
-	height:auto;
-	left:10px;
-	top:70px;
-	right:10px;
-	bottom:10px;
-    border:1px solid #ddd;
-}
-
-.editor-style {
-	position:absolute;
-	left:0px;
-	top:0px;
-	right:1px;
-	height:50%;
-    border-right:1px solid #ddd;
-}
-
-.editor-style.fullscreen {
-	position: fixed;
-	height:auto;
-	left:10px;
-	top:70px;
-	right:10px;
-	bottom:10px;
-    border:1px solid #ddd;
-}
 
 .editor-data2 {
 	position:absolute;
@@ -130,70 +96,8 @@
     border-right:1px solid #ddd;
 }
 
-.editor-component {
-	position:absolute;
-	left:0px;
-	bottom:0px;
-	right:1px;
-	top:50%;
-    border-right:1px solid #ddd;
-}
-
-.editor-component.fullscreen {
-	position:absolute;
-	left:10px;
-	bottom:10px;
-	right:10px;
-	top:70px;
-	border:1px solid black;
-}
-
-.editor-meta {
-	position:absolute;
-	right:0px;
-	top:0px;
-	left:0px;
-    height:50%;
-    background:white;
-}
-.editor-meta.fullscreen {
-	position: fixed;
-	height:auto;
-	left:10px;
-	top:70px;
-	right:10px;
-	bottom:10px;
-    border:1px solid #ddd;
-}
-.editor-result-frame {
-	position:absolute;
-	right:0px;
-	top:50%;
-	left:0px;
-    bottom:0px;
-    background:white;
-}
-.editor-result-frame.fullscreen {
-	position:absolute;
-	left:10px;
-	bottom:10px;
-	right:10px;
-	top:70px;
-	border:1px solid black;
-}
-.editor-result {
-	position:absolute;
-	right:0px;
-	top:0px;
-	left:50%;
-	bottom:0px;
-}
 .editor-result:before {
     border-left:1px solid #ddd;
-}
-
-.fullscreen {
-	border:5px solid black !important;
 }
 
 .editor-tool {
@@ -233,7 +137,7 @@
 	top:52px;
 	left:0px;
 	right:0px;
-	bottom:37px;
+	bottom:0px;
 }
 
 .editor-codemirror.editor-bottom-full {
@@ -316,4 +220,15 @@
 
 .cp-color-picker {
 	z-index: 1;
+}
+
+.window-item {
+	position:relative;
+	float:left;
+	width:100px;
+	padding:10px;
+}
+
+.window-item.select {
+	background:#ddd;
 }

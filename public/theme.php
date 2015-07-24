@@ -5,12 +5,6 @@
 <?php include_once "header.php";
 
 
-if (!$_SESSION['login']) {
-	echo "<script>alert('Please login.');history.go(-1);</script>";
-	exit;
-}
-
-
 // connect
 $m = new MongoClient();
 
