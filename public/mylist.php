@@ -24,7 +24,7 @@ $rows = $components->find(array(
 	'userid' => $_SESSION['userid']
 ))->sort(array(
 	'update_time' => -1
-))->limit(20);
+))->limit(100);
 
 
 
@@ -43,19 +43,6 @@ $rows = $components->find(array(
 			include "box.php";
 		} 
 		?>
-		<div class="summary-box"><div class="summary-normal">
-
-                <div class="name">
-                    <span>Select Component!</span>
-                </div>
-                <div class="imagesfield" style="background:white;font-size:20px;text-align:center;height:245.5px;">
-					<a href="component.php" class='btn' style='width:70%;margin-bottom:10px;'><i class='icon-plus' ></i> Chart Brush</a>
-					<a href="theme.php" class='btn' style='width:70%;margin-bottom:10px;'><i class='icon-plus' ></i> Chart Theme</a>
-					<a href="style.php" class='btn' style='width:70%;margin-bottom:10px;'><i class='icon-plus' ></i> UI Theme</a>
-				</div>
-            </div>
-        </div>
-
     </div>
 
 <script type="text/javascript">

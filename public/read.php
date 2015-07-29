@@ -18,6 +18,26 @@ header('Content-Type: application/json');
 
 if ($component) {
 	unset($component['_id']);
+
+	if ($component['type'] == 'data') {
+		$name = "data_".$_GET['id'];
+
+		$data = $db->{$name};
+
+		$temp = $data->find();
+
+		$list = array();
+		foreach($temp as $t) {
+			$list[] = array(
+				'id' => (string)$t['_id'],
+				'content' => $t['content'],
+				'type' => $t['type']	
+			);
+		}
+
+		$component['items'] = $list;
+	}
+
 	echo json_encode($component);
 } else {
 	echo json_encode(array());

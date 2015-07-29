@@ -5,9 +5,6 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-header('Content-Type: text/css');
-
-
 // connect
 $m = new MongoClient();
 
@@ -19,6 +16,10 @@ $components = $db->components;
 $document = array( '_id' => new MongoId($_GET['id']) );
 
 $component = $components->findOne($document);
+
+if ($component['type'] == 'map') {
+	header("Content-Type: image/svg+xml");
+}
 
 if ($_GET['code'] == 'sample') {
 	echo $component['sample_code'];

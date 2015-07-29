@@ -15,7 +15,7 @@ $first = $type_text[$type];
 			<?php
 				$share_text = urlencode($description)." #store #jui #js" ;
 				$share_url = urlencode("http://".$_SERVER['HTTP_HOST']."/view.php?id=".$id);
-
+				$embed_url = "http://".$_SERVER['HTTP_HOST']."/embed.php?id=".$id;
 				include "sns.button.php" 
 			?>
 

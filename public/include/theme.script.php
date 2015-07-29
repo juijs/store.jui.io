@@ -78,7 +78,7 @@ $(function() {
 	window.select_theme = function(btn) {
 		var win = jui.create('uix.window', "#theme_select_win", {
 			width: 650,
-			height: 300,
+			height: 250,
 			modal : true
 		});
 
@@ -96,6 +96,81 @@ $(function() {
 		});
 
 		win.show();
+	}
+
+	window.select_sample = function(btn) {
+		var win = jui.create('uix.window', "#sample_select_win", {
+			width: 650,
+			height: 500,
+			modal : true
+		});
+
+		$.get("sample.php").success(function(arr) {
+            var $body = $(win.root).find(".body");
+            $body.empty();
+			for(var i = 0, len = arr.length; i < len; i++) {
+                var item = arr[i];
+
+                if (typeof item == 'string') {
+                    var path = item.replace(".js", "");
+                    item = { sample : path, name : path, children : [] };
+                }
+
+                if (item.type == 'group') {
+                    var $item = $("<div class='window-item-group' />");
+                    $item.append("<p >" + item.name + "</p>");
+                    $body.append($item);
+                } else {
+                    var $item = $("<div class='window-item' />");
+
+					var chart_type = "";
+					if (item.sample.indexOf("bar") > -1) 
+					{
+						chart_type = "-bar";
+					} else if (item.sample.indexOf("column") > -1) {
+						chart_type = "-column";
+					} else if (item.sample.indexOf("gauge") > -1) {
+						chart_type = "-gauge";
+					} else if (item.sample.indexOf("line") > -1) {
+						chart_type = "-line";
+					} else if (item.sample.indexOf("radar") > -1) {
+						chart_type = "-radar";
+					} else if (item.sample.indexOf("area") > -1) {
+						chart_type = "-area";
+					} else if (item.sample.indexOf("scatter") > -1 || item.sample.indexOf("bubble") > -1) {
+						chart_type = "-scatter";
+					} 
+
+                    //$item.append("<img width='100px' height='100px' />");
+                    $item.append("<i class='icon-chart" + chart_type +"'></i>");
+                    $item.append("<a />");
+
+                    $item.data('sample', item.sample);
+                    $item.find("a").attr('title', item.name).append(item.name);
+
+                    $body.append($item);
+                }
+
+			}
+  
+    		$(win.root).find(".body .window-item").off().on('click', function() {
+	    		$(this).parent().find(".window-item.select").removeClass("select");
+		    	$(this).addClass('select');
+	    	});
+
+		    $(win.root).find(".foot .select-btn").off().on('click', function() {
+		    	win.hide();
+		    	var file = $(win.root).find(".window-item.select").data('sample');
+		    	select_sample_list(file);
+
+		    	$(btn).html("Select Sample : " + file);
+		    });
+
+     		win.show();
+
+		}).fail(function() {
+            //$(win.root).find("body").empty();
+        });
 	}
 
 	window.coderun = function coderun () {
@@ -192,7 +267,7 @@ $(function() {
 
 				}
 
-				table_2.append({ key: key + " <a class='btn btn-mini'><i class='icon-plus'></i></a>", value: list.join(" ") });
+				table_2.append({ key: key, value: list.join(" ") });
 			} else {
 				var str = obj[key].value;
 				if (key.indexOf("Color") > -1)
@@ -286,13 +361,21 @@ $(function() {
 			id : '<?php echo $_GET['id'] ?>',
             access : $("[name=access]:checked").val(),
 			title : $("#title").val(),
-			name : $("#name").val(),
+			name : $.trim($("#name").val()),
 			description : $("#description").val(),
 			license : $("#license").val(),
 			component_code : componentCode.getValue(),
 			sample_code : sampleCode.getValue(),
 			sample : $("#sample").val()
 		}
+
+		
+		if (data.name == '')
+		{
+			alert("Input a ID String (ex : my.module.name)");
+			return;
+		}
+
 
 		$.post("/save.php", data, function(res) {
 			
@@ -363,18 +446,6 @@ $(function() {
 		view_type_list(true);
 	}
 
-
-
-	function load_sample_list() {
-		var $sample_list = $("#sample_list");
-		$.get("sample.php").success(function(arr) {
-			for(var i = 0, len = arr.length; i < len; i++) {
-				$sample_list.append("<option value='"+ arr[i] + "'>" + arr[i].replace(".js", "") + "</option>");
-			}
-		});
-	}
-	load_sample_list();
-
 	$("#sample_list").on('change', function() {
 		var file = $(this).val();
 		
@@ -385,7 +456,7 @@ $(function() {
 	});
 
 	window.select_sample_list = function(file) {
-		$.get("/sample/" + file).success(function(code) {
+		$.get("/sample/" + file + ".js").success(function(code) {
 			code = code.replace("#chart\-content", "#result");
 			code = code.replace("#chart", "#result");
 			sampleCode.setValue(code); 	
@@ -407,25 +478,45 @@ $(function() {
     </div>
     <div class="body" style="text-align:center">
 		<div class="window-item" data-theme="jennifer" >
-			<img src="" width="100px" height="100px" />
+			<!--<img src="" width="100px" height="100px" />-->
+			<i class='icon-textcolor'></i>
 			<a >Jennifer</a>
 		</div>
 		<div class="window-item" data-theme="dark" >
-			<img src="" width="100px" height="100px" />
+			<!--<img src="" width="100px" height="100px" />-->
+			<i class='icon-textcolor'></i>
 			<a >Dark</a>
 		</div>
 		<div class="window-item" data-theme="pastel" >
-			<img src="" width="100px" height="100px" />
+			<!--<img src="" width="100px" height="100px" />-->
+			<i class='icon-textcolor'></i>
 			<a >Pastel</a>
 		</div>
 		<div class="window-item" data-theme="gradient" >
-			<img src="" width="100px" height="100px" />
+			<!--<img src="" width="100px" height="100px" />-->
+			<i class='icon-textcolor'></i>
 			<a >Gradient</a>
 		</div>
 		<div class="window-item" data-theme="pattern" >
-			<img src="" width="100px" height="100px" />
+			<!--<img src="" width="100px" height="100px" />-->
+			<i class='icon-textcolor'></i>
 			<a >Pattern</a>
 		</div>
+    </div>
+	<div class="foot">
+		<a class="btn select-btn">Select</a>
+	</div>
+
+</div>
+
+<div id="sample_select_win" class="window" style="display:none;">
+    <div class="head">
+        <div class="left">Select Sample</div>
+        <div class="right">
+            <a href="#" class="close"><i class="icon-exit"></i></a>
+        </div>
+    </div>
+    <div class="body" style="text-align:center">
     </div>
 	<div class="foot">
 		<a class="btn select-btn">Select</a>

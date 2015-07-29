@@ -84,6 +84,7 @@ $color = $type_colors[$first];
 					<?php
 						$share_text = urlencode($description)." #store #jui #js" ;
 						$share_url = urlencode("http://".$_SERVER['HTTP_HOST']."/view.php?id=".$id);
+						$embed_url = "http://".$_SERVER['HTTP_HOST']."/embed.php?id=".$id;
 
 						include "sns.button.php" 
 					?>
@@ -93,32 +94,22 @@ $color = $type_colors[$first];
 						<span id="good_count_<?php echo $id?>"><?php echo $row['good'] ? $row['good'] : 0 ?></span>
 					</span>
 				</div>
-				<div class="imagesfield">
-					<div id="result" ><?php
-						$type = $row['type'];
-						$sample_type = $row['sample_type'];
-
-						if ($type == 'style') {
-
-							if (!$sample_type) {
-								$sample_type = 'button';
-							}
-							?>
-								<div style="padding:10px" class="jui-style">
-									<?php include __DIR__."/sample/ui/implements/{$sample_type}.html" ?>
-								</div>
-						<?php
-						}
-						
-						?></div>
-				</div>
+				<div class="imagesfield"><iframe src="embed.php?id=<?php echo $id ?>&only=result" style="border:0px" width="100%" height="400px" frameborder="0" border="0" id="result"></iframe></div>
 				<div class="summary-info">
 					<div class="title"><span class="simbol simbol-<?php echo $type ?>"><?php echo $first ?></span> <?php echo $row['title'] ? $row['title'] : '&nbsp;' ?></div>
 					<div class="content"><?php echo nl2br($row['description']) ?></div>
 				</div>
 
-				<div class="summary-buttons">
-				    <a href="/<?php echo $row['type'] ?>.php?id=<?php echo $id ?>" class="btn-large">Edit</a>
+				<div class="summary-buttons" style="text-align:center;overflow:auto;">
+					<span style="float:left;padding:5px;">
+						Download : 
+					    <a href="/download.php?id=<?php echo $id ?>" class="btn-large"><?php echo $type_text[$row['type']] ?></a>
+						&nbsp;
+					    <a href="/download.php?id=<?php echo $id ?>&code=sample" class="btn-large">Sample</a>
+					</span>
+					<span style="float:right;padding:5px;">
+					    <a href="/<?php echo $row['type'] ?>.php?id=<?php echo $id ?>" class="btn-large">Edit</a>
+					</span>
 				</div>
 
 			</div>
@@ -142,36 +133,9 @@ $color = $type_colors[$first];
 	</div>
 
 </div>
-
-<?php if ($row['type'] == 'style') { ?>
-<link rel="stylesheet" href="sample/ui/css/jui.css" />
-<link rel="stylesheet" href="generate.css.php?id=<?php echo $_GET['id'] ?>" />
-
-<?php  } else { ?>
-
-<script type="text/javascript" src="generate.js.php?id=<?php echo $_GET['id'] ?>"></script>
-<script type="text/javascript" src="generate.js.php?id=<?php echo $_GET['id'] ?>&code=sample"></script>
-<script type="text/javascript">
-
-jui.ready(function() { 
-
-	// 테마 설정 
-	var theme = '<?php echo $row['name'] ?>';
-	if (theme.indexOf("chart.theme.") > -1) {
-		var obj = $("#result")[0].jui;
-		if (obj) {
-			obj.setTheme(theme.replace("chart.theme.", ""));
-		}
-	}
-
-    var height = $("#result")[0].scrollHeight;
-
+<script>
+function setContentHeight (height) {
 	$("#result").height(height);
-
-
-});
-
+}
 </script>
-
-<?php } ?>
 <?php include_once "footer.php" ?>

@@ -19,9 +19,7 @@
    { x : 'sample4', y : 2100 } ,
    { x : 'sample3', y : 5000 }
 ];
-/**
-	Sample Code For My component 
-*/
+
 var chart = jui.create("chart.builder", '#result', {
 	axis : {
 		x : { 
@@ -31,10 +29,6 @@ var chart = jui.create("chart.builder", '#result', {
           type : 'range', domain : 'y'
 		},
 		data : data 
-	},
-	brush : {
-		type : 'line',
-		target : "y"
 	}
 });
 

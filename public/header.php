@@ -5,11 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Store for JUI Chart</title>
-	<link href="/css/main.css" rel="stylesheet" />
-	<link href="/css/edit.css" rel="stylesheet" />
-
-
-	<?php if ($page_id == 'manager' || $page_id == 'view' || $page_id == 'theme' || $page_id == 'style') { ?>
+	<?php if ($page_id == 'manager' || $page_id == 'view' || $page_id == 'theme' || $page_id == 'style' || $page_id == 'data') { ?>
 	<script type="text/javascript" src="/bower_components/codemirror/lib/codemirror.js"></script>
 	<link href="/bower_components/codemirror/lib/codemirror.css" rel="stylesheet" />
 	<script src="/bower_components/codemirror/mode/javascript/javascript.js"></script>
@@ -23,14 +19,18 @@
 	<?php if ($page_id != 'generate.ui') { ?>
 	<link href="/bower_components/jui/jui.min.css" rel="stylesheet" />
 	<?php } ?>
+	<link href="/css/main.css" rel="stylesheet" />
+	<link href="/css/edit.css" rel="stylesheet" />
 
-	<script type="text/javascript" src="/bower_components/jui/jui.min.js"></script>
+	<script type="text/javascript" src="/bower_components/jui/jui.js"></script>
+<?php if ($page_id != 'generate' && $page_id != 'generate.ui') { ?>
 	<script src="/bower_components/tinyColorPicker/colors.js"></script>
 	<script src="/bower_components/tinyColorPicker/jqColorPicker.js"></script>
 	<link href="/bower_components/ionrangeslider/css/ion.rangeSlider.css" rel="stylesheet" />
 	<link href="/bower_components/ionrangeslider/css/ion.rangeSlider.skinNice.css" rel="stylesheet" />
 	<script src="/bower_components/ionrangeslider/js/ion.rangeSlider.js"></script>
 	<script src="/bower_components/masonry/dist/masonry.pkgd.js"></script>
+<?php } ?>
 	<?php echo $meta ?>
 </head>
 <body class="jui">

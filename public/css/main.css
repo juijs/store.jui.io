@@ -21,6 +21,24 @@ header a {
     text-decoration:none;
 }
 
+footer {
+    display:none;
+    position:fixed;
+    left:0px;
+    bottom:0px;
+    right:0px;
+    height: 40px;
+    background: #2b3340;
+    text-align:center;
+    padding-top:10px;
+}
+
+footer a {
+    color:white;
+    text-decoration:none;
+
+}
+
 .logo {
 	height: 52px;
 	position: absolute;
@@ -185,9 +203,10 @@ header a {
 }
 /*item summary*/
 .summary-box {
-	box-shadow: 0 5px 10px 0 rgba(0,0,0,0.22);
+	/*box-shadow: 0 5px 10px 0 rgba(0,0,0,0.22); */
 	width: 236px;
-	border-radius: 5px;
+	border:1px solid #ddd;
+	/*border-radius: 5px;*/
 	display: inline-block;
 	margin:7px 4px 7px 4px;
 	font-size:12px;
@@ -211,7 +230,7 @@ header a {
 /*summary-normal*/
 .summary-normal{
 	background-color: #ffffff;
-	border-radius: 5px;
+	/*border-radius: 5px; */
 }
 .summary-normal .name {
 	line-height: 52px;
@@ -233,11 +252,6 @@ header a {
 .summary-normal .imagesfield {
 	height: 164px;
 	width: 100%;
-	background-color: black;
-	background-color: rgba(0,0,0,0.15);
-	background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0, 0, 0, 0.5)));
-	background: -webkit-linear-gradient(transparent, rgba(0, 0, 0, 0.5));
-	background: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
 }
 .large .summary-normal .imagesfield {
 	width:100%;
@@ -303,11 +317,12 @@ header a {
 
 
 .summary-buttons {
-	margin-top:10px;
-	padding-bottom:20px;
-	text-align:right;
 	padding-right:10px;
 	border-top:1px solid #f4f4f4;
+}
+
+.summary-buttons > span {
+	margin-left:20px;
 }
 
 
@@ -322,13 +337,13 @@ header a {
 }
 .summary-normal .title{
 	font-weight: bold;
-	padding: 8px 20px 15px 20px;
+	padding: 8px;
 	color: #333;
 	text-align: left;
 }
 .summary-normal .content{
 	text-align: left;
-	padding: 0 20px 0px 20px;
+	padding: 0 8px 0px 8px;
 	color: #a2a2a2;
 	max-height:30px;
 	text-overflow:ellipsis;
@@ -370,10 +385,24 @@ header a {
 	background: #F06D97;
 }
 
+.simbol-data {
+	background: #249E4D;
+}
+
+.simbol-map {
+	background: #9B76E4;
+}
+
 .share-buttons{
   padding: 0;
 }
 
 .share-buttons img{
   width: 32px;
+}
+.create-button .button-image i {
+
+
+}
+.create-button .button-name{
 }

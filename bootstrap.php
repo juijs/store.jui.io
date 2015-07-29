@@ -17,9 +17,10 @@ $currentUri->setQuery('');
 require_once ROOT."/init.php";
 
 $type_text = array(
-	'component' => 'Brush',
-	'theme' => 'Theme',
-	'style' => 'Style',
+	'component' => 'Module',
+	'theme' => 'Chart Theme',
+	'style' => 'UI Theme',
+	'map' => 'Map',
 	'data' => 'Data'
 );
 

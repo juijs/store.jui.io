@@ -26,7 +26,7 @@ function good(id) {
 
 function toggleSns(sns) {
 	$(sns).next().toggle();
-    $(".share-buttons").not($(sns).next()).hide();
+    $(".share-container").not($(sns).next()).hide();
 }
 
 $(function() {
@@ -38,8 +38,18 @@ $(function() {
 		{
 
 		} else {
-			$(".share-buttons").hide();
+			//$(".share-buttons").hide();
 		}
 
 	});
+
+    $(".share-container input").click(function() { 
+        var elem = $(this);
+        
+        setTimeout(function() { 
+            elem.select();
+        
+        },50);
+        
+    });
 })

@@ -2,7 +2,7 @@
 <?php 
 
 $meta = "<script>define.amd=true;</script>";
-include_once "header.php" 
+include_once "header.php";
 
 ?>
 <style type="text/css">

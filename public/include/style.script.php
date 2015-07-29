@@ -78,8 +78,8 @@ $(function() {
 
 	window.select_theme = function(btn) {
 		var win = jui.create('uix.window', "#theme_select_win", {
-			width: 650,
-			height: 300,
+			width: 280,
+			height: 250,
 			modal : true
 		});
 
@@ -306,7 +306,7 @@ $(function() {
 			id : '<?php echo $_GET['id'] ?>',
             access : $("[name=access]:checked").val(),
 			title : $("#title").val(),
-			name : $("#name").val(),
+			name : $.trim($("#name").val()),
 			description : $("#description").val(),
 			license : $("#license").val(),
 			component_code : componentCode.getValue(),
@@ -314,6 +314,14 @@ $(function() {
 			sample_type : $("#sample_list").val(),
 			sample : $("#sample").val()
 		}
+
+		
+		if (data.name == '')
+		{
+			alert("Input a ID String (ex : my.module.name)");
+			return;
+		}
+
 
 		$.post("/save.php", data, function(res) {
 			
@@ -364,6 +372,7 @@ $(function() {
 				$("#license").val(data.license || "None");
 				componentCode.setValue(data.component_code);
 				sampleCode.setValue(data.sample_code);
+				$("#sample_list").val(data.sample_type);
 
 				coderun();
 
@@ -399,13 +408,6 @@ $(function() {
 	$("#sample_list").on('change', function() {
 		var type = $(this).val();
 
-		if ($.trim(type) == "") {
-
-		} else {
-			var el = $(table_2.root).find("tbody [data-key*=" + type +"]")[0];
-			$(table_2.root).find("tbody")[0].scrollTop = $(el).offset().top - 110;
-		} 
-		table_2.resize();
 		coderun();
 
 	});
@@ -422,11 +424,13 @@ $(function() {
     </div>
     <div class="body" style="text-align:center">
 		<div class="window-item" data-theme="jennifer" >
-			<img src="" width="100px" height="100px" />
+			<!--<img src="" width="100px" height="100px" />-->
+			<i class='icon-textcolor'></i>
 			<a >Jennifer</a>
 		</div>
 		<div class="window-item" data-theme="dark" >
-			<img src="" width="100px" height="100px" />
+			<!--<img src="" width="100px" height="100px" />-->
+			<i class='icon-textcolor'></i>
 			<a >Dark</a>
 		</div>
     </div>

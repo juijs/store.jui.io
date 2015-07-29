@@ -1,2 +1,25 @@
 <?php  header('Content-Type: application/json'); ?>
-["button"]
+[
+"accordion",
+"bargraph",
+"buttons",
+"calendar",
+"datepicker",
+"dropdown",
+"forms",
+"grid",
+"icons",
+"msgbox",
+"navbar",
+"notify",
+"paging",
+"panel",
+"popover",
+"tables",
+"tabs",
+"tooltip",
+"tree",
+"typography",
+"vmenu",
+"window"
+]

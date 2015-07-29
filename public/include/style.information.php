@@ -45,7 +45,7 @@
 			<div class="row" style="padding:5px">
 				<div class="col col-2">License </div>
 				<div class="col col-9">
-				   <select class="input" id="license">
+				   <select class="input" id="license" <?php if (!$isMy) { ?>disabled<?php } ?> >
 					<option value="None" selected>None</option>
 					<option value="Apache License 2.0">Apache License 2.0</option>
 					<option value="GNU General Public License v2.0">GNU General Public License v2.0</option>

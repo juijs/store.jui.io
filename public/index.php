@@ -22,7 +22,7 @@ $sort['update_time'] = -1;
 
 $rows = $components->find(array(
     'access' => 'public'            
-))->sort($sort)->limit(10);
+))->sort($sort)->limit(100);
 
 ?>
 
@@ -53,7 +53,7 @@ $(function() {
 	});
 
 	  $(window).scroll(function(e) {
-		console.log(e);
+		console.log($(document.body)[0].scrollHeight, $(document.body)[0].scrollTop, $(window).height())
 	  });
 	
 });

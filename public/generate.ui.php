@@ -42,6 +42,8 @@ try {
 	$parser->parseFile( __DIR__."/".$filename );
 	$result = $parser->getCss();
 
+    $result = str_replace("../img", "/img", $result);
+
 } catch (Exception $ex) {
 
 	echo $ex->getMessage();

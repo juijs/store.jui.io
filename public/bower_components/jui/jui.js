@@ -13787,7 +13787,6 @@ jui.define("chart.map", [ "jquery", "util.base", "util.math", "util.svg" ], func
 
             // 해당 URI의 데이터가 없을 경우
             pathData[uri] = [];
-
             $.ajax({
                 url: uri,
                 async: false,
@@ -13814,8 +13813,10 @@ jui.define("chart.map", [ "jquery", "util.base", "util.math", "util.svg" ], func
                             }
 
                             pathData[uri].push(obj);
+
                         }
                     });
+
 
                     $style.each(function () {
                         self.chart.svg.root.element.appendChild(this);

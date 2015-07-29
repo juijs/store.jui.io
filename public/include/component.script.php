@@ -50,13 +50,20 @@ $(function() {
 			id : '<?php echo $_GET['id'] ?>',
             access : $("[name=access]:checked").val(),
 			title : $("#title").val(),
-			name : $("#name").val(),
+			name : $.trm($("#name").val()),
 			description : $("#description").val(),
 			license : $("#license").val(),
 			component_code : componentCode.getValue(),
 			sample_code : sampleCode.getValue(),
 			sample : $("#sample").val()
 		}
+		
+		if (data.name == '')
+		{
+			alert("Input a ID String (ex : my.module.name)");
+			return;
+		}
+
 
 		$.post("/save.php", data, function(res) {
 			

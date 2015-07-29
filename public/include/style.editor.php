@@ -1,6 +1,6 @@
 <div class="editor-panel editor-panel-pull  editor-panel-border  view-component" style="background:#ffffff">
 
-	<div class="editor-tool" style="font-size:13px;">
+	<div class="editor-tool" style="font-size:13px;border-bottom:0px;">
 		<a  class="h2" style="display:inline-block"  data-view="component"><?php echo $type_text['style'] ?></a>
 		<span style="padding-left:20px">Load <input type="file" accept=".less" id="component_load" style="width:200px;"/></span>
 		<span style="float:right">
