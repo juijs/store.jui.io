@@ -50,7 +50,7 @@ try {
 	echo $ex->getMessage();
 }
 
-//unlink($filename);
+unlink($filename);
 ?>
 <style type="text/css">
 <?php echo $result ?> 

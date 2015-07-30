@@ -8,7 +8,7 @@ if (!$type) $type = 'component';
 $first = $type_text[$type];
 
 ?>
-<div class="summary-box"><div class="summary-normal">
+<div class="summary-box" data-id="<?php echo $id ?>"><div class="summary-normal">
 		<div class="name">
 			<span><img src="<?php echo $data['avatar'] ?>" width="30" height="30" class='avatar' align='absmiddle'/>&nbsp;<?php echo $data['username'] ?></span>
 

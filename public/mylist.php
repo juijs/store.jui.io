@@ -19,12 +19,17 @@ $db = $m->store;
 
 $components = $db->components;
 
+
+$sort_type = $_GET['sort'] ? $_GET['sort'] : 'update_time';
+
+$sort = array();
+$sort[$sort_type] = -1; 
+$sort['update_time'] = -1;
+
 $rows = $components->find(array(
 	'login_type' => $_SESSION['login_type'],
 	'userid' => $_SESSION['userid']
-))->sort(array(
-	'update_time' => -1
-))->limit(100);
+))->sort($sort)->limit(20);
 
 
 
@@ -36,22 +41,52 @@ $rows = $components->find(array(
 	<div style='margin-top:28px;'></div>
 
     <div id="content-container">
-
-
-		<?php 
+	<?php 
 		foreach ($rows as $data) { 
 			include "box.php";
 		} 
 		?>
     </div>
+<div style="text-align:center;padding:20px;">
+	<a class='btn load-btn' onclick="loadLastList()">Load</a>
+</div>
+
 
 <script type="text/javascript">
 $(function() {
-	$('#content-container').masonry({
+	var $container = $('#content-container');
+	
+	$container.masonry({
 	  // options
 	  itemSelector: '.summary-box',
 	  isFitWidth: true
 	});
+
+	window.loadLastList = function loadLastList() {
+		var lastId = $(".summary-box:last").data('id');
+		var sort = '<?php echo $sort_type ?>';
+
+		$(".load-btn").addClass("btn-disabled").html("Loading...");
+
+		$.get("/load-my-box.php", { lastId : lastId, sort : sort }, function(data) {
+	
+	        var $moreBlocks = jQuery( data );
+
+		    $container.append( $moreBlocks );
+
+	        $container.masonry( 'appended', $moreBlocks );         
+
+			$(".load-btn").removeClass("btn-disabled").html("Load");
+		});
+	}
+
+    $(window).scroll(function(e) {
+ 	  var height = $(document.body)[0].scrollHeight - $(document.body)[0].scrollTop - $(window).height();
+
+	  if (height == 0) {
+		loadLastList();
+	  }
+    });
 });
 
 </script>

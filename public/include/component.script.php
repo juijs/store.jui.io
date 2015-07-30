@@ -50,7 +50,7 @@ $(function() {
 			id : '<?php echo $_GET['id'] ?>',
             access : $("[name=access]:checked").val(),
 			title : $("#title").val(),
-			name : $.trm($("#name").val()),
+			name : $.trim($("#name").val()),
 			description : $("#description").val(),
 			license : $("#license").val(),
 			component_code : componentCode.getValue(),
