@@ -1,4 +1,4 @@
-<?php $page_id = 'manager'; 
+<?php $page_id = 'component'; 
 
 ?>
 

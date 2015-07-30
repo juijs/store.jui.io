@@ -68,4 +68,6 @@ jui.ready(function() {
 </script>
 
 
-<?php include_once "footer.php" ?>
+
+</body>
+</html>

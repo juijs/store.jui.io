@@ -22,21 +22,33 @@ header a {
 }
 
 footer {
-    display:none;
-    position:fixed;
-    left:0px;
-    bottom:0px;
-    right:0px;
-    height: 40px;
-    background: #2b3340;
-    text-align:center;
-    padding-top:10px;
+    position: relative;
+	padding: 15px 20px 15px 27px;
+    overflow: visible;
+    font-size: 12px;
+    background-color: #2b3340;
+    background-image: none;
+	color: #abadb1;
+	margin-top: 50px;
 }
 
-footer a {
-    color:white;
-    text-decoration:none;
+footer .msg {
+    font-size: 11px;
+    line-height: 1.8em;
+}
 
+footer .link {
+	position: absolute;
+    text-align: right;
+    font-size: 14px;
+	margin-bottom: 5px;
+	top: 9px;
+	color: #414853;
+}
+
+footer .link  > span {
+	color: #fff;
+	cursor: pointer;
 }
 
 .logo {
@@ -61,12 +73,19 @@ footer a {
 	line-height: 63px;
 	padding-right: 20px;
 	position: relative;
-	font-weight: bold;
 	font-size: 12px;
 }
 
 .login a {
 	color:white;
+}
+
+.login img {
+	margin-bottom: -3px;
+}
+
+.login .separator {
+	color:#414853;
 }
 
 .nav-wrap{

@@ -17,7 +17,7 @@
 }
 </style>
 
-<div style="padding-top:20px"></div>
+<div style="padding-top:30px"></div>
 <div id="content-container">
 
 	<div style="padding:20px;padding-top:70px;">
@@ -27,5 +27,3 @@
 	</div>
 
 </div>
-
-<?php include_once "footer.php" ?>

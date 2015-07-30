@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Store for JUI</title>
-	<?php if ($page_id == 'manager' || $page_id == 'view' || $page_id == 'theme' || $page_id == 'style' || $page_id == 'data') { ?>
+	<?php if ($type_text[$page_id]) { ?>
 	<script type="text/javascript" src="/bower_components/codemirror/lib/codemirror.js"></script>
 	<link href="/bower_components/codemirror/lib/codemirror.css" rel="stylesheet" />
 	<script src="/bower_components/codemirror/mode/javascript/javascript.js"></script>
@@ -20,7 +20,10 @@
 	<link href="/bower_components/jui/jui.min.css" rel="stylesheet" />
 	<?php } ?>
 	<link href="/css/main.css" rel="stylesheet" />
+
+	<?php if ($type_text[$page_id]) { ?>
 	<link href="/css/edit.css" rel="stylesheet" />
+	<?php } ?>
 
 	<script type="text/javascript" src="/bower_components/jui/jui.js"></script>
 <?php if ($page_id != 'generate' && $page_id != 'generate.ui') { ?>

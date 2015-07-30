@@ -175,13 +175,6 @@
 }
 
 
-
-
-
-
-
-
-
 @media (max-width: 600px) {
   .select-chart {
     left:50px;
@@ -265,4 +258,8 @@
 	border:1px solid #ddd;
 	margin:5px;
 	padding:5px;
+}
+
+footer {
+	display:none;
 }

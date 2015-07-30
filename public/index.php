@@ -30,9 +30,6 @@ $rows = $components->find(array(
 <div id="content-container">
 <?php  foreach ($rows as $data) {  include "box.php";   } ?>
 </div>
-<div style="text-align:center;padding:20px;">
-<a class='btn load-btn' onclick="loadLastList()">Load</a>
-</div>
 
 
 <script type="text/javascript">
@@ -50,8 +47,6 @@ $(function() {
 		var lastId = $(".summary-box:last").data('id');
 		var sort = '<?php echo $sort_type ?>';
 
-		$(".load-btn").addClass("btn-disabled").html("Loading...");
-
 		$.get("/load-box.php", { lastId : lastId, sort : sort }, function(data) {
 	
 	        var $moreBlocks = jQuery( data );
@@ -59,8 +54,6 @@ $(function() {
 		    $container.append( $moreBlocks );
 
 	        $container.masonry( 'appended', $moreBlocks );         
-
-			$(".load-btn").removeClass("btn-disabled").html("Load");
 		});
 	}
 
