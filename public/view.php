@@ -7,11 +7,24 @@ $m = new MongoClient();
 // select a rowbase
 $db = $m->store;
 
-$components = $db->components;
+if (isset($_GET['rev'])) {
+	$components = $db->components_history;
 
-$row = $components->findOne(array(
-	'_id' => new MongoId($_GET['id'])
-));
+	$row = $components->findOne(array(
+		'component_id' => $_GET['id'],
+		'rev' => intval($_GET['rev'])
+	));
+
+	$row['_id'] = $row['component_id'];
+} else {
+	$components = $db->components;
+
+	$row = $components->findOne(array(
+		'_id' => new MongoId($_GET['id'])
+	));
+}
+
+
 
 if ($row['access'] == 'private') {
 	header("HTTP/1.0 404 Not Found");

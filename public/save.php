@@ -16,6 +16,7 @@ $m = new MongoClient();
 $db = $m->store;
 
 $components = $db->components;
+$history = $db->components_history;
 
 $_POST = array_filter($_POST, 'strip_tags');
 
@@ -41,11 +42,37 @@ $document = array(
 
 
 if ($_POST['id']) {
+	$prevData = $components->findOne(array(
+		'_id' => new MongoId($_POST['id'])
+	));
+
+	$revData = $history->find(array(
+		'component_id' => $_POST['id']
+	))->sort(array(
+		'rev' => -1	
+	))->limit(1);
+
+	if ($revData && $revData->count(true) > 0) {
+		$rev = $revData[0]['rev'];
+	} else {
+		$rev = 0;
+	}
+
 	$result = $components->update(array(
 		'_id' => new MongoId($_POST['id']),
 		'login_type' => $_SESSION['login_type'],
 		'userid' => $_SESSION['userid']
 	), array('$set' => $document), array('upsert' => true) );
+
+	// rev 번호 얻어오기 
+	// rev 번호, component_id 추가 해서 현재 document 복사 
+	// 새로운 rev 번호 추가 
+	$prevData['component_id'] = $_POST['id'];
+	$prevData['rev'] = $rev+1;
+	unset($prevData['_id']);
+
+	$history->insert($prevData);
+
 } else {
 
 	$prevData = $components->findOne(array(
@@ -58,6 +85,10 @@ if ($_POST['id']) {
 	}
 
 	$components->insert($document);
+
+	$document['component_id'] = (string)$document['_id'];
+	$document['rev'] = 0;
+	$history->insert($document);
 
 	$result  = array(
 		'ok' => $document['_id'] ? true : false 	
