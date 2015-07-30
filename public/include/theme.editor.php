@@ -3,8 +3,6 @@
 	<div class="editor-tool" style="font-size:13px;border-bottom:0px;">
 		<a class="h2" style="display:inline-block"  data-view="component"><?php echo $type_text['theme'] ?></a>
 		<span style="padding-left:20px">Load <input type="file" accept=".js" id="component_load" style="width:200px;"/></span>
-
-		<div style='float:right;cursor:pointer;display:none;' class='close'><i class='icon-close' style='font-size:20px'></i></div>
 		
 		<span style="float:right;margin-right:10px;">
 			<a class="btn " onclick="select_theme(this)">Select Theme</a>

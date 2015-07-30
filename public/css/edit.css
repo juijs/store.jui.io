@@ -102,7 +102,7 @@
 
 .editor-tool {
 	position:absolute;
-	height:30px;
+	height:24px;
 	top:0px;
 	left:0px;
 	right:0px;
@@ -110,6 +110,10 @@
     border-bottom:1px solid #ddd;
     padding:10px;
 
+}
+
+.editor-tool .h2 {
+	font-size:20px;
 }
 
 .editor-tool2 {
@@ -134,7 +138,7 @@
 
 .editor-codemirror {
 	position:absolute;
-	top:52px;
+	top:46px;
 	left:0px;
 	right:0px;
 	bottom:0px;

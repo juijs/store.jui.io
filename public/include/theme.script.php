@@ -78,7 +78,7 @@ $(function() {
 	window.select_theme = function(btn) {
 		var win = jui.create('uix.window', "#theme_select_win", {
 			width: 650,
-			height: 250,
+			height: 260,
 			modal : true
 		});
 
@@ -282,11 +282,11 @@ $(function() {
 				} else if (key.indexOf("Opacity") > -1) {
                     str = "<input type='text' value='"+str+"' class='opacity-range picker-value'  data-key='" + key + "'/>";
 				} else if (key.indexOf("Padding") > -1) {
-                    str = "<input type='text' value='"+str+"' class='padding-range picker-value'  data-key='" + key + "'/>";
+                    str = "<input type='text' value='"+str+"' class='padding-range picker-value'  style='width:100%'   data-key='" + key + "'/>";
 				} else if (key.indexOf("Radius") > -1) {
-                    str = "<input type='text' value='"+str+"' class='radius-range picker-value'  data-key='" + key + "'/>";
+                    str = "<input type='text' value='"+str+"' class='radius-range picker-value'  style='width:100%'   data-key='" + key + "'/>";
 				} else if (key.indexOf("DashArray") > -1) {
-                    str = "<input type='text' value='"+str+"' class='dash-array input picker-value'  data-key='" + key + "'/>";
+                    str = "<input type='text' value='"+str+"' class='dash-array input picker-value'  style='width:100%'   data-key='" + key + "'/>";
 				} else if (key.indexOf("FontWeight") > -1) {
                     str = ["<select class='font-weight-range input picker-value' data-key='" + key + "'>",
                             "<option value='normal'>normal</option>",
@@ -304,7 +304,7 @@ $(function() {
                             "<option value='900'>900</option>",
                         "</select>"].join("");
                 } else {
-                    str = "<input type='text' value='"+str+"' class='input picker-value'  data-key='" + key + "'/>";
+                    str = "<input type='text' value='"+str+"' class='input picker-value' style='width:100%'  data-key='" + key + "'/>";
 				}
 				table_2.append({ key: key, value: str });
 			}

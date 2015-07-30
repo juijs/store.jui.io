@@ -53,7 +53,11 @@ $(function() {
 	});
 
 	  $(window).scroll(function(e) {
-		console.log($(document.body)[0].scrollHeight, $(document.body)[0].scrollTop, $(window).height())
+		  var height = $(document.body)[0].scrollHeight - $(document.body)[0].scrollTop - $(window).height();
+
+		  if (height == 0) {
+			loadLastList();
+		  }
 	  });
 	
 });

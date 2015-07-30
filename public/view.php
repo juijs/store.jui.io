@@ -101,14 +101,15 @@ $color = $type_colors[$first];
 				</div>
 
 				<div class="summary-buttons" style="text-align:center;overflow:auto;">
-					<span style="float:left;padding:5px;">
-						Download : 
-					    <a href="/download.php?id=<?php echo $id ?>" class="btn-large"><?php echo $type_text[$row['type']] ?></a>
-						&nbsp;
-					    <a href="/download.php?id=<?php echo $id ?>&code=sample" class="btn-large">Sample</a>
+					<span style="float:left;padding:10px 0px;">Download : 
+
+						<div class="group">
+							<a href="/download.php?id=<?php echo $id ?>" class="btn "><?php echo $type_text[$row['type']] ?></a>
+							<a href="/download.php?id=<?php echo $id ?>&code=sample" class="btn ">Sample</a>
+						</div>
 					</span>
-					<span style="float:right;padding:5px;">
-					    <a href="/<?php echo $row['type'] ?>.php?id=<?php echo $id ?>" class="btn-large">Edit</a>
+					<span style="float:right;padding:10px 0px;">
+					    <a href="/<?php echo $row['type'] ?>.php?id=<?php echo $id ?>" class="btn">Edit</a>
 					</span>
 				</div>
 

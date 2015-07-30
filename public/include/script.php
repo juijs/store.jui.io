@@ -57,7 +57,7 @@ $(function() {
 	$("a.h2").css({
 		'cursor' : 'pointer',
 		'-webkit-user-select' : 'none'
-	}).on('dblclick', viewFullscreen).attr('title', 'Do double click for greater view' );
+	}).on('click', viewFullscreen).attr('title', 'Do double click for greater view' );
 
 
 });

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Embeded - Store for JUI Chart</title>
+    <title>Embeded - Store for JUI</title>
 	<script type="text/javascript" src="/bower_components/codemirror/lib/codemirror.js"></script>
 	<link href="/bower_components/codemirror/lib/codemirror.css" rel="stylesheet" />
 	<script src="/bower_components/codemirror/mode/javascript/javascript.js"></script>

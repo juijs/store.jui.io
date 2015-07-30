@@ -43,13 +43,14 @@ try {
 	$result = $parser->getCss();
 
     $result = str_replace("../img", "/img", $result);
+    $result = str_replace("../widget/img", "/img", $result);
 
 } catch (Exception $ex) {
 
 	echo $ex->getMessage();
 }
 
-unlink($filename);
+//unlink($filename);
 ?>
 <style type="text/css">
 <?php echo $result ?> 

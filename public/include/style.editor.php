@@ -8,8 +8,6 @@
 
 		</span>
 
-		<div style='float:right;cursor:pointer;display:none;' class='close'><i class='icon-close' style='font-size:20px'></i></div>
-
 	</div>
 	<div id="tab_contents_2" class="tab-contents editor-codemirror" style="background:#ffffff">
 		<textarea id="component_code"></textarea>

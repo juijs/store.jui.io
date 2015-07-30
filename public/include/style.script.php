@@ -79,7 +79,7 @@ $(function() {
 	window.select_theme = function(btn) {
 		var win = jui.create('uix.window', "#theme_select_win", {
 			width: 280,
-			height: 250,
+			height: 260,
 			modal : true
 		});
 

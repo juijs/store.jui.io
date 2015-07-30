@@ -3,13 +3,14 @@
 	<div class="editor-tool" style="font-size:13px;">
 		<a class="h2" style="display:inline-block"  data-view="information">Information</a>
 
-		<div style='float:right;cursor:pointer;display:none;' class='close'><i class='icon-close' style='font-size:20px'></i></div>
 		<div style="float:right;margin-right:10px;">
 			<?php if ($isMy) { ?>
-			<a class="btn btn-small" onclick="savecode()">Save</a>
-			<a class="btn btn-small" onclick="deletecode()">Delete</a>
+			<div class='group'>
+				<a class="btn btn-small" onclick="savecode()">Save</a>
+				<a class="btn btn-small" onclick="deletecode()">Delete</a>
+			</div>
 			<?php } else { ?>
-			<a class="btn btn-small" onclick="forkcode()">Fork</a>
+
 			<?php } ?>
 		</div>
 	</div>

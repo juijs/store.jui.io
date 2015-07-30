@@ -2,7 +2,6 @@
 
 	<div class="editor-tool" style="font-size:13px;">
 		<a  class="h2" style="display:inline-block"  data-view="information">Information</a>
-		<div style='float:right;cursor:pointer;display:none;' class='close'><i class='icon-close' style='font-size:20px'></i></div>
 		<div style="float:right;margin-right:10px;">
 			<?php if ($isMy) { ?>
 			<div class="group">
@@ -10,7 +9,7 @@
 				<a class="btn" onclick="deletecode()">Delete</a>
 			</div>
 			<?php } else { ?>
-			<a class="btn" onclick="forkcode()">Fork</a>
+
 			<?php } ?>
 		</div>
 
