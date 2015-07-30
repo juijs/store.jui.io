@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="col col-8 msg">
 			JENNIFER UI has developed by the UI parts of JenniferSoft.<br>
-			Designer Yoha and Programmer Alvin and Jayden has developed a UI library.
+			Designer Yoha and Programmer <a href="matilto:seogi777@gmail.com">Alvin</a> and <a href="matilto:cyberuls@gmail.com">Jayden</a> has developed a UI library.
 		</div>
 		<div class="col col-4 link">
 			<span onclick="window.open('http://seogi1004.github.io/jui/ko/index.html#about')">ABOUT US</span> |

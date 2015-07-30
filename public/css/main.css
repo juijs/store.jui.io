@@ -32,6 +32,11 @@ footer {
 	margin-top: 50px;
 }
 
+footer a {
+	color:white;
+	text-decoration:none;
+}
+
 footer .msg {
     font-size: 11px;
     line-height: 1.8em;

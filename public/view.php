@@ -152,4 +152,6 @@ function setContentHeight (height) {
 	$("#result").height(height);
 }
 </script>
-<?php include_once "footer.php" ?>
+</body>
+</html>
+
