@@ -54,7 +54,7 @@ $(function() {
 	}
 
 
-	$("a.h2").css({
+	$("a[data-view]").css({
 		'cursor' : 'pointer',
 		'-webkit-user-select' : 'none'
 	}).on('click', viewFullscreen).attr('title', 'Click for fullscreen' );

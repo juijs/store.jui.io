@@ -1,7 +1,7 @@
 <div class="editor-panel view-information">
 
 	<div class="editor-tool" style="font-size:13px;">
-		<a class="h2" style="display:inline-block" data-view="information">Information</a>
+		<a class='h2' style="display:inline-block" data-view="information">Information</a>
 		<div style="float:right;margin-right:10px;">
 			<?php if ($isMy) { ?>
             <div class='group'>

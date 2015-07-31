@@ -1,6 +1,6 @@
 <div class="editor-panel view-data" style="background:#ffffff">
 	<div class="editor-tool" style="font-size:13px;">
-		<a class="h2" style="display:inline-block" data-view="data">Data Input</a>
+		<a class='h2' style="display:inline-block" data-view="data">Data Input</a>
 		<span style="float:right;margin-right:10px;font-size:15px;">
 			Type : 
 			<select id="select_data_type" class="input">

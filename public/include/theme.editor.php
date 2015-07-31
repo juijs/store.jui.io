@@ -1,7 +1,7 @@
 <div class="editor-panel-pull editor-panel-border view-component">
 
 	<div class="editor-tool" style="font-size:13px;border-bottom:0px;">
-		<a class="h2" style="display:inline-block"  data-view="component"><?php echo $type_text['theme'] ?></a>
+		<a class='h2' style="display:inline-block"  data-view="component"><?php echo $type_text['theme'] ?></a>
 		
 		<span class="editor-navbar">
 			<div class="group">

@@ -8,6 +8,11 @@ body {
 	border: 0;
 	outline: 0;
 }
+
+input,textarea {
+	font-family: 'noto sans', sans-serif !important;
+}
+
 header{
 	height: 63px;
 	line-height: 63px;
@@ -69,7 +74,6 @@ footer .link  > span {
 .gallery {
 	position: absolute;
 	color: #ffffff;
-	font-weight: 700;
 	left: 86px;
 }
 .login {
@@ -429,4 +433,8 @@ footer .link  > span {
 
 }
 .create-button .button-name{
+}
+
+a[data-view] {
+	font-size:16px;
 }

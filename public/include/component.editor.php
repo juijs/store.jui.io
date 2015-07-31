@@ -1,7 +1,7 @@
 <div class="editor-panel  editor-panel-border  view-component" style="background:#ffffff">
 
 	<div class="editor-tool" style="font-size:13px;">
-		<a class="h2" data-view="component" style="display:inline-block"><?php echo $type_text['component'] ?></a>
+		<a class='h2' data-view="component" style="display:inline-block"><?php echo $type_text['component'] ?></a>
 		
 		<span class="editor-navbar">
 			<a class="btn"><i class="icon-upload"></i> Upload File</a> 

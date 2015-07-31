@@ -1,6 +1,6 @@
 <div class="editor-panel editor-panel-border view-sample" style="background:#ffffff">
 	<div class="editor-tool" style="font-size:13px;">
-		<a class="h2" style="display:inline-block" data-view="sample">Sample Code</a>
+		<a class='h2' style="display:inline-block" data-view="sample">Sample Code</a>
 		<div class="editor-navbar">
 			<a class='btn' onclick="coderun()">Run <i class="icon-play"></i></a>
 			<form id="chart_form" action="generate.map.php" method="post" target="chart_frame" enctype="multipart/form-data" style="display:none">
