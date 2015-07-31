@@ -124,13 +124,13 @@ $(function() {
                     var $item = $("<div class='window-item' />");
 
 					var chart_type = "";
-					if (item.sample.indexOf("bar") > -1) 
+					if (item.sample.indexOf("gauge") > -1) {
+						chart_type = "-gauge";
+					} else if (item.sample.indexOf("bar") > -1) 
 					{
 						chart_type = "-bar";
-					} else if (item.sample.indexOf("column") > -1) {
+					} else if (item.sample.indexOf("column") > -1 || item.sample.indexOf("equalizer") > -1 || item.sample.indexOf("cylinder") > -1 || item.sample.indexOf("fullstack") > -1 || item.sample.indexOf("waterfall") > -1) {
 						chart_type = "-column";
-					} else if (item.sample.indexOf("gauge") > -1) {
-						chart_type = "-gauge";
 					} else if (item.sample.indexOf("line") > -1) {
 						chart_type = "-line";
 					} else if (item.sample.indexOf("radar") > -1) {
@@ -139,7 +139,7 @@ $(function() {
 						chart_type = "-area";
 					} else if (item.sample.indexOf("scatter") > -1 || item.sample.indexOf("bubble") > -1) {
 						chart_type = "-scatter";
-					} 
+					}
 
                     //$item.append("<img width='100px' height='100px' />");
                     $item.append("<i class='icon-chart" + chart_type +"'></i>");

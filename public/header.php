@@ -6,9 +6,15 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Store for JUI</title>
 	<?php if ($type_text[$page_id]) { ?>
-	<script type="text/javascript" src="/bower_components/codemirror/lib/codemirror.js"></script>
 	<link href="/bower_components/codemirror/lib/codemirror.css" rel="stylesheet" />
+	<link href="/bower_components/codemirror/addon/hint/show-hint.css" rel="stylesheet" />
+	<script type="text/javascript" src="/bower_components/codemirror/lib/codemirror.js"></script>
+	<script src="/bower_components/codemirror/addon/hint/show-hint.js"></script>
+	<script src="/bower_components/codemirror/addon/hint/javascript-hint.js"></script>
+	<script src="/bower_components/codemirror/addon/hint/html-hint.js"></script>
+	<script src="/bower_components/codemirror/addon/hint/xml-hint.js"></script>
 	<script src="/bower_components/codemirror/mode/javascript/javascript.js"></script>
+	<script src="/bower_components/codemirror/mode/xml/xml.js"></script>
 	<script src="/bower_components/codemirror/mode/css/css.js"></script>
 	<link href="/bower_components/codemirror/theme/twilight.css" rel="stylesheet" />
 	<?php } ?>

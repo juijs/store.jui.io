@@ -2,7 +2,7 @@
 
 	<div class="editor-tool" style="font-size:13px;">
 		<a  class="h2" style="display:inline-block"  data-view="information">Information</a>
-		<div style="float:right;margin-right:10px;">
+		<div class="editor-navbar">
 			<?php if ($isMy) { ?>
 			<div class="group">
 				<a class="btn" onclick="savecode()">Save</a>
@@ -41,18 +41,7 @@
 					<textarea style="width:100%;height: 100px;" class="input" id="description" <?php if (!$isMy) { ?>disabled<?php } ?> ></textarea>
 				</div>
 			</div>
-			<div class="row" style="padding:5px">
-				<div class="col col-2">License </div>
-				<div class="col col-9">
-				   <select class="input" id="license" <?php if (!$isMy) { ?>disabled<?php } ?> >
-					<option value="None" selected>None</option>
-					<option value="Apache License 2.0">Apache License 2.0</option>
-					<option value="GNU General Public License v2.0">GNU General Public License v2.0</option>
-					<option value="MIT License">MIT License</option>
-					</select>
-
-				</div>
-			</div>
+			<?php include_once "license.php" ?>
 
 
 

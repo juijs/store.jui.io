@@ -57,7 +57,16 @@ $(function() {
 	$("a.h2").css({
 		'cursor' : 'pointer',
 		'-webkit-user-select' : 'none'
-	}).on('click', viewFullscreen).attr('title', 'Do double click for greater view' );
+	}).on('click', viewFullscreen).attr('title', 'Click for fullscreen' );
+
+	window.more_info_license = function() {
+		var key = $("#license").val();
+		var url = 'http://opensource.org/licenses/' + key;
+
+		window.open(url, "_license");
+	}
+
+
 
 
 });

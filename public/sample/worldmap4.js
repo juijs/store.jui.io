@@ -4,7 +4,7 @@ chart("#chart", {
     padding : 0,
     axis : [{
         map : {
-            path : "../../lib/jui/img/map/world-1040x660.svg",
+            path : "/img/map/world-1040x660.svg",
             width : 1040,
             height : 630
         },

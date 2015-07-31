@@ -263,3 +263,19 @@
 footer {
 	display:none;
 }
+
+#component_load  {
+	position: absolute;
+    width: 0px;
+    height: 24px;
+    opacity: 0;
+	top: 10px;
+    right: 110px;
+    cursor: pointer;
+    padding-right: 90px;
+}
+
+.editor-navbar {
+	float: right; 
+	margin-top: -2px;
+}

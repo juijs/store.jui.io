@@ -53,7 +53,10 @@ if ($_POST['id']) {
 	))->limit(1);
 
 	if ($revData && $revData->count(true) > 0) {
-		$rev = $revData[0]['rev'];
+		foreach($revData as $_rev) {
+			$rev = $_rev['rev'];
+		}
+
 	} else {
 		$rev = 0;
 	}

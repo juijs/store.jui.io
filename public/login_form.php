@@ -6,15 +6,15 @@
 
 .btn-sns {
 	width : 300px;
-	height: 40px;
+	height: 45px;
     max-width:90%;
 	margin-bottom:12px;
 }
 
-
-.btn-facebook {
-	
+.btn-sns img {
+	margin-top:-5px;
 }
+
 </style>
 
 <div style="padding-top:30px"></div>

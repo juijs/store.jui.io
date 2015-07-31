@@ -3,12 +3,15 @@
 $(function() {
 	var componentCode = window.componentCode = CodeMirror.fromTextArea($("#component_code")[0], {
 	  mode:  "javascript",
-	  lineNumbers : true 
+	  lineNumbers : true,
+	  extraKeys: {"Ctrl-Space": "autocomplete"}
+
 	});
 
 	var sampleCode = window.sampleCode = CodeMirror.fromTextArea($("#sample_code")[0], {
 	  mode:  "javascript",
-	  lineNumbers : true
+	  lineNumbers : true,
+	  extraKeys: {"Ctrl-Space": "autocomplete"}
 	});
 
 	$("#component_load").change(function(e) {

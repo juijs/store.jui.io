@@ -95,6 +95,13 @@
 "ohlc.js",
 {"type" : "group", "name" : "Map Chart"},
 "koreamap_weather.js",
+"chart_in_worldmap.js", 
+"worldmap1.js", 
+"worldmap2.js", 
+"worldmap3.js", 
+"worldmap4.js", 
+"worldmap6.js",
+
 {"type" : "group", "name" : "Dashboard & Mixed Chart"},
 "dashboard.js",
 "dashboard2.js",

@@ -59,7 +59,7 @@ chart("#chart", {
     padding : 0,
     axis : [{
         map : {
-            path : "../../lib/jui/img/map/korea-500x650.svg",
+            path : "/img/map/korea-500x650.svg",
             width : 500,
             height : 650
         },
