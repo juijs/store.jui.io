@@ -1,4 +1,4 @@
-<script type="text/template" id="theme_template">jui.define("<!= name !>", [], function() {
+<script type="text/template" id="theme_template">jui.define("chart.theme.<!= name !>", [], function() {
 	return <!= json !>;
 });
 </script>

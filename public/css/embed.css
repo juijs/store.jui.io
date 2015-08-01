@@ -12,10 +12,6 @@
 	display:none;
 }
 
-.nav a {
-	font-size:12px !important;
-}
-
 .nav-container {
 	position:fixed;
     left:0px;
@@ -62,8 +58,18 @@
 .nav-btn {
 	text-decoration:none;
     cursor:pointer; 
+	font-size: 12px !important;
 }
 
 .nav-btn.active {
     font-weight:bold;
+}
+
+.nav-btn:hover {
+	text-decoration: underline;
+}
+
+.nav-edit {
+	color: #C6CACD; 
+	font-size: 11px !important;
 }

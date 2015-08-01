@@ -13,7 +13,14 @@ $row = $components->findOne(array(
 	'_id' => new MongoId($_GET['id'])
 ));
 
-if ($row['access'] == 'private') {
+$isMy = true;
+if ($_GET['id'] && ($row['login_type'] != $_SESSION['login_type'] || $row['userid'] != $_SESSION['userid']) ) {
+    $isMy = false;
+}
+
+
+
+if ($row['access'] == 'private' && !$isMy) {
 	header("HTTP/1.0 404 Not Found");
 	exit;
 }
@@ -77,14 +84,13 @@ html, body {
     <div class='nav <?php echo $only ? "result-only" : "" ?>'>
         <span style="float:left">
             <a class="btn-large nav-btn active" data-target="result" onclick="select(this)">Result</a>
+			<a class="btn-large nav-btn" data-target="component" onclick="select(this)"><?php echo $first ?></a>
             <a class="btn-large nav-btn" data-target="sample" onclick="select(this)">Sample</a>
-            <a class="btn-large nav-btn" data-target="component" onclick="select(this)">Component</a>
-            <a class="btn-large nav-btn" data-target="information" onclick="select(this)">Information</a>
+            <!--<a class="btn-large nav-btn" data-target="information" onclick="select(this)">Information</a> -->
         </span> 
 
         <span style="float:right">
-            <a class='btn-large nav-btn' href="/view.php?id=<?php echo $_GET['id'] ?>" target="_blank">Edit Source</a>
-			<a class='label label-mini'>JUI</a>
+            <a class='btn-large nav-btn nav-edit' href="/view.php?id=<?php echo $_GET['id'] ?>" target="_blank">Edit in JUI Store</a>
         </span>
     </div>
 	<div class='nav-container <?php echo $only ? "result-only" : "" ?>' >

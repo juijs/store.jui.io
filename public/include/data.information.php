@@ -27,7 +27,7 @@
 			</div>
             <?php } ?>
 			<div class="row" style="padding:5px">
-				<div class="col col-2"> * Data Type </div>
+				<div class="col col-2"> Name </div>
 				<div class="col col-9">
 					<select class="input" id="data_type" <?php if (!$isMy) { ?>disabled<?php } ?> >
 						<option value="DB" selected>DB</option>

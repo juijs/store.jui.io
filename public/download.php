@@ -6,6 +6,7 @@ $ext = array(
 	'component' => 'js',
 	'theme' => 'js',
 	'style' => 'less',
+	'css' => 'css',
 	'data' => '',
 	'map' => 'svg'
 );
@@ -21,6 +22,32 @@ $components = $db->components;
 $document = array( '_id' => new MongoId($_GET['id']) );
 
 $component = $components->findOne($document);
+
+if ($_GET['ext'] == 'css' && $component['type'] == 'style') {
+	$id = uniqid("temp".rand(0, 100).rand(0,100));
+	$code = $component['component_code'];
+	$filename = "sample/ui/theme/".$id.".less";
+
+	file_put_contents(__DIR__."/".$filename, $code);
+
+	try {
+		$parser = new Less_Parser();
+		$parser->parseFile( __DIR__."/".$filename );
+		$result = $parser->getCss();
+
+		$result = str_replace("../img", "img", $result);
+		$result = str_replace("../widget/img", "img", $result);
+
+	} catch (Exception $ex) {
+
+		echo $ex->getMessage();
+	}
+
+	unlink($filename);
+
+	$component['type'] = 'css';
+	$component['component_code'] = $result;
+}
 
 $filename = rawurlencode($component['name']);
 

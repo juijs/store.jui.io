@@ -428,11 +428,6 @@ $(function() {
 			<i class='icon-textcolor'></i>
 			<a >Jennifer</a>
 		</div>
-		<div class="window-item" data-theme="dark" >
-			<!--<img src="" width="100px" height="100px" />-->
-			<i class='icon-textcolor'></i>
-			<a >Dark</a>
-		</div>
     </div>
 	<div class="foot">
 		<a class="btn select-btn">Select</a>

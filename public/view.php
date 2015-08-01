@@ -24,9 +24,14 @@ if (isset($_GET['rev'])) {
 	));
 }
 
+$isMy = true;
+if ($_GET['id'] && ($row['login_type'] != $_SESSION['login_type'] || $row['userid'] != $_SESSION['userid']) ) {
+    $isMy = false;
+}
 
 
-if ($row['access'] == 'private') {
+
+if ($row['access'] == 'private' && !$isMy) {
 	header("HTTP/1.0 404 Not Found");
 	exit;
 }
@@ -117,8 +122,13 @@ $color = $type_colors[$first];
 					<span style="float:left;padding:10px 0px;">Download : 
 
 						<div class="group">
+							<?php if ($row['type'] == 'style') { ?>
+							<a href="/download.php?id=<?php echo $id ?>" class="btn ">LESS</a>
+							<a href="/download.php?id=<?php echo $id ?>&ext=css" class="btn ">CSS</a>
+							<?php } else { ?>
 							<a href="/download.php?id=<?php echo $id ?>" class="btn "><?php echo $type_text[$row['type']] ?></a>
 							<a href="/download.php?id=<?php echo $id ?>&code=sample" class="btn ">Sample</a>
+							<?php } ?>
 						</div>
 					</span>
 					<span style="float:right;padding:10px 0px;">

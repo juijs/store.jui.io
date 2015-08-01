@@ -8,14 +8,14 @@
 				<a href="component.php" class='btn create-button'>
 					<div class='button-image'><i class='icon-check'></i> <?php echo $type_text['component'] ?></div> 
 				</a>
+				<a href="map.php" class='btn create-button'>
+					<div class='button-image'><i class='icon-image'></i> <?php echo $type_text['map'] ?></div>
+				</a>
 				<a href="theme.php" class='btn create-button'>
 					<div class='button-image'><i class='icon-textcolor'></i> <?php echo $type_text['theme'] ?></div>
 				</a>
 				<a href="style.php" class='btn create-button'>
 					<div class='button-image'><i class='icon-edit'></i> <?php echo $type_text['style'] ?></div>
-				</a>
-				<a href="map.php" class='btn create-button'>
-					<div class='button-image'><i class='icon-image'></i> <?php echo $type_text['map'] ?></div>
 				</a>
 			</div>
 		</span>

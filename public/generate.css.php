@@ -38,8 +38,8 @@ try {
 	$parser->parseFile( __DIR__."/".$filename );
 	$result = $parser->getCss();
 
-    $result = str_replace("../img", "/img", $result);
-    $result = str_replace("../widget/img", "/img", $result);
+    $result = str_replace("../img", "img", $result);
+    $result = str_replace("../widget/img", "img", $result);
 
 } catch (Exception $ex) {
 

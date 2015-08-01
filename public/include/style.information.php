@@ -28,7 +28,7 @@
 			</div>
             <?php } ?>
 			<div class="row" style="padding:5px">
-				<div class="col col-2"> * ID </div>
+				<div class="col col-2"> Name </div>
 				<div class="col col-9"><input type="text" class="input" style="width:100%;" id="name" require="true" <?php if (!$isMy) { ?>disabled<?php } ?>  /></div>
 			</div>
 			<div class="row" style="padding:5px;">

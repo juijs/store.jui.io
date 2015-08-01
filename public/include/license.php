@@ -1,7 +1,7 @@
 			<div class="row" style="padding:5px">
 				<div class="col col-2">License </div>
 				<div class="col col-9">
-					<select class="input" id="license" <?php if (!$isMy) { ?>disabled<?php } ?> >
+					<select class="input" style='width:200px' id="license" <?php if (!$isMy) { ?>disabled<?php } ?> >
 						<option value="Apache-2.0">Apache License, Version 2.0</option>
 						<option value="gpl-license">GNU General Public License (GPL)</option>
 						<option value="AGPL-3.0">GNU AFFERO GENERAL PUBLIC LICENSE, Version 3 (AGPL-3.0)</option>
