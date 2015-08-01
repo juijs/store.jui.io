@@ -24,9 +24,18 @@ $first = $type_text[$type];
 				<span id="good_count_<?php echo $id?>"><?php echo $data['good'] ? $data['good'] : 0 ?></span>
 			</span>
 		</div>
+
+		<?php if (/*!$data['sample'] ||*/ true) { // only iframe view ?>
+		<div class="imagesfield" ><iframe src="embed.php?id=<?php echo $id ?>&only=result" class='iframe-wrap' id="result"></iframe>
+	
+			<a href="<?php echo $link ?>" class='box-a'>&nbsp;</a>
+</div>
+
+		<?php } else { ?>
 		<div class="imagesfield">
 			<a href="<?php echo $link ?>"><img class="chart-image" src="<?php echo $data['sample'] ? $data['sample'] : 'images/chart-sample.jpg' ?>"></a>
 		</div>
+		<?php } ?>
 		<div class="summary-info">
 			<div class="title"><span class="simbol simbol-<?php echo $type ?>"><?php echo $first ?></span> <?php echo $data['title'] ? $data['title'] : '&nbsp;' ?></div>
 			<div class="content"><?php echo $data['description'] ? str_replace("\r\n", "", $data['description']) : '&nbsp;' ?></div>

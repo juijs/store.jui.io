@@ -25,7 +25,7 @@ html,body {
 <div id="result"></div>
 <script type="text/javascript">
 <?php echo $sample_code ?>
-
+/*
 function createSampleImage() {
 	var obj = $("#result")[0].jui;
 
@@ -64,7 +64,7 @@ jui.ready(function() {
 
 
 });
-
+ */
 </script>
 
 

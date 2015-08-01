@@ -24,7 +24,7 @@ html,body {
 <?php echo $_POST['component_code'] ?>
 
 <?php echo $_POST['sample_code'] ?>
-
+/*
 function createSampleImage() {
 	var obj = $("#result")[0].jui;
 
@@ -54,7 +54,7 @@ function createSampleImage() {
 
 	img.src = uri;
 }
-
+ */
 jui.ready(function() { 
 
 	// 테마 설정 
@@ -66,11 +66,11 @@ jui.ready(function() {
 		}
 	}
 
-
+	/*
 	setTimeout(function() { 
 		createSampleImage();
 	}, 2000);
-
+	*/
 
 });
 
