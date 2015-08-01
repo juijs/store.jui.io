@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Store for JUI</title>
+    <title>JENNIFER UI: Store</title>
 	<?php if ($type_text[$page_id]) { ?>
 	<link href="/bower_components/codemirror/lib/codemirror.css" rel="stylesheet" />
 	<link href="/bower_components/codemirror/addon/hint/show-hint.css" rel="stylesheet" />

@@ -199,10 +199,10 @@ jui.ready(function() {
 
 	// 테마 설정 
 	var theme = '<?php echo $row['name'] ?>';
-	if (theme.indexOf("chart.theme.") > -1) {
+	if ('<?php echo $row['type'] ?>' == 'theme') {
 		var obj = $("#result")[0].jui;
 		if (obj) {
-			obj.setTheme(theme.replace("chart.theme.", ""));
+			obj.setTheme(theme);
 		}
 	}
 });

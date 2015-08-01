@@ -68,7 +68,7 @@ $(function() {
 
 			getThemeObject();
 
-			$("#name").val("chart.theme.mytheme");
+			//$("#name").val("chart.theme.mytheme");
 
 			coderun();
 		});

@@ -59,10 +59,10 @@ jui.ready(function() {
 
 	// 테마 설정 
 	var theme = '<?php echo $_POST['name'] ?>';
-	if (theme.indexOf("chart.theme.") > -1) {
+	if ('<?php echo $_POST['type'] ?>' == 'theme') {
 		var obj = $("#result")[0].jui;
 		if (obj) {
-			obj.setTheme(theme.replace("chart.theme.", ""));
+			obj.setTheme(theme);
 		}
 	}
 
