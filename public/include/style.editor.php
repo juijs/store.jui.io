@@ -3,7 +3,7 @@
 	<div class="editor-tool" style="font-size:13px;border-bottom:0px;">
 		<a class='h2' style="display:inline-block"  data-view="component"><?php echo $type_text['style'] ?></a>
 		<span class="editor-navbar">
-			<div class="group">
+			<div class="group" id="js_html_convert">
 				<a class="btn"><i class="icon-upload"></i> Upload File</a> 
 				<a class="btn" onclick="select_theme(this)">Select Theme</a>
 			</div>
@@ -23,7 +23,7 @@
 			</form>
 	</div>
 	<div id="tab_contents_1" class="tab-contents editor-codemirror">
-		<table class="table table-simple table-headline" id="table_style">
+		<table class="table simple headline" id="table_style">
 		<colgroup>
 			<col width="40%" />
 			<col width="60%" />

@@ -18,7 +18,7 @@ $db = $m->store;
 $components = $db->components;
 $history = $db->components_history;
 
-$_POST = array_filter($_POST, 'strip_tags');
+//$_POST = array_filter($_POST, 'strip_tags');
 
 // must be saved 
 $document = array(
@@ -33,13 +33,13 @@ $document = array(
 	'description' => $_POST['description'],
 	'component_code' => $_POST['component_code'],
 	'sample_code' => $_POST['sample_code'],
+	'html_code' => $_POST['html_code'],
 	'sample_type' => $_POST['sample_type'],
 	'sample' => $_POST['sample'],
 	'data_type' => $_POST['data_type'],
 	'license' => $_POST['license'],
 	'update_time' => time()
 );
-
 
 if ($_POST['id']) {
 	$prevData = $components->findOne(array(
@@ -100,6 +100,10 @@ if ($_POST['id']) {
 
 if ($result['ok']) {
 	$id = $_POST['id'] ? $_POST['id'] : (string)$document['_id'];
+
+	// auto created sample image 
+	$root = getcwd();
+	shell_exec(escapeshellcmd("webshot --render-delay=100 http://{$_SERVER['HTTP_HOST']}/embed.php?id={$id}&only=true {$root}/thumbnail/{$id}.png"));
 
 	echo json_encode(array('id' => $id, 'result' => true));
 } else {

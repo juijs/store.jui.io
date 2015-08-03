@@ -27,6 +27,9 @@ if ($_POST['id']) {
     ));
 
 	if ($result) {
+
+		$root = getcwd();
+		@unlink($root."/thumbnail/".$_POST['id'].".png");
 		echo json_encode(array('result' => true));
 	} else {
 		$result  = array(

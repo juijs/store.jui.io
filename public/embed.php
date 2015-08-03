@@ -83,18 +83,25 @@ html, body {
 <div id="content-container">
     <div class='nav <?php echo $only ? "result-only" : "" ?>'>
         <span style="float:left">
-            <a class="btn-large nav-btn active" data-target="result" onclick="select(this)">Result</a>
-			<a class="btn-large nav-btn" data-target="component" onclick="select(this)"><?php echo $first ?></a>
-            <a class="btn-large nav-btn" data-target="sample" onclick="select(this)">Sample</a>
+            <a class="btn large nav-btn active" data-target="embedResult" onclick="select(this)">Result</a>
+			<a class="btn large nav-btn" data-target="component" onclick="select(this)"><?php echo $first ?></a>
+			<?php if ($row['type']) {  ?>
+			<a class="btn large nav-btn" data-target="sample" onclick="select(this)">JS</a>
+			<a class="btn large nav-btn" data-target="html" onclick="select(this)">HTML</a>
+			<?php } else { ?>
+            <a class="btn large nav-btn" data-target="sample" onclick="select(this)">Sample</a>
+			<?php } ?>
+
+
             <!--<a class="btn-large nav-btn" data-target="information" onclick="select(this)">Information</a> -->
         </span> 
 
         <span style="float:right">
-            <a class='btn-large nav-btn nav-edit' href="/view.php?id=<?php echo $_GET['id'] ?>" target="_blank">Edit in JUI Store</a>
+            <a class='btn large nav-btn nav-edit' href="/view.php?id=<?php echo $_GET['id'] ?>" target="_blank">Edit in JUI Store</a>
         </span>
     </div>
 	<div class='nav-container <?php echo $only ? "result-only" : "" ?>' >
-        <div id='result' class='nav-content active' style="overflow:<?php echo $only ? "hidden" : "auto" ?>" >
+        <div id='embedResult' class='nav-content active' style="overflow:<?php echo $only ? "hidden" : "auto" ?>" >
 			<?php
 			$type = $row['type'];
 			$sample_type = $row['sample_type'];
@@ -109,13 +116,18 @@ html, body {
 						<?php include __DIR__."/sample/ui/implements/{$sample_type}.html" ?>
 					</div>
 			<?php
-			}
+			} else if ($type == 'component') {
 						
+				echo $row['html_code'];
+			}
 			?>		
 		
 		</div>
         <div id='sample' class='nav-content' >
             <textarea id="sample_code"></textarea>
+        </div>
+        <div id='html' class='nav-content' >
+            <textarea id="html_code"></textarea>
         </div>
         <div id='component' class='nav-content'>
             <textarea id="component_code"></textarea>
@@ -141,6 +153,7 @@ $(function() {
 
         componentCode.refresh();
         sampleCode.refresh();
+        htmlCode.refresh();
    }
 
 	var componentCode = window.componentCode = CodeMirror.fromTextArea($("#component_code")[0], {
@@ -156,6 +169,13 @@ $(function() {
 	});
 
 
+	var htmlCode = window.htmlCode = CodeMirror.fromTextArea($("#html_code")[0], {
+	  mode:  "htmlmixed",
+	  lineNumbers : true,
+      readOnly : true
+	});
+
+
 	function loadContent() {
 		var id = '<?php echo $_GET['id'] ?>';
 
@@ -163,6 +183,7 @@ $(function() {
 			$.get('/read.php', { id : id }, function(data) {
 				componentCode.setValue(data.component_code || "");
 				sampleCode.setValue(data.sample_code || "");
+				htmlCode.setValue(data.html_code || "");
 			});
 		}
 
@@ -200,7 +221,7 @@ jui.ready(function() {
 	// 테마 설정 
 	var theme = '<?php echo $row['name'] ?>';
 	if ('<?php echo $row['type'] ?>' == 'theme') {
-		var obj = $("#result")[0].jui;
+		var obj = $("#embedResult")[0].jui;
 		if (obj) {
 			obj.setTheme(theme);
 		}
@@ -216,7 +237,7 @@ $(function() {
 	setTimeout(function() {
 		if (parent && parent.setContentHeight)
 		{
-			parent.setContentHeight($("#result")[0].scrollHeight);
+			parent.setContentHeight($("#embedResult")[0].scrollHeight);
 		}
 	}, 100);
 });

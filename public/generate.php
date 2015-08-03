@@ -19,42 +19,18 @@ html,body {
     
 }
 </style>
+
+<?php if ($_POST['type'] == 'component') { ?>
+<?php echo $_POST['html_code'] ?>
+
+<?php } else {?>
 <div id="result"></div>
+<?php } ?>
 <script type="text/javascript">
 <?php echo $_POST['component_code'] ?>
 
 <?php echo $_POST['sample_code'] ?>
-/*
-function createSampleImage() {
-	var obj = $("#result")[0].jui;
 
-	if (!obj) return;
-
-	var svg = obj.svg;
-
-    if (!svg) return;
-
-	var img = new Image(),
-		size = svg.size();
-
-	var uri = svg.toDataURI()
-		.replace('width="100%"', 'width="' + size.width + '"')
-		.replace('height="100%"', 'height="' + size.height + '"');
-
-	img.onload = function() {
-		var canvas = document.createElement("canvas");
-		canvas.width = img.width;
-		canvas.height = img.height;
-
-		var context = canvas.getContext('2d');
-		context.drawImage(img, 0, 0);
-
-		parent.setSampleImage && parent.setSampleImage(canvas.toDataURL("image/png"));
-	}
-
-	img.src = uri;
-}
- */
 jui.ready(function() { 
 
 	// 테마 설정 
@@ -65,13 +41,6 @@ jui.ready(function() {
 			obj.setTheme(theme);
 		}
 	}
-
-	/*
-	setTimeout(function() { 
-		createSampleImage();
-	}, 2000);
-	*/
-
 });
 
 </script>

@@ -24,7 +24,7 @@
 			</form>
 	</div>
 	<div id="tab_contents_1" class="tab-contents editor-codemirror">
-		<table class="table table-simple table-headline" id="table_theme">
+		<table class="table simple headline" id="table_theme">
 			<thead>
 				<tr>
 					<th width="40%">key</th>

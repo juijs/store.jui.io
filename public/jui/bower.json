@@ -1,0 +1,12 @@
+{
+  "name": "jui",
+  "version": "1.4.1",
+  "main": "jui.min.js",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "jquery": ">1.8.0"
+  }
+}
