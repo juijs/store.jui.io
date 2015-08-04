@@ -82,6 +82,8 @@ footer .link [class*=icon-] {
 	position: absolute;
 	color: #ffffff;
 	left: 86px;
+	font-size: 1.2em;
+	font-weight: bold;
 }
 .login {
 	float: right;
