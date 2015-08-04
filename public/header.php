@@ -4,6 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="title" content="JENNIFER UI: Store" />
+	<meta name="description" content="JENNIFER Store can be shared chart and UI themes, SVG map files, chart and UI components Module." />
+	<meta name="keywords" content="HTML, CSS, JS, JavaScript, SVG, chart, framework, bootstrap, front-end, frontend, web development, free, MIT" />
+	<meta name="author" content="Alvin, Jayden and Yoha" />
+	
     <title>JENNIFER UI: Store</title>
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">

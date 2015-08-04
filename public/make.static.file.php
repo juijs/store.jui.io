@@ -123,8 +123,9 @@ $sample_code = str_replace("@path", "'".$map_link."'", $data['sample_code']) ;
 </script>
 
 <?php  } else { ?>
-
-<script type="text/javascript" src="/generate.js.php?id=<?php echo $id ?>"></script>
+<script type="text/javascript">
+<?php echo $data['component_code'] ?>
+</script>
 <script type="text/javascript">
 <?php echo $data['sample_code'] ?>
 </script>
