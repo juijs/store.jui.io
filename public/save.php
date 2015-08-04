@@ -106,6 +106,11 @@ if ($result['ok']) {
 	shell_exec(escapeshellcmd("webshot --window-size=320/240 http://{$_SERVER['HTTP_HOST']}/embed.php?id={$id}&only=true {$root}/thumbnail/{$id}.png"));
 
 	echo json_encode(array('id' => $id, 'result' => true));
+
+	// create static file 
+	$data = $document;
+	include_once "make.static.file.php";
+
 } else {
 	echo json_encode(array('result' => false));
 }

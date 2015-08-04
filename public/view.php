@@ -69,6 +69,7 @@ $meta =<<<EOD
 	<meta itemprop="image" content="http://store.jui.io/thumbnail.php?id={$id}">
 EOD;
 
+$page_id = 'view';
 include_once "header.php";
 
 
@@ -112,15 +113,28 @@ $color = $type_colors[$first];
 						<span id="good_count_<?php echo $id?>"><?php echo $row['good'] ? $row['good'] : 0 ?></span>
 					</span>
 				</div>
-				<div class="imagesfield"><iframe src="embed.php?id=<?php echo $id ?>&only=result" style="border:0px" width="100%" height="400px" frameborder="0" border="0" id="result"></iframe></div>
+				<div class="imagesfield">
+					<?php
+						$embed_url = "embed.php?id=".$id."&only=result";
+
+												// generate static file 
+						$root = getcwd();
+						$static_file = "/static/".$id."/embed.html";
+
+						if (file_exists($root.$static_file)) {
+							$embed_url = $static_file;
+						}
+					?>
+					<iframe src="<?php echo $embed_url ?>" style="border:0px" width="100%" height="400px" frameborder="0" border="0" id="result"></iframe>
+					</div>
 				<div class="summary-info">
 					<div class="title"><span class="simbol simbol-<?php echo $type ?>"><?php echo $first ?></span> <?php echo $row['title'] ? $row['title'] : '&nbsp;' ?></div>
 					<div class="content"><?php echo nl2br($row['description']) ?></div>
 				</div>
 
 				<div class="summary-buttons" style="text-align:center;overflow:auto;">
+					<span class='mini-view' style='float:left;padding:15px 0px;'>Download : </span>
 					<span style="float:left;padding:10px 0px;">
-
 						<div class="group">
 							<?php if ($row['type'] == 'style') { ?>
 							<a href="/download.php?id=<?php echo $id ?>" class="btn ">LESS</a>
@@ -135,6 +149,7 @@ $color = $type_colors[$first];
 							<?php } ?>
 						</div>
 					</span>
+					
 					<span style="float: right; padding: 10px 0px;">
 					    <a href="/<?php echo $row['type'] ?>.php?id=<?php echo $id ?>" class="btn focus"><?php if ($isMy) { ?>Edit<?php } else { ?>Source<?php } ?></a>
 					</span>

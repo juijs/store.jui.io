@@ -26,7 +26,19 @@ $first = $type_text[$type];
 		</div>
 
 		<?php if (/*!$data['sample'] ||*/ true) { // only iframe view ?>
-		<div class="imagesfield" ><iframe data-src="embed.php?id=<?php echo $id ?>&only=result" class='iframe-wrap' id="result"></iframe>
+		<div class="imagesfield" >
+			<?php
+				$embed_url = "embed.php?id=".$id."&only=result";
+
+										// generate static file 
+				$root = getcwd();
+				$static_file = "/static/".$id."/embed.html";
+
+				if (file_exists($root.$static_file)) {
+					$embed_url = $static_file;
+				}
+			?>		
+			<iframe data-src="<?php echo $embed_url ?>" class='iframe-wrap' id="result"></iframe>
 	
 			<a href="<?php echo $link ?>" class='box-a'>&nbsp;</a>
 </div>

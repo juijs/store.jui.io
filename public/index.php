@@ -1,4 +1,9 @@
-<?php include_once "header.php" ?>
+<?php 
+
+$page_id = 'list';
+include_once "header.php" ;
+
+?>
 
 		<div>
 			<span class="content-btn">

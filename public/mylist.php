@@ -1,6 +1,6 @@
 <?php 
 
-$page_id = "mylist";
+$page_id = "list";
 
 ?>
 <?php include_once "header.php" ?>

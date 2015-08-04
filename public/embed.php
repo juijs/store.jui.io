@@ -1,6 +1,15 @@
 <?php 
 include_once '../bootstrap.php';
 
+// generate static file 
+$static_file = getcwd()."/static/".$_GET['id']."/embed.html";
+
+if (file_exists($static_file)) {
+	readfile($static_file);
+	exit;
+}
+
+
 // connect
 $m = new MongoClient();
 
@@ -43,7 +52,7 @@ $meta =<<<EOD
 	<!-- Facebook -->
 	<meta property="og:title" content="{$title}"/>
 	<meta property="og:type" content="article"/>
-	<meta property="og:url" content="http://store.jui.io/share.php?id={$id}"/>
+	<meta property="og:url" content="http://store.jui.io/view.php?id={$id}"/>
 	<meta property="og:description" content="{$description}"/>
 	<meta property="og:image" content="http://store.jui.io/thumbnail.php?id={$id}"/>
 

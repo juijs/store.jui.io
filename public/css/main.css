@@ -300,9 +300,9 @@ footer .link [class*=icon-] {
 	top: 0;
 	left: 0;
 	background: white;
-	-webkit-transform: scale(0.333333);
-	-ms-transform: scale(0.333333);
-	transform: scale(0.333333);
+	-webkit-transform: translate3d(0, 0, 0) scale(0.333333);
+	-ms-transform: translate3d(0, 0, 0) scale(0.333333);
+	transform: translate3d(0, 0, 0) scale(0.333333);
 	-webkit-transform-origin: top left;
 	-ms-transform-origin: top left;
 	transform-origin: top left;
@@ -345,6 +345,10 @@ footer .link [class*=icon-] {
 
 	 .large .summary-normal .imagesfield #result {
 		height:300px;
+	}
+
+	.mini-view {
+		display:none;
 	}
 
 }
