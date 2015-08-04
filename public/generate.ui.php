@@ -8,7 +8,7 @@ $page_id = "generate.ui";
 ?>
 
 <?php include_once "header.php" ?>
-<link rel="stylesheet" href="sample/ui/css/jui.css" />
+<link rel="stylesheet" href="/jui/dist/jui.min.css" />
 <style type="text/css">
 html,body { 
     background:white;
@@ -33,7 +33,7 @@ if (!$sample_type) {
 $id = uniqid("temp".rand(0, 100));
 $code = $_POST['component_code'];
 
-$filename = "sample/ui/theme/".$id.".less";
+$filename = "jui/less/theme/".$id.".less";
 
 file_put_contents(__DIR__."/".$filename, $code);
 
@@ -57,7 +57,7 @@ unlink($filename);
 </style>
 <div id="result">
 	<div style="padding:10px" class="jui-style">
-		<?php include_once "sample/ui/implements/{$sample_type}.html" ?>
+		<?php include_once "sample/ui/{$sample_type}.html" ?>
 	</div>
 </div>
 

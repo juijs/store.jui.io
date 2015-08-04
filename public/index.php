@@ -25,7 +25,7 @@ $sort['update_time'] = -1;
 
 $rows = $components->find(array(
     'access' => 'public'            
-))->sort($sort)->limit(20);
+))->sort($sort)->limit(5);
 
 ?>
 
@@ -34,41 +34,5 @@ $rows = $components->find(array(
 <?php  foreach ($rows as $data) {  include "box.php";   } ?>
 </div>
 
-
-<script type="text/javascript">
-$(function() {
-
-	var $container = $('#content-container');
-	
-	$container.masonry({
-	  // options
-	  itemSelector: '.summary-box',
-	  isFitWidth: true
-	});
-
-	window.loadLastList = function loadLastList() {
-		var lastId = $(".summary-box:last").data('id');
-		var sort = '<?php echo $sort_type ?>';
-
-		$.get("/load-box.php", { lastId : lastId, sort : sort }, function(data) {
-	
-	        var $moreBlocks = jQuery( data );
-
-		    $container.append( $moreBlocks );
-
-	        $container.masonry( 'appended', $moreBlocks );         
-		});
-	}
-
-    $(window).scroll(function(e) {
- 	  var height = $(document.body)[0].scrollHeight - $(document.body)[0].scrollTop - $(window).height();
-
-	  if (height == 0) {
-		loadLastList();
-	  }
-    });
-	
-});
-
-</script>
+<?php include_once "include/store.list.php" ?>
 <?php include_once "footer.php" ?>

@@ -20,13 +20,13 @@ $first = $type_text[$type];
 			?>
 
 			<span class="good" style="float:right;overflow:auto;display:inline-block;">
-				<a href="javascript:void(good('<?php echo $id?>'))"><img src="images/good.png" /></a> 
+				<a href="javascript:void(good('<?php echo $id?>'))"><i class="icon-like" style="color: #999; font-size: 16px;"></i></a> 
 				<span id="good_count_<?php echo $id?>"><?php echo $data['good'] ? $data['good'] : 0 ?></span>
 			</span>
 		</div>
 
 		<?php if (/*!$data['sample'] ||*/ true) { // only iframe view ?>
-		<div class="imagesfield" ><iframe src="embed.php?id=<?php echo $id ?>&only=result" class='iframe-wrap' id="result"></iframe>
+		<div class="imagesfield" ><iframe data-src="embed.php?id=<?php echo $id ?>&only=result" class='iframe-wrap' id="result"></iframe>
 	
 			<a href="<?php echo $link ?>" class='box-a'>&nbsp;</a>
 </div>

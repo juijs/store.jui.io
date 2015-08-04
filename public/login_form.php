@@ -1,31 +1,30 @@
-
 <?php $page_id = "login_form" ?>
 <?php include_once "header.php" ?>
 
 <style type="text/css">
-
 .btn-sns {
-	width : 300px;
-	height: 45px;
-    max-width:90%;
-	margin-bottom:12px;
+	width: 260px;
+	margin-bottom: 12px;
+	font-size: 16px;
+	padding-left: 50px !important;
 }
 
-.btn-sns img {
-	margin-top:-5px;
+.btn-sns > i {
+	position: absolute;
+	font-size: 24px;
+	left: 18px;
+	top: 7px;
 }
-
 </style>
 
 <div style="padding-top:30px"></div>
+
 <div id="content-container">
-
-	<div style="padding:20px;padding-top:70px;">
-		<div><a href="javascript:void(login('facebook'))" class="btn large plat btn-sns btn-facebook"><img src="/images/sns/Facebook.svg" width="20" height="20" align="absmiddle"> Connect with Facebook</a></div>
-		<div><a href="javascript:void(login('twitter'))" class="btn large rect btn-sns btn-twitter"> <img src="/images/sns/Twitter.svg"  width="20" height="20" align="absmiddle"> Connect with Twitter</a> </div>
-		<div><a href="javascript:void(login('github'))" class="btn large rect btn-sns btn-github"> <img src="/images/sns/Github.svg"  width="20" height="20" align="absmiddle"> Connect with Github</a> </div>
+	<div style="padding-top: 70px;">
+		<div><a href="javascript:void(login('facebook'))" class="btn large plat btn-sns btn-facebook"><i class="icon-facebook"></i> Connect with Facebook</a></div>
+		<div><a href="javascript:void(login('twitter'))" class="btn large rect btn-sns btn-twitter"><i class="icon-twitter"></i> Connect with Twitter</a> </div>
+		<div><a href="javascript:void(login('github'))" class="btn large rect btn-sns btn-github"><i class="icon-github"></i> Connect with Github</a> </div>
 	</div>
-
 </div>
 
 </body>

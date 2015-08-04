@@ -26,7 +26,7 @@ $component = $components->findOne($document);
 if ($_GET['ext'] == 'css' && $component['type'] == 'style') {
 	$id = uniqid("temp".rand(0, 100).rand(0,100));
 	$code = $component['component_code'];
-	$filename = "sample/ui/theme/".$id.".less";
+	$filename = "jui/less/theme/".$id.".less";
 
 	file_put_contents(__DIR__."/".$filename, $code);
 
@@ -53,6 +53,8 @@ $filename = rawurlencode($component['name']);
 
 if ($_GET['code'] == 'sample') {
 	$filename = "sample-".$filename.".js";
+} else if ($_GET['code'] == 'html') {
+	$filename = "sample-".$filename.".html";
 } else {
 	$filename .= ".".$ext[$component['type']];
 }
@@ -74,6 +76,10 @@ if ($_GET['code'] == 'sample') {
 
 	header("Content-Length: ".strlen($sample_code));
 	echo $sample_code;
+} else if ($_GET['code'] == 'html') {
+	$html_code = $component['html_code'];
+	header("Content-Length: ".strlen($html_code));
+	echo $html_code;
 } else {
 	header("Content-Length: ".strlen($component['component_code']));
 	echo $component['component_code'];

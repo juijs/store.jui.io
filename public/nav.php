@@ -45,7 +45,7 @@
 	</span>
 
 	<span class="logo-link">
-			<a class="logo" href="/"><img src="images/logo-jui.png"></a>
+		<a class="logo" href="/"><img style="margin-top:3px" src="images/logo-jui.png"></a>
 	</span>
 	<?php } ?>
 

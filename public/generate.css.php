@@ -29,7 +29,7 @@ if (!$sample_type) {
 
 $id = uniqid("temp".rand(0, 100));
 $code = $component['component_code'];
-$filename = "sample/ui/theme/".$id.".less";
+$filename = "jui/less/theme/".$id.".less";
 
 file_put_contents(__DIR__."/".$filename, $code);
 

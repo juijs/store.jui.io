@@ -108,7 +108,7 @@ $color = $type_colors[$first];
 					?>
 
 					<span class="good" style="float:right;overflow:auto;display:inline-block;">
-						<a href="javascript:void(good('<?php echo $id?>'))"><img src="images/good.png" /></a> 
+						<a href="javascript:void(good('<?php echo $id?>'))"><i class="icon-like" style="color: #333; font-size: 15px;"></i></a> 
 						<span id="good_count_<?php echo $id?>"><?php echo $row['good'] ? $row['good'] : 0 ?></span>
 					</span>
 				</div>
@@ -119,20 +119,24 @@ $color = $type_colors[$first];
 				</div>
 
 				<div class="summary-buttons" style="text-align:center;overflow:auto;">
-					<span style="float:left;padding:10px 0px;">Download : 
+					<span style="float:left;padding:10px 0px;">
 
 						<div class="group">
 							<?php if ($row['type'] == 'style') { ?>
 							<a href="/download.php?id=<?php echo $id ?>" class="btn ">LESS</a>
 							<a href="/download.php?id=<?php echo $id ?>&ext=css" class="btn ">CSS</a>
+							<?php } else if ($row['type'] == 'component') { ?>
+							<a href="/download.php?id=<?php echo $id ?>" class="btn "><?php echo $type_text[$row['type']] ?></a>
+							<a href="/download.php?id=<?php echo $id ?>&code=sample" class="btn ">JavaScript</a>
+							<a href="/download.php?id=<?php echo $id ?>&code=html" class="btn ">HTML</a>
 							<?php } else { ?>
 							<a href="/download.php?id=<?php echo $id ?>" class="btn "><?php echo $type_text[$row['type']] ?></a>
 							<a href="/download.php?id=<?php echo $id ?>&code=sample" class="btn ">Sample</a>
 							<?php } ?>
 						</div>
 					</span>
-					<span style="float:right;padding:10px 0px;">
-					    <a href="/<?php echo $row['type'] ?>.php?id=<?php echo $id ?>" class="btn">Edit</a>
+					<span style="float: right; padding: 10px 0px;">
+					    <a href="/<?php echo $row['type'] ?>.php?id=<?php echo $id ?>" class="btn focus"><?php if ($isMy) { ?>Edit<?php } else { ?>Source<?php } ?></a>
 					</span>
 				</div>
 

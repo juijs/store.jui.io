@@ -34,57 +34,24 @@ $rows = $components->find(array(
 
 
 ?>
-	<div>
-		<span class="content-btn">
-			<a href="?sort=update_time" class="btn-simple form-btn-<?php echo $_GET['sort'] != 'good' ? 'on' : 'off' ?>">Sort by date</a>
-			<a href="?sort=good" class="btn-simple form-btn-<?php echo $_GET['sort'] == 'good' ? 'on' : 'off' ?>">Sort by score</a>
-		</span>
-	</div>
+<div>
+	<span class="content-btn">
+		<a href="?sort=update_time" class="btn-simple form-btn-<?php echo $_GET['sort'] != 'good' ? 'on' : 'off' ?>">Sort by date</a>
+		<a href="?sort=good" class="btn-simple form-btn-<?php echo $_GET['sort'] == 'good' ? 'on' : 'off' ?>">Sort by score</a>
+	</span>
+</div>
 
-	<div style='margin-top:28px;'></div>
+<div style='margin-top:28px;'></div>
 
-    <div id="content-container">
+<div id="content-container">
 	<?php 
-		foreach ($rows as $data) { 
-			include "box.php";
-		} 
-		?>
-    </div>
+	foreach ($rows as $data) { 
+		include "box.php";
+	} 
+	?>
+</div>
 
-<script type="text/javascript">
-$(function() {
-	var $container = $('#content-container');
-	
-	$container.masonry({
-	  // options
-	  itemSelector: '.summary-box',
-	  isFitWidth: true
-	});
-
-	window.loadLastList = function loadLastList() {
-		var lastId = $(".summary-box:last").data('id');
-		var sort = '<?php echo $sort_type ?>';
-
-		$.get("/load-my-box.php", { lastId : lastId, sort : sort }, function(data) {
-	
-	        var $moreBlocks = jQuery( data );
-
-		    $container.append( $moreBlocks );
-
-	        $container.masonry( 'appended', $moreBlocks );         
-		});
-	}
-
-    $(window).scroll(function(e) {
- 	  var height = $(document.body)[0].scrollHeight - $(document.body)[0].scrollTop - $(window).height();
-
-	  if (height == 0) {
-		loadLastList();
-	  }
-    });
-});
-
-</script>
+<?php include_once "include/store.list.php" ?>
 
 </body>
 </html>

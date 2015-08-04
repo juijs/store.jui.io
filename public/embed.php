@@ -79,17 +79,45 @@ html, body {
 .CodeMirror {
 	height: 100%;
 }
+
+.nav-btn {
+	position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    text-decoration: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0 12px;
+    font-size: 12px;
+    height: 28px;
+    line-height: 28px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+	width:70px;
+	text-align:center;
+}
+
+.nav-btn.nav-edit {
+	width:inherit;
+}
+
+.nav-btn.large {
+
+}
 </style>
 <div id="content-container">
     <div class='nav <?php echo $only ? "result-only" : "" ?>'>
         <span style="float:left">
-            <a class="btn large nav-btn active" data-target="embedResult" onclick="select(this)">Result</a>
-			<a class="btn large nav-btn" data-target="component" onclick="select(this)"><?php echo $first ?></a>
+            <a class="large nav-btn active" data-target="embedResult" onclick="select(this)">Result</a>
+			<a class="large nav-btn" data-target="component" onclick="select(this)"><?php echo $first ?></a>
 			<?php if ($row['type']) {  ?>
-			<a class="btn large nav-btn" data-target="sample" onclick="select(this)">JS</a>
-			<a class="btn large nav-btn" data-target="html" onclick="select(this)">HTML</a>
+			<a class="large nav-btn" data-target="sample" onclick="select(this)">JavaScript</a>
+			<a class="large nav-btn" data-target="html" onclick="select(this)">HTML</a>
 			<?php } else { ?>
-            <a class="btn large nav-btn" data-target="sample" onclick="select(this)">Sample</a>
+            <a class="large nav-btn" data-target="sample" onclick="select(this)">Sample</a>
 			<?php } ?>
 
 
@@ -97,7 +125,7 @@ html, body {
         </span> 
 
         <span style="float:right">
-            <a class='btn large nav-btn nav-edit' href="/view.php?id=<?php echo $_GET['id'] ?>" target="_blank">Edit in JUI Store</a>
+            <a class='large nav-btn nav-edit' href="/view.php?id=<?php echo $_GET['id'] ?>" target="_blank">Edit in JUI Store</a>
         </span>
     </div>
 	<div class='nav-container <?php echo $only ? "result-only" : "" ?>' >
@@ -113,10 +141,10 @@ html, body {
 				}
 				?>
 					<div style="padding:10px">
-						<?php include __DIR__."/sample/ui/implements/{$sample_type}.html" ?>
+						<?php include __DIR__."/sample/ui/{$sample_type}.html" ?>
 					</div>
 			<?php
-			} else if ($type == 'component') {
+			} else if ($type == 'component' || $type == 'map') {
 						
 				echo $row['html_code'];
 			}
@@ -197,7 +225,6 @@ $(function() {
 </script>
 
 <?php if ($row['type'] == 'style') { ?>
-<link rel="stylesheet" href="sample/ui/css/jui.css" />
 <link rel="stylesheet" href="generate.css.php?id=<?php echo $_GET['id'] ?>" />
 
 <?php } else if ($row['type'] == 'map') { 

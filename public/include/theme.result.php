@@ -6,7 +6,9 @@
 			<!--<select id="sample_list" class="input">
 				<option value="">Select Sample</option>
 			</select>-->
+			<?php if ($isMy) { ?>
             <a class='btn' onclick='select_sample(this)'>Select Sample</a>
+			<?php } ?>
 		</span>
 	</div>
 

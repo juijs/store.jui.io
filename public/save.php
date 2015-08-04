@@ -103,7 +103,7 @@ if ($result['ok']) {
 
 	// auto created sample image 
 	$root = getcwd();
-	shell_exec(escapeshellcmd("webshot --render-delay=100 http://{$_SERVER['HTTP_HOST']}/embed.php?id={$id}&only=true {$root}/thumbnail/{$id}.png"));
+	shell_exec(escapeshellcmd("webshot --window-size=320/240 http://{$_SERVER['HTTP_HOST']}/embed.php?id={$id}&only=true {$root}/thumbnail/{$id}.png"));
 
 	echo json_encode(array('id' => $id, 'result' => true));
 } else {

@@ -66,7 +66,7 @@ $(function() {
 
 	window.select_theme_list = function(value) {
 		var path = value.replace(/\./g, '/');
-		$.get("/sample/ui/theme/" + path + ".less").success(function(code) {
+		$.get("/jui/less/theme/" + path + ".less").success(function(code) {
 			componentCode.setValue(code); 	
 
 			getStyleObject();

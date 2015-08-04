@@ -10,9 +10,7 @@ if ($_SESSION['login']) {
 		<a href="/logout.php">Logout</a>		
 	</span>
 	<span class='login-menu-small'>
-		<div class="group">
-			<a class='btn btn-small' onclick="dd_1.show()"><i class='icon-menu'></i></a>
-		</div>
+		<span onclick="dd_1.show()" style="cursor:pointer;font-size:22px;color:#abadb1;"><i class='icon-menu'></i></span>
 		<div id="login-menu-small" class="dropdown large" style="top:50px;right:20px;">
 			<ul style="width: 150px;">
 				<li >

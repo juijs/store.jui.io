@@ -14,6 +14,7 @@ $document = array( '_id' => new MongoId($_GET['id']) );
 
 $component = $components->findOne($document);
 
+//ob_start('ob_gzhandler');
 header('Content-Type: application/json');
 
 if ($component) {

@@ -4,8 +4,10 @@
 		<a class='h2' data-view="component" style="display:inline-block"><?php echo $type_text['map'] ?></a>
 
 		<span class="editor-navbar">
+			<?php if ($isMy) { ?>
 			<a class="btn"><i class="icon-upload"></i> Upload File</a> 
 			<input type="file" accept=".svg" id="component_load" style="right: 30px;" />
+			<?php } ?>
 		</span>
 	</div>
 

@@ -35,7 +35,7 @@ foreach ($rows as $data) {
 	if ($checkPoint) {
 		include "box.php"; 
 		$count++;
-		if ($count >= 20) break;
+		if ($count >= 5) break;
 	}
 } 
 

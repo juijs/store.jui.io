@@ -3,11 +3,13 @@
 	<div class="editor-tool" style="font-size:13px;border-bottom:0px;">
 		<a class='h2' style="display:inline-block"  data-view="component"><?php echo $type_text['style'] ?></a>
 		<span class="editor-navbar">
+			<?php if ($isMy) { ?>
 			<div class="group" id="js_html_convert">
 				<a class="btn"><i class="icon-upload"></i> Upload File</a> 
 				<a class="btn" onclick="select_theme(this)">Select Theme</a>
 			</div>
 			<input type="file" accept=".less" id="component_load" />
+			<?php } ?>
 		</span>
 	</div>
 	<div id="tab_contents_2" class="tab-contents editor-codemirror" style="background:#ffffff">

@@ -12,7 +12,7 @@ html,body {
     padding:0px;
 }
 
-#result {
+#embedResult {
     position:absolute;
     width:100%;
     height:100%;
@@ -24,7 +24,7 @@ html,body {
 <?php echo $_POST['html_code'] ?>
 
 <?php } else {?>
-<div id="result"></div>
+<div id="embedResult"></div>
 <?php } ?>
 <script type="text/javascript">
 <?php echo $_POST['component_code'] ?>
@@ -36,7 +36,7 @@ jui.ready(function() {
 	// 테마 설정 
 	var theme = '<?php echo $_POST['name'] ?>';
 	if ('<?php echo $_POST['type'] ?>' == 'theme') {
-		var obj = $("#result")[0].jui;
+		var obj = $("#embedResult")[0].jui;
 		if (obj) {
 			obj.setTheme(theme);
 		}

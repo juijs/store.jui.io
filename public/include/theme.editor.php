@@ -4,11 +4,13 @@
 		<a class='h2' style="display:inline-block"  data-view="component"><?php echo $type_text['theme'] ?></a>
 		
 		<span class="editor-navbar">
+			<?php if ($isMy) { ?>
 			<div class="group">
 				<a class="btn"><i class="icon-upload"></i> Upload File</a> 
 				<a class="btn" onclick="select_theme(this)">Select Theme</a>
 			</div>
 			<input type="file" accept=".js" id="component_load" />
+			<?php } ?>
 		</span>
 	</div>
 	<div id="tab_contents_2" class="tab-contents editor-codemirror" style="background:#ffffff">

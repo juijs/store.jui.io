@@ -20,7 +20,7 @@
             <?php if ($isMy) { ?>
 			<div class="row" style="padding:5px">
 				<div class="col col-2">Access </div>
-				<div class="col col-9">
+				<div class="col col-10">
 					<label><input type="radio" name="access" value="public" checked onclick="viewAccessMessage()" /> Public</label>
 					<label><input type="radio" name="access" value="private" onclick="viewAccessMessage()"/> Private</label>
 					<span id="access_message" style="font-size:11px"></span>
@@ -28,16 +28,16 @@
 			</div>
             <?php } ?>
 			<div class="row" style="padding:5px">
-				<div class="col col-2"> Name </div>
-				<div class="col col-9"><input type="text" class="input" style="width:100%;" id="name" require="true" <?php if (!$isMy) { ?>disabled<?php } ?>  /></div>
+				<div class="col col-2">Name <i class="icon-help" title="Set a theme and file name"></i></div>
+				<div class="col col-10"><input type="text" class="input" style="width:100%;" id="name" require="true" <?php if (!$isMy) { ?>disabled<?php } ?>  /></div>
 			</div>
 			<div class="row" style="padding:5px;">
 				<div class="col col-2">Title </div>
-				<div class="col col-9"><input type="text" class="input" style="width:100%;" id="title" <?php if (!$isMy) { ?>disabled<?php } ?>   /></div>
+				<div class="col col-10"><input type="text" class="input" style="width:100%;" id="title" <?php if (!$isMy) { ?>disabled<?php } ?>   /></div>
 			</div>
 			<div class="row" style="padding:5px">
 				<div class="col col-2">Description </div>
-				<div class="col col-9">
+				<div class="col col-10">
 					<textarea style="width:100%;height: 100px;" class="input" id="description" <?php if (!$isMy) { ?>disabled<?php } ?> ></textarea>
 				</div>
 			</div>

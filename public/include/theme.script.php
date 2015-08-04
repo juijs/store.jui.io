@@ -62,13 +62,14 @@ $(function() {
 	}
 
 	window.select_theme_list = function(value) {
+
 		var path = value.replace(/\./g, '/');
-		$.get("/bower_components/jui/js/chart/theme/" + path + ".js").success(function(code) {
+		$.get("/jui/js/chart/theme/" + path + ".js").success(function(code) {
 			componentCode.setValue(code); 	
 
-			getThemeObject();
+			window.selected_theme_name = value; 
 
-			//$("#name").val("chart.theme.mytheme");
+			getThemeObject();
 
 			coderun();
 		});
@@ -186,6 +187,8 @@ $(function() {
 
 	window.getThemeObject = function getThemeObject () {
 		window.coderun.componentCodeText = componentCode.getValue();
+
+		window.coderun.componentCodeText = 	window.coderun.componentCodeText.replace(window.selected_theme_name, "chart.theme." + $("#name").val());
 
         $("#theme_form [name=component_code]").val(window.coderun.componentCodeText);
 
@@ -457,8 +460,8 @@ $(function() {
 
 	window.select_sample_list = function(file) {
 		$.get("/sample/" + file + ".js").success(function(code) {
-			code = code.replace("#chart\-content", "#result");
-			code = code.replace("#chart", "#result");
+			code = code.replace("#chart\-content", "#embedResult");
+			code = code.replace("#chart", "#embedResult");
 			sampleCode.setValue(code); 	
 
 			coderun();

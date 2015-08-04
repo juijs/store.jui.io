@@ -13,6 +13,36 @@ $(function() {
 	  extraKeys: {"Ctrl-Space": "autocomplete"}
 	});
 
+
+	var htmlCode = window.htmlCode = CodeMirror.fromTextArea($("#html_code")[0], {
+	  mode:  "htmlmixed",
+	  lineNumbers : true,
+	  extraKeys: {"Ctrl-Space": "autocomplete"}
+	});
+
+	jui.create("ui.button", "#js_html_convert", { 
+		type : "radio",
+		event : {
+			change : function(data) {
+				$("#js_html_convert a").removeClass('focus');
+				$("#js_html_convert a[value=" + data.value + "]").addClass('focus');
+				if (data.value == 'js') {
+					$("#tab_contents_js").show();
+					$("#tab_contents_html").hide();
+
+					sampleCode.refresh();
+
+				} else if (data.value == 'html') {
+					$("#tab_contents_js").hide();
+					$("#tab_contents_html").show();
+
+					htmlCode.refresh();
+				}
+			}
+		}
+	});
+
+
 	$("#component_load").change(function(e) {
 	
 		if (e.target.files[0]) {
@@ -31,13 +61,16 @@ $(function() {
 	window.coderun = function coderun () {
 		window.coderun.componentCodeText = componentCode.getValue();
 		window.coderun.sampleCodeText = sampleCode.getValue();
+		window.coderun.htmlCodeText = htmlCode.getValue();
 
         $("#chart_form [name=component_code]").val(window.coderun.componentCodeText);
         $("#chart_form [name=sample_code]").val(window.coderun.sampleCodeText);
+        $("#chart_form [name=html_code]").val(window.coderun.htmlCodeText);
         $("#chart_form [name=name]").val($("#name").val());
 
         $("#chart_form").submit();
 	}
+
 	window.forkcode = function savecode() {
 
 		var data = {
@@ -57,6 +90,7 @@ $(function() {
 			license : $("#license").val(),
 			component_code : componentCode.getValue(),
 			sample_code : sampleCode.getValue(),
+			html_code : htmlCode.getValue(),
 			sample : $("#sample").val()
 		}
 
@@ -116,6 +150,7 @@ $(function() {
 				$("#license").val(data.license || "None");
 				componentCode.setValue(data.component_code || "");
 				sampleCode.setValue(data.sample_code || "");
+				htmlCode.setValue(data.html_code || "");
 
 				coderun();
 			});
