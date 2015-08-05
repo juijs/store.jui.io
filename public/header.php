@@ -37,13 +37,13 @@
 	<?php } ?>
 
 	<script type="text/javascript" src="/jui/dist/jui.min.js"></script>
-<?php if ($page_id != 'generate' && $page_id != 'generate.ui' && $page_id != 'view'  && $page_id != 'list'  ) { ?>
+<?php if ($page_id != 'generate' && $page_id != 'generate.ui' && $page_id != 'view'  && $page_id != 'list' && $page_id != 'mylist'  ) { ?>
 	<script src="/bower_components/tinyColorPicker/colors.js"></script>
 	<script src="/bower_components/tinyColorPicker/jqColorPicker.js"></script>
 	<link href="/bower_components/ionrangeslider/css/ion.rangeSlider.css" rel="stylesheet" />
 	<link href="/bower_components/ionrangeslider/css/ion.rangeSlider.skinNice.css" rel="stylesheet" />
 	<script src="/bower_components/ionrangeslider/js/ion.rangeSlider.js"></script>
-<?php } else if ($page_id == 'list') { ?>
+<?php } else if ($page_id == 'list' || $page_id == 'mylist') { ?>
 	<script src="/bower_components/masonry/dist/masonry.pkgd.js"></script>
 <?php } ?>
 	<?php echo $meta ?>

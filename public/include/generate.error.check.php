@@ -37,11 +37,17 @@ window.onerror = function(message, path, line, column, error) {
 	}
 
 	if (pos.component.start > -1 && pos.component.end < 0) 	{
-		// component error 
-		//console.log(line);
-	} else if (pos.sample.start > -1 && pos.sample.end < 0) 	{
-		// sample error 
+		var real_error_line = line-3-pos.component.start;
+		var real_error_column = column;
+		var real_error_message = message;
 
+		parent.setError && parent.setError('component', real_error_line, real_error_column, real_error_message);
+	} else if (pos.sample.start > -1 && pos.sample.end < 0) 	{
+		var real_error_line = line - 3 - pos.sample.start;
+		var real_error_column = column;
+		var real_error_message = message;
+
+		parent.setError && parent.setError('sample', real_error_line, real_error_column, real_error_message);
 	} else if (pos.component.start < line-3 && line-3 < pos.component.end ) {
 
 		var real_error_line = line-3-pos.component.start;
