@@ -4,17 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-	<meta name="title" content="JENNIFER UI: Store" />
-	<meta name="description" content="JENNIFER Store can be shared chart and UI themes, SVG map files, chart and UI components Module." />
-	<meta name="keywords" content="HTML, CSS, JS, JavaScript, SVG, chart, framework, bootstrap, front-end, frontend, web development, free, MIT" />
-	<meta name="author" content="Alvin, Jayden and Yoha" />
-	
     <title>JENNIFER UI: Store</title>
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
 	<?php if ($type_text[$page_id]) { ?>
 	<link href="/bower_components/codemirror/lib/codemirror.css" rel="stylesheet" />
 	<link href="/bower_components/codemirror/addon/hint/show-hint.css" rel="stylesheet" />
+	<link href="/bower_components/codemirror/addon/lint/lint.css" rel="stylesheet" />
 	<script type="text/javascript" src="/bower_components/codemirror/lib/codemirror.js"></script>
 	<script src="/bower_components/codemirror/addon/hint/show-hint.js"></script>
 	<script src="/bower_components/codemirror/addon/hint/javascript-hint.js"></script>
@@ -41,13 +37,13 @@
 	<?php } ?>
 
 	<script type="text/javascript" src="/jui/dist/jui.min.js"></script>
-<?php if ($page_id != 'generate' && $page_id != 'generate.ui' && $page_id != 'view'  && $page_id != 'mylist'  && $page_id != 'list'  ) { ?>
+<?php if ($page_id != 'generate' && $page_id != 'generate.ui' && $page_id != 'view'  && $page_id != 'list'  ) { ?>
 	<script src="/bower_components/tinyColorPicker/colors.js"></script>
 	<script src="/bower_components/tinyColorPicker/jqColorPicker.js"></script>
 	<link href="/bower_components/ionrangeslider/css/ion.rangeSlider.css" rel="stylesheet" />
 	<link href="/bower_components/ionrangeslider/css/ion.rangeSlider.skinNice.css" rel="stylesheet" />
 	<script src="/bower_components/ionrangeslider/js/ion.rangeSlider.js"></script>
-<?php } else if ($page_id == 'list' || $page_id == 'mylist') { ?>
+<?php } else if ($page_id == 'list') { ?>
 	<script src="/bower_components/masonry/dist/masonry.pkgd.js"></script>
 <?php } ?>
 	<?php echo $meta ?>

@@ -19,7 +19,6 @@
 
 	<link href="/bower_components/codemirror/theme/twilight.css" rel="stylesheet" />
     <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
-	<script type="text/javascript" src="/js/embed.js"></script>
 	<link href="/jui/dist/jui.min.css" rel="stylesheet" />
 	<link href="/jui/dist/jennifer.theme.min.css" rel="stylesheet" />
 	<link href="/css/embed.css" rel="stylesheet" />

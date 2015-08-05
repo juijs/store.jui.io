@@ -5,6 +5,7 @@ $meta = "<script>define.amd=true;</script>";
 include_once "header.php";
 
 ?>
+<?php include_once "include/generate.error.check.php" ?>
 <style type="text/css">
 html,body { 
     background:white;
@@ -27,9 +28,13 @@ html,body {
 <div id="embedResult"></div>
 <?php } ?>
 <script type="text/javascript">
+/** component - start */
 <?php echo $_POST['component_code'] ?>
+/** component - end */
 
+/** sample - start */
 <?php echo $_POST['sample_code'] ?>
+/** sample - end */
 
 jui.ready(function() { 
 

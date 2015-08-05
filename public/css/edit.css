@@ -152,7 +152,53 @@
 	bottom:17px;
 }
 
+.editor-submenu {
+	display:none;
+	position:absolute;
+	top:46px;
+	right:0px;
+	width:299px;
+	bottom:0px;
+	overflow:hidden;
+	background:white;
+	border-left:3px solid #ddd;'
+}
 
+.editor-submenu .submenu-toolbar {
+	position:absolute;
+	top:0px;
+	display:none;
+	left:0px;
+	right:0px;
+	padding:5px;
+	border-bottom:1px solid #ddd;
+	font-size:13px;
+}
+.editor-submenu .submenu-content {
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	overflow:auto;
+}
+
+.has-submenu .editor-codemirror {
+	right:299px;
+}
+
+.has-submenu .editor-submenu {
+	display:block;
+}
+
+.has-toolbar .submenu-toolbar {
+	display:block;
+}
+
+.has-toolbar .submenu-content {
+	top:35px;
+	display:block;
+}
 
 .editor-statusbar {
 	border-top:1px solid #ddd;

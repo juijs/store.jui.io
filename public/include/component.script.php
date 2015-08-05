@@ -58,6 +58,9 @@ $(function() {
 	});
 
 	window.coderun = function coderun () {
+
+		removeError();
+
 		window.coderun.componentCodeText = componentCode.getValue();
 		window.coderun.sampleCodeText = sampleCode.getValue();
 		window.coderun.htmlCodeText = htmlCode.getValue();
@@ -68,7 +71,11 @@ $(function() {
         $("#chart_form [name=name]").val($("#name").val());
 
         $("#chart_form").submit();
+
 	}
+
+	<?php include_once "error.view.php" ?>
+
 	window.forkcode = function savecode() {
 
 		var data = {
@@ -157,6 +164,84 @@ $(function() {
 	}
 
 	loadContent();
+
+	$("#file-list").on('click', 'li.leaf', function() {
+
+		if (!confirm("Do you want to change the module?")){
+			return;
+		}
+
+		$("#file-list li.active").removeClass('active');
+		$(this).addClass('active');
+
+		$.ajax({
+			url : "/jui/js/" + $(this).data('path'),
+			dataType : 'text',
+			success : function(data) {
+				componentCode.setValue(data);
+				componentCode.refresh();
+			}
+		})
+	});
+
+	$("#file-list").on('click', 'li.fold i,li.open i', function() {
+		var $parent = $(this).parent();
+		if ($parent.hasClass('fold')) {
+			$parent.addClass('open').removeClass('fold');
+			$parent.find("> ul").show();
+		} else {
+			$parent.addClass('fold').removeClass('open');
+			$parent.find("> ul").hide();
+		}
+	});
+
+	$("#library").click(function() {
+
+		$(this).toggleClass('active');
+
+		$(".view-component").toggleClass('has-submenu');
+		componentCode.refresh();
+
+		function generateTree(data, className) {
+
+			var arr = [];
+			for(var i = 0, len = data.length; i< len; i++) {
+				if (data[i].is_dir) {
+					var $li = $("<li />").addClass('open');
+
+					$li.append("<i></i>");
+					$li.append("<div><i></i> "+data[i].name+"</div>");
+					$li.append(generateTree(data[i].list));
+
+					arr.push($li);
+				} else {
+					var $li = $("<li />").addClass('leaf');
+
+					$li.append("<i></i>");
+					$li.append("<div><i></i> "+data[i].name+"</div>");
+
+					$li.data('path', data[i].path);
+
+					arr.push($li);
+				}
+			}
+
+			arr[arr.length-1].addClass('last');
+
+			return $("<ul />").append(arr).addClass(className || "");
+		}
+
+		$.getJSON("/scandir.php", function(data) {
+
+			var $ul = generateTree(data);
+
+			var $root = $("<ul class='tree line-file'><li class='open root'><i></i> <div><i></i> JUI</div></li></ul>");
+			$root.find("li").append($ul);
+
+			$("#loaded-file-list").html($root);
+
+		});
+	});
 });
 </script>
 

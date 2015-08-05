@@ -29,6 +29,8 @@ if ($_GET['id'] && ($data['login_type'] != $_SESSION['login_type'] || $data['use
 .CodeMirror {
 	height: 100%;
 }
+.lint-error {font-family: arial; font-size: 70%; background: #ffa; color: #a00; padding: 2px 5px 3px; }
+.lint-error-icon {color: white; background-color: red; font-weight: bold; border-radius: 50%; padding: 0 3px; margin-right: 7px;}
 body { overflow: hidden; }
 </style>
 

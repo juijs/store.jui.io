@@ -7,6 +7,8 @@ $db = $m->store;
 $users = $db->users;
 
 $document = array(
+	'login_type' => $_SESSION['login_type'],
+	'userid' => $_SESSION['userid'],
 	'username' => $_SESSION['username'],
 	'avatar' => $_SESSION['avatar']
 );

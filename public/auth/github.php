@@ -21,10 +21,8 @@ $gitHub = $serviceFactory->createService('GitHub', $credentials, $storage, array
 if (!empty($_GET['code'])) {
     // This was a callback request from github, get the token
     $gitHub->requestAccessToken($_GET['code']);
-	var_dump('a');
     $result = json_decode($gitHub->request('user'), true);
     //echo 'The first email on your github account is ' . $result[0];
-	var_dump($result);
 
 	if ($result['login']) {
 		$_SESSION['login'] = true;
@@ -32,17 +30,17 @@ if (!empty($_GET['code'])) {
 		$_SESSION['userid'] = $result['id'];
 		$_SESSION['username'] = $result['login'];
 		$_SESSION['avatar'] = $result['avatar_url'];
+
+		include_once "save.user.php";
 	}
 
 	include_once "callback.php";
 
 } elseif (!empty($_GET['go']) && $_GET['go'] === 'go') {
     $url = $gitHub->getAuthorizationUri();
-	//var_dump($url);
 	header('Location: ' . $url);
 } else {
     $url = $currentUri->getRelativeUri() . '?go=go';
 	header('Location: ' . $url);
-    //echo "<a href='$url'>Login with Github!</a>";
 }
 ?>

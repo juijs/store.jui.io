@@ -58,7 +58,11 @@ $(function() {
 
 	});
 
+
+
 	window.coderun = function coderun () {
+		removeError();
+
 		window.coderun.componentCodeText = componentCode.getValue();
 		window.coderun.sampleCodeText = sampleCode.getValue();
 		window.coderun.htmlCodeText = htmlCode.getValue();
@@ -70,6 +74,8 @@ $(function() {
 
         $("#chart_form").submit();
 	}
+
+	<?php include_once "error.view.php" ?>
 
 	window.forkcode = function savecode() {
 

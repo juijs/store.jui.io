@@ -36,6 +36,8 @@ if (!empty($_GET['oauth_token'])) {
 		$_SESSION['userid'] = $result->id;
 		$_SESSION['username'] = $result->name;
 		$_SESSION['avatar'] = $result->profile_image_url;
+
+		include_once "save.user.php";
 	}
 
 	include_once "callback.php";

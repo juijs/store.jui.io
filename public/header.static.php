@@ -8,7 +8,6 @@
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
     <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
-	<script type="text/javascript" src="/js/embed.js"></script>
 	<link href="/jui/dist/jui.min.css" rel="stylesheet" />
 	<link href="/jui/dist/jennifer.theme.min.css" rel="stylesheet" />
 	<link href="/css/embed.css" rel="stylesheet" />
