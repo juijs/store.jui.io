@@ -141,8 +141,7 @@ $color = $type_colors[$first];
 							<a href="/download.php?id=<?php echo $id ?>&ext=css" class="btn ">CSS</a>
 							<?php } else if ($row['type'] == 'component') { ?>
 							<a href="/download.php?id=<?php echo $id ?>" class="btn "><?php echo $type_text[$row['type']] ?></a>
-							<a href="/download.php?id=<?php echo $id ?>&code=sample" class="btn ">JavaScript</a>
-							<a href="/download.php?id=<?php echo $id ?>&code=html" class="btn ">HTML</a>
+							<a href="/download.full.php?id=<?php echo $id ?>" class="btn ">Sample</a>
 							<?php } else { ?>
 							<a href="/download.php?id=<?php echo $id ?>" class="btn "><?php echo $type_text[$row['type']] ?></a>
 							<a href="/download.php?id=<?php echo $id ?>&code=sample" class="btn ">Sample</a>
