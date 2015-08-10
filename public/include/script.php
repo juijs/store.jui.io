@@ -2,13 +2,25 @@
 $(function() {
    window.viewAccessMessage = function viewAccessMessage() {
         var access = $("[name=access]:checked").val();
+		var html = "";
+		var color = "blue";
+
         if (access == 'private') {
-            $("#access_message").html('Only you can see this component.').css({
-                color : 'red'        
-            });
+            html = 'only you can see this component.';
+			color = 'red';
+        } else if (access == 'share') {
+            html = 'It\'s like private. but result view can be share.';
+			color = 'green';
         } else {
-            $("#access_message").html("Anyone can see this component.").css({color : 'blue'});
+            html = 'Anyone can see this component.';
+			color = 'blue';
         }
+
+		$("#access_message").html(html).css({
+			border : '1px solid ' + color,
+			color : color        
+        });
+
    }
 
    viewAccessMessage();

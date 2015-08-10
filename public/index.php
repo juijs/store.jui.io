@@ -7,8 +7,8 @@ include_once "header.php" ;
 
 		<div>
 			<span class="content-btn">
-				<a href="?sort=update_time" class="btn-simple form-btn-<?php echo $_GET['sort'] != 'good' ? 'on' : 'off' ?>">Sort by date</a>
-				<a href="?sort=good" class="btn-simple form-btn-<?php echo $_GET['sort'] == 'good' ? 'on' : 'off' ?>">Sort by score</a>
+				<a href="?sort=update_time" class="btn-simple form-btn-<?php echo $_GET['sort'] == 'update_time' ? 'on' : 'off' ?>">Sort by date</a>
+				<a href="?sort=good" class="btn-simple form-btn-<?php echo $_GET['sort'] != 'update_time' ? 'on' : 'off' ?>">Sort by score</a>
 			</span>
 		</div>
 <?php 
@@ -22,11 +22,10 @@ $db = $m->store;
 
 $components = $db->components;
 
-$sort_type = $_GET['sort'] ? $_GET['sort'] : 'update_time';
+$sort_type = $_GET['sort'] ? $_GET['sort'] : 'good';
 
 $sort = array();
 $sort[$sort_type] = -1; 
-$sort['update_time'] = -1;
 
 $rows = $components->find(array(
     'access' => 'public'            

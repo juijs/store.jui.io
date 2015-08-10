@@ -3,7 +3,7 @@ include_once '../bootstrap.php';
 
 
 
-if ($row['access'] == 'private') {
+if ($row['access'] == 'private' || $row['access'] == 'share') {
 	header("HTTP/1.0 404 Not Found");
 	exit;
 }

@@ -1,15 +1,6 @@
 <?php 
 include_once '../bootstrap.php';
 
-// generate static file 
-$static_file = getcwd()."/static/".$_GET['id']."/embed.html";
-
-if (file_exists($static_file)) {
-	readfile($static_file);
-	exit;
-}
-
-
 // connect
 $m = new MongoClient();
 
@@ -134,7 +125,8 @@ html, body {
         </span> 
 
         <span style="float:right">
-            <a class='large nav-btn nav-edit' href="/view.php?id=<?php echo $_GET['id'] ?>" target="_blank">Edit in JUI Store</a>
+			<?php $link = ($row['access'] == 'share') ? "/" : "view.php?id=".$_GET['id'] ?>
+            <a class='large nav-btn nav-edit' href="<?php echo $link ?>" target="_blank">Edit in JUI Store</a>
         </span>
     </div>
 	<div class='nav-container <?php echo $only ? "result-only" : "" ?>' >

@@ -10,7 +10,8 @@ $document = array(
 	'login_type' => $_SESSION['login_type'],
 	'userid' => $_SESSION['userid'],
 	'username' => $_SESSION['username'],
-	'avatar' => $_SESSION['avatar']
+	'avatar' => $_SESSION['avatar'],
+	'update_time' => time()
 );
 
 $users->update(array(

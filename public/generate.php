@@ -1,6 +1,7 @@
 <?php $page_id = "generate"; ?>
 <?php 
 
+header('X-XSS-Protection: 0');
 $meta = "<script>define.amd=true;</script>";
 include_once "header.php";
 

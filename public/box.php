@@ -13,16 +13,20 @@ $first = $type_text[$type];
 			<span><img src="<?php echo $data['avatar'] ?>" width="30" height="30" class='avatar' align='absmiddle'/>&nbsp;<?php echo $data['username'] ?></span>
 
 			<?php
-				$share_text = urlencode($description)." #store #jui #js" ;
-				$share_url = urlencode("http://".$_SERVER['HTTP_HOST']."/view.php?id=".$id);
-				$embed_url = "http://".$_SERVER['HTTP_HOST']."/embed.php?id=".$id;
-				include "sns.button.php" 
+					$share_text = urlencode($description)." #store #jui #js" ;
+					$share_url = urlencode("http://".$_SERVER['HTTP_HOST']."/view.php?id=".$id);
+					$embed_url = "http://".$_SERVER['HTTP_HOST']."/embed.php?id=".$id;
+					$thumbnail_url = "http://".$_SERVER['HTTP_HOST']."/thumbnail.php?id=".$id;
+					include "sns.button.php" 
 			?>
 
+
+			<?php if ($data['access'] == 'public') { ?>
 			<span class="good" style="float:right;overflow:auto;display:inline-block;">
 				<a href="javascript:void(good('<?php echo $id?>'))"><i class="icon-like" style="color: #999; font-size: 16px;"></i></a> 
 				<span id="good_count_<?php echo $id?>"><?php echo $data['good'] ? $data['good'] : 0 ?></span>
 			</span>
+			<?php } ?>
 		</div>
 
 		<?php if (/*!$data['sample'] ||*/ true) { // only iframe view ?>

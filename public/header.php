@@ -24,6 +24,7 @@
 	<?php } ?>
 
     <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 	<script type="text/javascript" src="/js/main.js"></script>
 	
 	<?php if ($page_id != 'generate.ui') { ?>

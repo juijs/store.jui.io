@@ -14748,7 +14748,7 @@ jui.defineUI("chart.builder", [ "jquery", "util.base", "util.svg", "util.color",
          * @private  
          */
         function drawBefore(self) {
-            _brush = _.deepClone(_options.brush);
+            _brush = _.deepClone(_options.brush, { faces : true });
             _widget = _.deepClone(_options.widget);
 
             // defs 엘리먼트 생성

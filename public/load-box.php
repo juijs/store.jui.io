@@ -9,12 +9,11 @@ $db = $m->store;
 
 $components = $db->components;
 
-$sort_type = $_GET['sort'] ? $_GET['sort'] : 'update_time';
+$sort_type = $_GET['sort'] ? $_GET['sort'] : 'good';
 
 
 $sort = array();
 $sort[$sort_type] = -1; 
-$sort['update_time'] = -1;
 
 
 $rows = $components->find(array(

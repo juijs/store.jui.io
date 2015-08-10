@@ -53,3 +53,36 @@ $(function() {
         
     });
 })
+
+Kakao.init('4310fdabd1669a4b1fbabab509d3acae');
+
+function shareToKakao(share_url, description, thumbnail_url) {
+
+	description = decodeURIComponent(description).replace(/\+/g, " ");
+	share_url = decodeURIComponent(share_url);
+
+	if (Kakao.Story)
+	{
+		Kakao.Story.share({
+			url : share_url,
+			text : description
+		})
+	} else if (Kakao.Link)
+	{
+		Kakao.Link.sendTalkLink({
+			label: description,
+			image : {
+				src : thumbnail_url,
+				width : 800,
+				height : 600
+			},
+			webLink : {
+				text : "Store for JUI",
+				url : share_url
+			}
+		});
+	}
+
+
+
+}

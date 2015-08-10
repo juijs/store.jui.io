@@ -8,6 +8,6 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<link href="https://rawgit.com/seogi1004/jui/develop/dist/jui.min.css" rel="stylesheet" />
 	<link href="https://rawgit.com/seogi1004/jui/develop/dist/jennifer.theme.min.css" rel="stylesheet" />
-	<script type="text/javascript" src="https://rawgit.com/seogi1004/jui/develop/dist/jui.min.js"></script>
+	<script type="text/javascript" src="https://rawgit.com/seogi1004/jui/develop/dist/jui.js"></script>
 </head>
 <body class="jui">

@@ -29,9 +29,9 @@ if ($_GET['id'] && ($row['login_type'] != $_SESSION['login_type'] || $row['useri
     $isMy = false;
 }
 
+//var_dump($row);
 
-
-if ($row['access'] == 'private' && !$isMy) {
+if (($row['access'] == 'private' || $row['access'] == 'share') && !$isMy) {
 	header("HTTP/1.0 404 Not Found");
 	exit;
 }
@@ -104,7 +104,7 @@ $color = $type_colors[$first];
 						$share_text = urlencode($description)." #store #jui #js" ;
 						$share_url = urlencode("http://".$_SERVER['HTTP_HOST']."/view.php?id=".$id);
 						$embed_url = "http://".$_SERVER['HTTP_HOST']."/embed.php?id=".$id;
-
+						$thumbnail_url = "http://".$_SERVER['HTTP_HOST']."/thumbnail.php?id=".$id;
 						include "sns.button.php" 
 					?>
 

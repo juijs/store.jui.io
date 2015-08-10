@@ -11,7 +11,7 @@
 	<link href="/jui/dist/jui.min.css" rel="stylesheet" />
 	<link href="/jui/dist/jennifer.theme.min.css" rel="stylesheet" />
 	<link href="/css/embed.css" rel="stylesheet" />
-	<script type="text/javascript" src="/jui/dist/jui.min.js"></script>
+	<script type="text/javascript" src="/jui/dist/jui.js"></script>
 	<?php echo $meta ?>
 </head>
 <body class="jui">

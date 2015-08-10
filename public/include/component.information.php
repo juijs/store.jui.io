@@ -21,9 +21,10 @@
 			<div class="row" style="padding:5px">
 				<div class="col col-2">Access </div>
 				<div class="col col-10">
-					<label><input type="radio" name="access" value="public" checked onclick="viewAccessMessage()" /> Public</label>
-					<label><input type="radio" name="access" value="private" onclick="viewAccessMessage()"/> Private</label>
-					<span id="access_message" style="font-size:11px"></span>
+					<label><input type="radio" name="access" value="public" checked onclick="viewAccessMessage()" <?php echo $data['access'] == 'public' ? 'checked' : '' ?>/> Public</label>
+					<label><input type="radio" name="access" value="private" onclick="viewAccessMessage()" <?php echo $data['access'] == 'private' ? 'checked' : '' ?>/> Private </label>
+					<label><input type="radio" name="access" value="share" onclick="viewAccessMessage()" <?php echo $data['access'] == 'share' ? 'checked' : '' ?>/> Share </label>
+					<span id="access_message" style="font-size:11px;padding:5px;"></span>
 				</div>
 			</div>
 			<?php } ?>
