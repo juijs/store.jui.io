@@ -1,5 +1,4 @@
-# Welcom to Store for JUI Chart
-
+# Welcom to Store for JUI
 http://store.jui.io 
 
 
