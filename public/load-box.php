@@ -10,6 +10,8 @@ $db = $m->store;
 $components = $db->components;
 
 $sort_type = $_GET['sort'] ? $_GET['sort'] : 'good';
+$max = isset($_GET['max']) ? $_GET['max'] : 5;
+
 
 
 $sort = array();
@@ -33,7 +35,7 @@ foreach ($rows as $data) {
 	if ($checkPoint) {
 		include "box.php"; 
 		$count++;
-		if ($count >= 5) break;
+		if ($count >= $max) break;
 	}
 } 
 

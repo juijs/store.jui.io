@@ -6,8 +6,7 @@ $(function() {
 	$container.masonry({
 	  // options
 	  itemSelector: '.summary-box',
-	  isFitWidth: true,
-	  transitionDuration: '0.8s'
+		isFitWidth : true 
 	});
 
 	window.lazyLoadFrame = function() {
@@ -35,7 +34,11 @@ $(function() {
 		var lastId = $(".summary-box:last").data('id');
 		var sort = '<?php echo $sort_type ?>';
 
-		$.get(url, { lastId : lastId, sort : sort }, function(data) {
+		var h = Math.floor($(window).height() / 303);
+		var w = Math.floor($(window).width() / 238);
+		var max = h * w + 1;
+
+		$.get(url, { lastId : lastId, sort : sort, max : max }, function(data) {
 	        var $moreBlocks = jQuery( data );
 
 		    $container.append( $moreBlocks );
@@ -51,7 +54,7 @@ $(function() {
 
 		setTimeout(function() {
 			loadLastList();
-		},1000);
+		},2000);
 	}, 1000);
 
     $(window).scroll(function(e) {
