@@ -371,7 +371,7 @@ footer {
 }
 
 .external-item .handle {
-	display:inline-block;
+	display:none;
 	margin-right:10px !important;
 }
 
@@ -381,13 +381,25 @@ footer {
 
 .external-item input[type=text] {
 	display:inline-block;
-	width:450px;
+	width:100%;
 	margin-right:10px !important;
 }
 
-.external-item .delete-x {
-	display:inline-block;
+.my .external-item input[type=text] {
+	width: 450px;
+}
+
+.external-item .btn {
+	display:none;
 	width:30px;
+}
+
+.my .external-item .btn {
+	display:inline-block;
+}
+
+.my .external-item .handle {
+	display:inline-block;
 }
 
 .external-help {
@@ -403,6 +415,11 @@ footer {
 	right:0px;
 	bottom:0px;
 	height:30px;
+	display:none;
+}
+
+.my .external-toolbar {
+	display:block;
 }
 
 .blockUI {

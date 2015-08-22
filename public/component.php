@@ -73,7 +73,7 @@ function changeLayout (type) {
 body { overflow: hidden; }
 </style>
 
-<div class="editor-container view-all">
+<div class="editor-container view-all <?php echo $isMy ? 'my' : '' ?>">
 	<div class="editor-content has-toolbar">
 		<div class="editor-toolbar">
 			<div style='float:left;padding:10px;'>
