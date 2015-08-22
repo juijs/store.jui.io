@@ -69,6 +69,7 @@ $(function() {
         $("#chart_form [name=sample_code]").val(window.coderun.sampleCodeText);
         $("#chart_form [name=html_code]").val(window.coderun.htmlCodeText);
         $("#chart_form [name=name]").val($("#name").val());
+        $("#chart_form [name=resources]").val(getResourceList());
 
         $("#chart_form").submit();
 
@@ -83,7 +84,32 @@ $(function() {
 			id : '<?php echo $_GET['id'] ?>'
 		}
 	}
+
+	window.getResourceList = function getResoureList() {
+		return $(".external-item input[type=text]").map(function() {
+			return $(this).val();
+		}).get().join(",");
+	}
+
+	window.setResourceList = function setReousrceList(resourceList) {
+		var arr = resourceList.split(",");
+
+		var $list = $(".external-list");
+		$list.empty();
+		for(var i = 0; i < arr.length; i++) {
+			var $item = $("<div class='external-item' />");
+			$item.append('<span title="drag me for ordering" class="handle" draggable="true"><i class="icon-dashboardlist"></i></span><input type="text" placeholder="//myhost.com/my.js" class="input" /><a class="btn"><i class="icon-exit"></i></a>');
+
+			$item.find("input").val(arr[i]);
+
+			$list.append($item);
+		}
+
+		$list.sortable({ placeholderClass: 'border-on' 	});
+	}
 	window.savecode = function savecode() {
+
+		$(".blockUI").show();
 
 		var data = {
 			type : 'component',
@@ -96,7 +122,8 @@ $(function() {
 			component_code : componentCode.getValue(),
 			sample_code : sampleCode.getValue(),
 			html_code : htmlCode.getValue(),
-			sample : $("#sample").val()
+			sample : $("#sample").val(),
+			resources : getResourceList()
 		}
 
 		if (data.name == '')
@@ -107,6 +134,8 @@ $(function() {
 
 
 		$.post("/save.php", data, function(res) {
+			$(".blockUI").hide();
+
 			if (res.result)
 			{
 				location.href = '?id=' + res.id; 	
@@ -155,7 +184,7 @@ $(function() {
 				componentCode.setValue(data.component_code || "");
 				sampleCode.setValue(data.sample_code || "");
 				htmlCode.setValue(data.html_code || "");
-
+				setResourceList(data.resources);
 				coderun();
 			});
 		}
@@ -165,6 +194,35 @@ $(function() {
 
 	loadContent();
 
+	var fileListWin = jui.create("uix.window", "#file-list", {
+		width : 600,
+		height : 400,
+		modal : true 
+	});
+
+	var resourceTab = jui.create('uix.tab', ".import-toolbar", {
+		target: ".import-content",
+	});
+
+	$(".add-form-btn").on('click', function() {
+		var $item = $("<div class='external-item' />");
+
+		$item.append('<span title="drag me for ordering" class="handle" draggable="true"><i class="icon-dashboardlist"></i></span><input type="text" placeholder="//myhost.com/my.js" class="input" /><a class="btn"><i class="icon-exit"></i></a>');
+
+		var $list = $(".external-list");
+		$list.append($item);
+		
+		$list.sortable({ placeholderClass: 'border-on' 	});
+	});
+
+	$(".external-list").on("click", '.external-item .btn', function(e) {
+		$(e.currentTarget).parent().remove();
+
+		if ($(".external-list").children().length == 0) {
+			$(".add-form-btn").click();
+		}
+	});
+	
 	$("#file-list").on('click', 'li.leaf', function() {
 
 		if (!confirm("Do you want to change the module?")){
@@ -180,6 +238,8 @@ $(function() {
 			success : function(data) {
 				componentCode.setValue(data);
 				componentCode.refresh();
+
+				fileListWin.hide();
 			}
 		})
 	});
@@ -197,10 +257,7 @@ $(function() {
 
 	$("#library").click(function() {
 
-		$(this).toggleClass('active');
-
-		$(".view-component").toggleClass('has-submenu');
-		componentCode.refresh();
+		fileListWin.show();
 
 		function generateTree(data, className) {
 
@@ -245,5 +302,54 @@ $(function() {
 });
 </script>
 
+<div id="file-list" class='window' style='display:none'>
+    <div class="head">
+        <div class="left"><i class='icon-search'></i> Import</div>
+        <div class="right">
+            <a href="#" class="close"><i class="icon-exit"></i></a>
+        </div>
+    </div>
+	<div class="body" style="padding:10px;">
+		<div style="position:relative;width:100%;height:100%">
+		<ul class="tab import-toolbar">
+			<li class='active'><a href="#external-resources">External Resources</a></li>
+			<li>
+				<a href="#jui-resources">JUI Resources</a>
+			</li>
+		</ul>
+		<div id="tab_contents_1" class='import-content'>
+			<div id="jui-resources">
+				<div id="loaded-file-list" class='submenu-content'></div>
+			</div>
+			<div id="external-resources">
+				<div class='external-help'>It can import  external css and js files. </div>
+				<div class="external-list">
+					<div class='external-item'>
+						<span title="drag me for ordering" class=
+'handle'><i class='icon-dashboardlist'></i></span><input type="text" placeholder="//myhost.com/my.js" class="input" /><a class='btn'><i class='icon-exit'></i></a>
+					</div>
+				</div>
+				<div class='external-toolbar'>
+					<div style="float:left">
+						<a class='btn add-form-btn'><i class='icon-plus' ></i> Add Resource</a>					
+					</div>
+					<div style="float:right">
+					Quick Reference : 
+
+						<select class='input'>
+							<option>No Library</option>
+							<option value="jQuery 1.9.1">jQuery</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+</div>
+
+<div class='blockUI'>
+	<div class='message'>Saving...</div>
+</div>
 
 <?php include __DIR__."/script.php" ?>

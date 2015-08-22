@@ -12,7 +12,19 @@ $username = $data['username'];
 
 if (!$data['type']) $data['type'] = 'component';
 
-$meta =<<<EOD
+$metaList = array();
+$arr = explode(",", $data['resources']);
+foreach($arr as $val) {
+	$ext = strtolower(array_pop(explode(".", $val)));
+
+	if ($ext == 'css') {
+		$metaList[] = "<link rel='stylesheet' href='".$val."' />";
+	} else {
+		$metaList[] = "<script type='text/javascript' src='".$val."'></script>";
+	}
+}
+
+$metaList[] =<<<EOD
 	<!-- Facebook -->
 	<meta property="og:title" content="{$title}"/>
 	<meta property="og:type" content="article"/>
@@ -34,9 +46,9 @@ $meta =<<<EOD
 	<meta itemprop="image" content="http://store.jui.io/thumbnail.php?id={$id}">
 EOD;
 
+$meta = implode(PHP_EOL, $metaList);
 
 include_once "header.static.php";
-
 
 $type = $data['type'];
 $first = $type_text[$type];

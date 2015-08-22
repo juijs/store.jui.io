@@ -38,8 +38,19 @@ $username = $row['username'];
 
 if (!$row['type']) $row['type'] = 'component';
 
+$metaList = array();
+$arr = explode(",", $row['resources']);
+foreach($arr as $val) {
+	$ext = strtolower(array_pop(explode(".", $val)));
 
-$meta =<<<EOD
+	if ($ext == 'css') {
+		$metaList[] = "<link rel='stylesheet' href='".$val."' />";
+	} else {
+		$metaList[] = "<script type='text/javascript' src='".$val."'></script>";
+	}
+}
+
+$metaList[] =<<<EOD
 	<!-- Facebook -->
 	<meta property="og:title" content="{$title}"/>
 	<meta property="og:type" content="article"/>
@@ -61,6 +72,7 @@ $meta =<<<EOD
 	<meta itemprop="image" content="http://store.jui.io/thumbnail.php?id={$id}">
 EOD;
 
+$meta = implode(PHP_EOL, $metaList);
 
 include_once "header.embed.php";
 

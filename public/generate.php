@@ -2,7 +2,22 @@
 <?php 
 
 header('X-XSS-Protection: 0');
-$meta = "<script>define.amd=true;</script>";
+
+$arr = explode(",", $_POST['resources']);
+$metaList = array();
+foreach($arr as $val) {
+	$ext = strtolower(array_pop(explode(".", $val)));
+
+	if ($ext == 'css') {
+		$metaList[] = "<link rel='stylesheet' href='".$val."' />";
+	} else {
+		$metaList[] = "<script type='text/javascript' src='".$val."'></script>";
+	}
+}
+
+$metaList[] = "<script>define.amd=true;</script>";
+$meta = implode(PHP_EOL, $metaList);
+
 include_once "header.php";
 
 ?>

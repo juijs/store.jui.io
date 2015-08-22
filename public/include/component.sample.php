@@ -17,6 +17,7 @@
 				<input type="hidden" name="html_code" value="" />
 				<input type="hidden" name="name" value="" />
 				<input type="hidden" name="type" value="component" />
+				<input type="hidden" name="resources" value="" />
 			</form>
 		</div>
 	</div>

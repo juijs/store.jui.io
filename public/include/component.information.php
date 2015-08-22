@@ -44,6 +44,7 @@
 			</div>
 			<?php include_once "license.php" ?>
 			<input type="hidden" id="sample" name="sample" value="" />
+			<input type="hidden" name="resources" value="" />
 		</div>
 	</div>
 

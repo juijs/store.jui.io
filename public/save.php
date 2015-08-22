@@ -38,6 +38,7 @@ $document = array(
 	'sample' => $_POST['sample'],
 	'data_type' => $_POST['data_type'],
 	'license' => $_POST['license'],
+	'resources' => $_POST['resources'],
 	'update_time' => time()
 );
 

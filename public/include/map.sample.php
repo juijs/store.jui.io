@@ -1,7 +1,7 @@
 <div class="editor-panel editor-panel-border view-sample" style="background:#ffffff">
 	<div class="editor-tool" style="font-size:13px;">
 		<a class='h2' style="display:inline-block" data-view="sample">
-			Sample Code <small style="cursor: default;">'@path' will be replaced with the actual file path.</small>
+			Sample Code <small style="cursor: default;"><strong>@path</strong> will be replaced with the actual file path.</small>
 		</a>
 		<div class="editor-navbar">
 			<div class='group' id="js_html_convert">

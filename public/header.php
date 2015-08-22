@@ -44,6 +44,7 @@
 	<link href="/bower_components/ionrangeslider/css/ion.rangeSlider.css" rel="stylesheet" />
 	<link href="/bower_components/ionrangeslider/css/ion.rangeSlider.skinNice.css" rel="stylesheet" />
 	<script src="/bower_components/ionrangeslider/js/ion.rangeSlider.js"></script>
+	<script src="/bower_components/html.sortable/dist/html.sortable.js"></script>
 <?php } else if ($page_id == 'list' || $page_id == 'mylist') { ?>
 	<script src="/bower_components/masonry/dist/masonry.pkgd.js"></script>
 <?php } ?>
