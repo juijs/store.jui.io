@@ -15,6 +15,11 @@ if (!$data['type']) $data['type'] = 'component';
 $metaList = array();
 $arr = explode(",", $data['resources']);
 foreach($arr as $val) {
+	$path = "frameworks/{$val}.php";
+	if (file_exists($path)) {
+		$metaList[] = file_get_contents($path);
+		continue;
+	}
 	$ext = strtolower(array_pop(explode(".", $val)));
 
 	if ($ext == 'css') {

@@ -362,6 +362,7 @@ footer {
 	right:0px;
 	bottom: 40px;
 	overflow:auto;
+	border-bottom:1px solid #ddd;
 }
 
 .external-item {
@@ -381,7 +382,7 @@ footer {
 
 .external-item input[type=text] {
 	display:inline-block;
-	width:100%;
+	width:95%;
 	margin-right:10px !important;
 }
 
@@ -406,8 +407,11 @@ footer {
 	position:absolute;
 	left:0px;
 	right:0px;
-	top:0px;
-	height:30px;
+	top:1px;
+	border:1px solid green;
+	color:green;
+	padding:5px;
+
 }
 .external-toolbar {
 	position:absolute;

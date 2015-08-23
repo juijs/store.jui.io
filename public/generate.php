@@ -6,6 +6,12 @@ header('X-XSS-Protection: 0');
 $arr = explode(",", $_POST['resources']);
 $metaList = array();
 foreach($arr as $val) {
+
+	$path = "frameworks/{$val}.php";
+	if (file_exists($path)) {
+		$metaList[] = file_get_contents($path);
+		continue;
+	} 
 	$ext = strtolower(array_pop(explode(".", $val)));
 
 	if ($ext == 'css') {

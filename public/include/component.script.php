@@ -92,6 +92,7 @@ $(function() {
 	}
 
 	window.setResourceList = function setReousrceList(resourceList) {
+		resourceList = resourceList || "";
 		var arr = resourceList.split(",");
 
 		var $list = $(".external-list");
@@ -200,6 +201,83 @@ $(function() {
 		modal : true 
 	});
 
+	$.getJSON("/scandir.framework.php", function(data) {
+
+		var currentGroup = "";
+		var arr = [];
+		var $currentOpt = null;
+
+		arr.push($("<option value=''>No Lib(Pure JS)</option>"));
+		for(var i = 0, len = data.length; i < len; i++) {
+			var file = data[i];
+			var group = file.name.split(".")[0];
+
+			if (group != currentGroup) {
+				$currentOpt = $("<optgroup />").attr('label', group);
+
+				arr.push($currentOpt);
+
+				currentGroup = group;
+			}
+
+			if ($currentOpt) {
+				var $opt = $("<option />").val(file.name).html(file.name);
+
+				$currentOpt.append($opt);
+			}
+
+		}
+
+		$(".framework-list").html(arr);
+	});
+
+	window.resetExternalItem = function() {
+		$(".external-item input").each(function() {
+
+			var value = $.trim($(this).val());
+
+			if (value == '') {
+				$(this).parent().remove();
+			}
+		});
+
+	}
+
+	$(".framework-list").change(function(e) {
+		var name = $(this).val();
+
+		if ($.trim(name) == '') {
+			return;
+		}
+
+		resetExternalItem();
+
+		var count = 0; 
+		$(".external-item input").each(function() {
+
+			var value = $.trim($(this).val());
+
+			if (value == name) {
+				count++;
+			}
+		});
+
+		if (count > 0) {
+			return;
+		}
+
+		var $item = $("<div class='external-item' />");
+
+		$item.append('<span title="drag me for ordering" class="handle" draggable="true"><i class="icon-dashboardlist"></i></span><input type="text" placeholder="//myhost.com/my.js" class="input" /><a class="btn"><i class="icon-exit"></i></a>');
+
+		$item.find(".input").val(name);
+		var $list = $(".external-list");
+		$list.append($item);
+		
+		$list.sortable({ placeholderClass: 'border-on' 	});
+
+	});
+
 	var resourceTab = jui.create('uix.tab', ".import-toolbar", {
 		target: ".import-content",
 	});
@@ -298,11 +376,12 @@ $(function() {
 			$("#loaded-file-list").html($root);
 
 		});
+
 	});
 });
 </script>
 
-<div id="file-list" class='window' style='display:none'>
+	<div id="file-list" class='window <?php echo $isMy ? 'my' : '' ?>' style='display:none'>
     <div class="head">
         <div class="left"><i class='icon-search'></i> Import</div>
         <div class="right">
@@ -314,7 +393,7 @@ $(function() {
 		<ul class="tab import-toolbar">
 			<li class='active'><a href="#external-resources">External Resources</a></li>
 			<li>
-				<a href="#jui-resources">JUI Resources</a>
+				<a href="#jui-resources">Load JUI Resources</a>
 			</li>
 		</ul>
 		<div id="tab_contents_1" class='import-content'>
@@ -326,7 +405,7 @@ $(function() {
 				<div class="external-list">
 					<div class='external-item'>
 						<span title="drag me for ordering" class=
-'handle'><i class='icon-dashboardlist'></i></span><input type="text" placeholder="//myhost.com/my.js" class="input" /><a class='btn'><i class='icon-exit'></i></a>
+'handle'><i class='icon-dashboardlist'></i></span><input type="text" placeholder="//myhost.com/my.js or my.css" class="input" /><a class='btn small'><i class='icon-exit'></i></a>
 					</div>
 				</div>
 				<div class='external-toolbar'>
@@ -336,7 +415,7 @@ $(function() {
 					<div style="float:right">
 					Quick Reference : 
 
-						<select class='input'>
+						<select class='input framework-list'>
 							<option>No Library</option>
 							<option value="jQuery 1.9.1">jQuery</option>
 						</select>
