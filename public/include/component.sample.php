@@ -8,6 +8,7 @@
 			<div class='group' id="js_html_convert">
 				<a class='btn active focus' value='js'>JavaScript</a>
 				<a class='btn' value='html'>HTML</a>
+				<a class='btn' value='css'>CSS</a>
 			</div>
 	
 			<a class='btn' onclick="coderun()">Run <i class="icon-play"></i></a>
@@ -15,9 +16,11 @@
 				<input type="hidden" name="component_code" value="" />
 				<input type="hidden" name="sample_code" value="" />
 				<input type="hidden" name="html_code" value="" />
+				<input type="hidden" name="css_code" value="" />
 				<input type="hidden" name="name" value="" />
 				<input type="hidden" name="type" value="component" />
 				<input type="hidden" name="resources" value="" />
+				<input type="hidden" name="preprocessor" value="" />
 			</form>
 		</div>
 	</div>
@@ -51,5 +54,9 @@ jui.ready([ "chart.builder" ], function(builder) {
 
 	<div id="tab_contents_html" class="tab-contents editor-codemirror" style="display:none">
 		<textarea id="html_code"><div id="result"></div></textarea>
+	</div>
+
+	<div id="tab_contents_css" class="tab-contents editor-codemirror" style="display:none">
+		<textarea id="css_code"></textarea>
 	</div>
 </div>

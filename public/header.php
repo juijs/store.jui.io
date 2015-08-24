@@ -9,17 +9,18 @@
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
 	<?php if ($type_text[$page_id]) { ?>
 	<link href="/bower_components/codemirror/lib/codemirror.css" rel="stylesheet" />
-	<link href="/bower_components/codemirror/addon/hint/show-hint.css" rel="stylesheet" />
-	<link href="/bower_components/codemirror/addon/lint/lint.css" rel="stylesheet" />
 	<script type="text/javascript" src="/bower_components/codemirror/lib/codemirror.js"></script>
-	<script src="/bower_components/codemirror/addon/hint/show-hint.js"></script>
-	<script src="/bower_components/codemirror/addon/hint/javascript-hint.js"></script>
-	<script src="/bower_components/codemirror/addon/hint/html-hint.js"></script>
-	<script src="/bower_components/codemirror/addon/hint/xml-hint.js"></script>
+	<script src="/bower_components/codemirror/mode/coffeescript/coffeescript.js"></script>
 	<script src="/bower_components/codemirror/mode/javascript/javascript.js"></script>
 	<script src="/bower_components/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+	<script src="/bower_components/codemirror/mode/markdown/markdown.js"></script>
+	<script src="/bower_components/codemirror/mode/jade/jade.js"></script>
+	<script src="/bower_components/codemirror/mode/haml/haml.js"></script>
 	<script src="/bower_components/codemirror/mode/xml/xml.js"></script>
 	<script src="/bower_components/codemirror/mode/css/css.js"></script>
+	<script src="/bower_components/codemirror/mode/sass/sass.js"></script>
+	<script src="/bower_components/codemirror/mode/stylus/stylus.js"></script>
+
 	<link href="/bower_components/codemirror/theme/twilight.css" rel="stylesheet" />
 	<?php } ?>
 

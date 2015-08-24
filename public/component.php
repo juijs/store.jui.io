@@ -77,7 +77,7 @@ body { overflow: hidden; }
 	<div class="editor-content has-toolbar">
 		<div class="editor-toolbar">
 			<div style='float:left;padding:10px;'>
-				<a class="btn" id="library"><i class='icon-search'></i> Import</a>
+				<a class="btn" id="library"><i class='icon-gear'></i> Setting</a>
 			</div>
 			<div class="group" style="float:right;padding:10px;">
 				<a href="javascript:void(changeLayout('module+result'))" class="btn" title="module + result">
@@ -115,7 +115,7 @@ body { overflow: hidden; }
 					</svg>				
 				</a>
 			</div>
-			<div style="float:right;padding:10px;padding-top:20px;">Layout : </div>
+			<div style="float:right;padding:10px;padding-top:15px;">Layout : </div>
 
 		</div>
 		<div class="editor-area">

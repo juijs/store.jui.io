@@ -1,6 +1,9 @@
 
 <script type="text/javascript">
 $(function() {
+
+	var ExternalItemTemplate = '<span title="drag me for ordering" class="handle" draggable="true"><i class="icon-dashboardlist"></i></span><input type="text" placeholder="//myhost.com/my.js" class="input" /><a class="btn small"><i class="icon-exit"></i></a>';
+
 	var componentCode = window.componentCode = CodeMirror.fromTextArea($("#component_code")[0], {
 	  mode:  "javascript",
 	  lineNumbers : true,
@@ -10,14 +13,17 @@ $(function() {
 
 	var sampleCode = window.sampleCode = CodeMirror.fromTextArea($("#sample_code")[0], {
 	  mode:  "javascript",
-	  lineNumbers : true,
-	  extraKeys: {"Ctrl-Space": "autocomplete"}
+	  lineNumbers : true
 	});
 
 	var htmlCode = window.htmlCode = CodeMirror.fromTextArea($("#html_code")[0], {
 	  mode:  "htmlmixed",
-	  lineNumbers : true,
-	  extraKeys: {"Ctrl-Space": "autocomplete"}
+	  lineNumbers : true
+	});
+
+	var cssCode = window.cssCode = CodeMirror.fromTextArea($("#css_code")[0], {
+	  mode:  "css",
+	  lineNumbers : true
 	});
 
 	jui.create("ui.button", "#js_html_convert", { 
@@ -29,14 +35,23 @@ $(function() {
 				if (data.value == 'js') {
 					$("#tab_contents_js").show();
 					$("#tab_contents_html").hide();
+					$("#tab_contents_css").hide();
 
 					sampleCode.refresh();
 
 				} else if (data.value == 'html') {
 					$("#tab_contents_js").hide();
 					$("#tab_contents_html").show();
+					$("#tab_contents_css").hide();
 
 					htmlCode.refresh();
+
+				} else if (data.value == 'css') {
+					$("#tab_contents_js").hide();
+					$("#tab_contents_html").hide();
+					$("#tab_contents_css").show();
+
+					cssCode.refresh();
 				}
 			}
 		}
@@ -64,12 +79,15 @@ $(function() {
 		window.coderun.componentCodeText = componentCode.getValue();
 		window.coderun.sampleCodeText = sampleCode.getValue();
 		window.coderun.htmlCodeText = htmlCode.getValue();
+		window.coderun.cssCodeText = cssCode.getValue();
 
         $("#chart_form [name=component_code]").val(window.coderun.componentCodeText);
         $("#chart_form [name=sample_code]").val(window.coderun.sampleCodeText);
         $("#chart_form [name=html_code]").val(window.coderun.htmlCodeText);
+        $("#chart_form [name=css_code]").val(window.coderun.cssCodeText);
         $("#chart_form [name=name]").val($("#name").val());
         $("#chart_form [name=resources]").val(getResourceList());
+        $("#chart_form [name=preprocessor]").val(getPreProcessorList());
 
         $("#chart_form").submit();
 
@@ -99,7 +117,7 @@ $(function() {
 		$list.empty();
 		for(var i = 0; i < arr.length; i++) {
 			var $item = $("<div class='external-item' />");
-			$item.append('<span title="drag me for ordering" class="handle" draggable="true"><i class="icon-dashboardlist"></i></span><input type="text" placeholder="//myhost.com/my.js" class="input" /><a class="btn"><i class="icon-exit"></i></a>');
+			$item.append(ExternalItemTemplate);
 
 			$item.find("input").val(arr[i]);
 
@@ -108,6 +126,61 @@ $(function() {
 
 		$list.sortable({ placeholderClass: 'border-on' 	});
 	}
+
+	window.getPreProcessorList = function getPreProcessList() {
+
+		return $(".p-item select").map(function() {
+			return $(this).val();
+		}).get().join(",");
+	} 
+
+	window.setPreProcessorList = function setPreProcessList(preprocessorList) {
+		var arr = (preprocessorList || "").split(",");
+			
+		$(".p-item select").each(function(i) {
+			if (arr[i])
+			{
+				$(this).val(arr[i]);
+			}
+
+		});
+
+		updatePreProcessorList();
+	}
+
+	window.updatePreProcessorList = function updatePreProcessList() {
+		var arr = getPreProcessorList().split(",");
+		// update ui title 
+		var html = arr[0];
+		var javascript = arr[1];
+		var css = arr[2];
+
+		$("#js_html_convert [value=js]").html(javascript);
+		$("#js_html_convert [value=html]").html(html);
+		$("#js_html_convert [value=css]").html(css);
+
+		var htmlMode = html;
+		var javascriptMode = javascript;
+		var cssMode = css;
+
+		if (htmlMode == 'html') {
+			htmlMode = 'htmlmixed'
+		}
+
+		if (cssMode == 'less') {
+			cssMode = 'css'
+		}
+
+		if (cssMode == 'scss') {
+			cssMode = 'sass'
+		}
+
+		// set syntax highlighting
+	    sampleCode.setOption("mode", javascriptMode);
+	    htmlCode.setOption("mode", htmlMode);
+
+	}
+
 	window.savecode = function savecode() {
 
 		$(".blockUI").show();
@@ -123,8 +196,10 @@ $(function() {
 			component_code : componentCode.getValue(),
 			sample_code : sampleCode.getValue(),
 			html_code : htmlCode.getValue(),
+			css_code : htmlCode.getValue(),
 			sample : $("#sample").val(),
-			resources : getResourceList()
+			resources : getResourceList(),
+			preprocessor : getPreProcessorList()
 		}
 
 		if (data.name == '')
@@ -186,6 +261,7 @@ $(function() {
 				sampleCode.setValue(data.sample_code || "");
 				htmlCode.setValue(data.html_code || "");
 				setResourceList(data.resources);
+				setPreProcessorList(data.proprocessor);
 				coderun();
 			});
 		}
@@ -198,7 +274,12 @@ $(function() {
 	var fileListWin = jui.create("uix.window", "#file-list", {
 		width : 600,
 		height : 400,
-		modal : true 
+		modal : true,
+		event : {
+			hide : function() {
+				updatePreProcessorList();
+			}
+		}
 	});
 
 	$.getJSON("/scandir.framework.php", function(data) {
@@ -268,7 +349,7 @@ $(function() {
 
 		var $item = $("<div class='external-item' />");
 
-		$item.append('<span title="drag me for ordering" class="handle" draggable="true"><i class="icon-dashboardlist"></i></span><input type="text" placeholder="//myhost.com/my.js" class="input" /><a class="btn"><i class="icon-exit"></i></a>');
+		$item.append(ExternalItemTemplate);
 
 		$item.find(".input").val(name);
 		var $list = $(".external-list");
@@ -285,7 +366,7 @@ $(function() {
 	$(".add-form-btn").on('click', function() {
 		var $item = $("<div class='external-item' />");
 
-		$item.append('<span title="drag me for ordering" class="handle" draggable="true"><i class="icon-dashboardlist"></i></span><input type="text" placeholder="//myhost.com/my.js" class="input" /><a class="btn"><i class="icon-exit"></i></a>');
+		$item.append(ExternalItemTemplate);
 
 		var $list = $(".external-list");
 		$list.append($item);
@@ -383,7 +464,7 @@ $(function() {
 
 	<div id="file-list" class='window <?php echo $isMy ? 'my' : '' ?>' style='display:none'>
     <div class="head">
-        <div class="left"><i class='icon-search'></i> Import</div>
+        <div class="left"><i class='icon-gear'></i> Setting</div>
         <div class="right">
             <a href="#" class="close"><i class="icon-exit"></i></a>
         </div>
@@ -392,6 +473,7 @@ $(function() {
 		<div style="position:relative;width:100%;height:100%">
 		<ul class="tab import-toolbar">
 			<li class='active'><a href="#external-resources">External Resources</a></li>
+			<li><a href="#preprocessor">Preprocessor</a></li>
 			<li>
 				<a href="#jui-resources">Load JUI Resources</a>
 			</li>
@@ -399,6 +481,37 @@ $(function() {
 		<div id="tab_contents_1" class='import-content'>
 			<div id="jui-resources">
 				<div id="loaded-file-list" class='submenu-content'></div>
+			</div>
+			<div id="preprocessor">
+				<div class='preprocessor-help'>Sample Code </div>
+				<div class='p-list'>
+					<div class="p-item">
+						<label>HTML</label>
+						<select class='input'>
+							<option value="html">HTML</option>
+							<option value="jade">Jade</option>
+							<option value="markdown">Markdown</option>
+							<option value="haml" disabled>Haml</option>
+						</select>
+					</div>
+					<div class="p-item">
+						<label>JavaScript</label>
+						<select class='input'>
+							<option value="javascript">JavaScript</option>
+							<option value="coffeescript" disabled>CoffeeScript</option>
+							<option value="typescript" disabled>TypeScript</option>
+						</select>
+					</div>
+					<div class="p-item">
+						<label>CSS</label>
+						<select class='input'>
+							<option value="css">CSS</option>
+							<option value="less">LESS</option>
+							<option value="scss">SCSS</option>
+							<option value="stylus">Stylus</option>
+						</select>
+					</div>
+				</div>
 			</div>
 			<div id="external-resources">
 				<div class='external-help'>It can import  external css and js files. </div>
@@ -412,12 +525,10 @@ $(function() {
 					<div style="float:left">
 						<a class='btn add-form-btn'><i class='icon-plus' ></i> Add Resource</a>					
 					</div>
-					<div style="float:right">
+					<div style="float:right;display:none;">
 					Quick Reference : 
 
 						<select class='input framework-list'>
-							<option>No Library</option>
-							<option value="jQuery 1.9.1">jQuery</option>
 						</select>
 					</div>
 				</div>

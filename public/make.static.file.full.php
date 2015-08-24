@@ -12,23 +12,7 @@ $username = $data['username'];
 
 if (!$data['type']) $data['type'] = 'component';
 
-$metaList = array();
-$arr = explode(",", $data['resources']);
-foreach($arr as $val) {
-	$path = "frameworks/{$val}.php";
-	if (file_exists($path)) {
-		$metaList[] = file_get_contents($path);
-		continue;
-	}
-
-	$ext = strtolower(array_pop(explode(".", $val)));
-
-	if ($ext == 'css') {
-		$metaList[] = "<link rel='stylesheet' href='".$val."' />";
-	} else {
-		$metaList[] = "<script type='text/javascript' src='".$val."'></script>";
-	}
-}
+include_once "include/generate.meta.php";
 
 $metaList[] =<<<EOD
 	<!-- Facebook -->
@@ -57,6 +41,7 @@ $meta = implode(PHP_EOL, $metaList);
 
 include_once "header.static.full.php";
 
+include_once "include/preprocessor.php";
 
 $type = $data['type'];
 
@@ -72,7 +57,9 @@ $type = $data['type'];
 	</div>
 
 </div>
-
+<style type="text/css">
+<?php echo $data['css_code'] ?>
+</style>
 <script type="text/javascript">
 <?php echo $data['component_code'] ?>
 </script>

@@ -34,11 +34,13 @@ $document = array(
 	'component_code' => $_POST['component_code'],
 	'sample_code' => $_POST['sample_code'],
 	'html_code' => $_POST['html_code'],
+	'css_code' => $_POST['css_code'],
 	'sample_type' => $_POST['sample_type'],
 	'sample' => $_POST['sample'],
 	'data_type' => $_POST['data_type'],
 	'license' => $_POST['license'],
 	'resources' => $_POST['resources'],
+	'preprocessor' => $_POST['preprocessor'],
 	'update_time' => time()
 );
 

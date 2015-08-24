@@ -9,6 +9,8 @@ $(function() {
 		isFitWidth : true 
 	});
 
+	window.isLast = false; 
+
 	window.lazyLoadFrame = function() {
 		if (window.isLazyLoad) return;
 
@@ -30,7 +32,11 @@ $(function() {
 
 	lazyLoadFrame();
 
-	window.loadLastList = function loadLastList() {
+	window.loadLastList = function loadLastList(isLast) {
+		if (isLast == true) {
+			window.isLast = true;
+		}
+
 		var lastId = $(".summary-box:last").data('id');
 		var sort = '<?php echo $sort_type ?>';
 
@@ -53,14 +59,14 @@ $(function() {
 		loadLastList();
 
 		setTimeout(function() {
-			loadLastList();
+			loadLastList(true);
 		},2000);
 	}, 1000);
 
     $(window).scroll(function(e) {
 		var height = $(document.body)[0].scrollHeight - $(document.body)[0].scrollTop - $(window).height();
 
-		if (height == 0) {
+		if (height == 0 && isLast) {
 			loadLastList();
 		}
     });

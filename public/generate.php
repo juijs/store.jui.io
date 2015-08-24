@@ -3,28 +3,17 @@
 
 header('X-XSS-Protection: 0');
 
-$arr = explode(",", $_POST['resources']);
-$metaList = array();
-foreach($arr as $val) {
+$data = $_POST;
 
-	$path = "frameworks/{$val}.php";
-	if (file_exists($path)) {
-		$metaList[] = file_get_contents($path);
-		continue;
-	} 
-	$ext = strtolower(array_pop(explode(".", $val)));
-
-	if ($ext == 'css') {
-		$metaList[] = "<link rel='stylesheet' href='".$val."' />";
-	} else {
-		$metaList[] = "<script type='text/javascript' src='".$val."'></script>";
-	}
-}
+include_once "include/generate.meta.php";
 
 $metaList[] = "<script>define.amd=true;</script>";
 $meta = implode(PHP_EOL, $metaList);
 
+
 include_once "header.php";
+
+include_once "include/preprocessor.php";
 
 ?>
 <?php include_once "include/generate.error.check.php" ?>
@@ -43,26 +32,29 @@ html,body {
 }
 </style>
 
-<?php if ($_POST['type'] == 'component') { ?>
-<?php echo $_POST['html_code'] ?>
+<?php if ($data['type'] == 'component') { ?>
+<?php echo $data['html_code'] ?>
 
 <?php } else {?>
 <div id="embedResult"></div>
 <?php } ?>
+<style type="text/css">
+<?php echo $data['css_code'] ?>
+</style>
 <script type="text/javascript">
 /** component - start */
-<?php echo $_POST['component_code'] ?>
+<?php echo $data['component_code'] ?>
 /** component - end */
 
 /** sample - start */
-<?php echo $_POST['sample_code'] ?>
+<?php echo $data['sample_code'] ?>
 /** sample - end */
 
 jui.ready(function() { 
 
 	// 테마 설정 
-	var theme = '<?php echo $_POST['name'] ?>';
-	if ('<?php echo $_POST['type'] ?>' == 'theme') {
+	var theme = '<?php echo $data['name'] ?>';
+	if ('<?php echo $data['type'] ?>' == 'theme') {
 		var obj = $("#embedResult")[0].jui;
 		if (obj) {
 			obj.setTheme(theme);

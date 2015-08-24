@@ -2,6 +2,10 @@
     "require": {
         "lusitanian/oauth": "^0.3.5",
         "tedivm/jshrink": "^1.0",
-        "oyejorge/less.php": "~1.5"
+        "oyejorge/less.php": "~1.5",
+        "erusev/parsedown": "^1.5",
+        "neemzy/stylus": "dev-master",
+        "panique/php-sass": "^1.0",
+        "kylekatarnls/jade-php": "^1.3"
     }
 }

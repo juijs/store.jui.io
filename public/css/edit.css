@@ -358,7 +358,7 @@ footer {
 .external-list {
 	position:absolute;
 	left:0px;
-	top:40px;
+	top:50px;
 	right:0px;
 	bottom: 40px;
 	overflow:auto;
@@ -368,7 +368,7 @@ footer {
 .external-item {
 	position:relative;
 	width:100%;
-	height:30px;
+	height:40px;
 }
 
 .external-item .handle {
@@ -392,7 +392,6 @@ footer {
 
 .external-item .btn {
 	display:none;
-	width:30px;
 }
 
 .my .external-item .btn {
@@ -407,7 +406,7 @@ footer {
 	position:absolute;
 	left:0px;
 	right:0px;
-	top:1px;
+	top:10px;
 	border:1px solid green;
 	color:green;
 	padding:5px;
@@ -454,4 +453,38 @@ footer {
 .border-on {
 border:1px dashed black;
 height:30px;
+}
+
+#preprocessor {
+	width:100%;
+	position:relative;
+}
+
+.p-list {
+	margin-top:10px;
+}
+
+.p-list .p-item {
+	padding: 10px 0px;
+}
+
+.p-list .p-item label {
+	display:inline-block;
+	width:100px;
+	text-align:right;
+	margin-right:10px;
+}
+
+.p-list .p-item select {
+	display:inline-block;
+	width:200px;
+	margin-right:10px;
+}
+
+.preprocessor-help {
+	margin-top:10px;
+	border:1px solid green;
+	color:green;
+	padding:5px;
+
 }
