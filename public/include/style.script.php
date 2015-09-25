@@ -67,6 +67,8 @@ $(function() {
 	window.select_theme_list = function(value) {
 		var path = value.replace(/\./g, '/');
 		$.get("/jui/less/theme/" + path + ".less").success(function(code) {
+			$("#theme_name").val(path);
+
 			componentCode.setValue(code); 	
 
 			getStyleObject();
@@ -109,6 +111,7 @@ $(function() {
         $("#result_form [name=sample_code]").val(window.coderun.sampleCodeText);
         $("#result_form [name=sample_type]").val($("#sample_list").val());
         $("#result_form [name=name]").val($("#name").val());
+        $("#result_form [name=theme_name]").val($("#theme_name").val());
 
         $("#result_form").submit();
 	}
@@ -320,6 +323,7 @@ $(function() {
 			component_code : componentCode.getValue(),
 			sample_code : sampleCode.getValue(),
 			sample_type : $("#sample_list").val(),
+			theme_name : $("#theme_name").val(),
 			sample : $("#sample").val()
 		}
 
@@ -381,6 +385,7 @@ $(function() {
 				componentCode.setValue(data.component_code);
 				sampleCode.setValue(data.sample_code);
 				$("#sample_list").val(data.sample_type);
+				$("#theme_name").val(data.theme_name);
 
 				coderun();
 
@@ -425,7 +430,7 @@ $(function() {
 
 <div id="theme_select_win" class="window" style="display:none;">
     <div class="head">
-        <div class="left">Select Theme</div>
+        <div class="left">Select UI Theme</div>
         <div class="right">
             <a href="#" class="close"><i class="icon-exit"></i></a>
         </div>

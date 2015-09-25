@@ -46,6 +46,7 @@
 
 
 			<input type="hidden" id="sample" name="sample" value="" />
+			<input type="hidden" id="theme_name" name="theme_name" value="" />
 		</div>
 	</div>
 

@@ -35,6 +35,7 @@ $document = array(
 	'sample_code' => $_POST['sample_code'],
 	'html_code' => $_POST['html_code'],
 	'css_code' => $_POST['css_code'],
+	'theme_name' => $_POST['theme_name'],
 	'sample_type' => $_POST['sample_type'],
 	'sample' => $_POST['sample'],
 	'data_type' => $_POST['data_type'],

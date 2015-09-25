@@ -5,13 +5,24 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 $page_id = "generate.ui"; 
+
+$backgroundColor = 'white';
+
+if ($_POST['theme_name'] == 'dark') {
+	$backgroundColor = 'black';
+}
+
+$metaList[] = '<link rel="stylesheet" href="/jui/dist/jui.min.css" />';
+$metaList[] = '<link rel="stylesheet" href="/jui/dist/'.$_POST['theme_name'].'.theme.min.css" />';
+$meta = implode(PHP_EOL, $metaList);
+
 ?>
 
 <?php include_once "header.php" ?>
-<link rel="stylesheet" href="/jui/dist/jui.min.css" />
+
 <style type="text/css">
 html,body { 
-    background:white;
+    background:<?php echo $backgroundColor ?>;
     margin:0px;
     padding:0px;
 }
@@ -56,7 +67,7 @@ unlink($filename);
 <?php echo $result ?> 
 </style>
 <div id="result">
-	<div style="padding:10px" class="jui-style">
+	<div style="padding:10px" class="jui-style <?php echo $_POST['theme_name'] ?>">
 		<?php include_once "sample/ui/{$sample_type}.html" ?>
 	</div>
 </div>
