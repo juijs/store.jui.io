@@ -442,7 +442,7 @@
 		 * @property {Boolean} browser.mozilla  Mozilla 브라우저 체크
 		 * @property {Boolean} browser.msie  IE 브라우저 체크 */
 		browser: {
-			webkit: (typeof window.webkitURL != "undefined") ? true : false,
+			webkit: ('WebkitAppearance' in document.documentElement.style) ? true : false,
 			mozilla: (typeof window.mozInnerScreenX != "undefined") ? true : false,
 			msie: (navigator.userAgent.indexOf("Trident") != -1) ? true : false
 		},
@@ -3617,16 +3617,20 @@ jui.define("util.svg.element", [], function() {
             return this;
         }
 
-        this.html = function(html) {
+        this.html = function(html) { // @deprecated
             this.element.innerHTML = html;
 
             return this;
         }
 
         this.text = function(text) {
-            this.element.innerHTML = "";
-            this.element.appendChild(document.createTextNode(text));
+            var children = this.element.childNodes;
 
+            for(var i = 0; i < children.length; i++) {
+                this.element.removeChild(children[i]);
+            }
+
+            this.element.appendChild(document.createTextNode(text));
             return this;
         }
 
@@ -5542,9 +5546,11 @@ jui.define("chart.axis", [ "jquery", "util.base" ], function($, _) {
          */
         this.updateGrid = function(type, grid, isReset) {
             if(isReset === true) {
-                originAxis[type] = grid;
+                originAxis[type] = _.deppClone(grid);
+                cloneAxis[type] = _.deppClone(grid);
             } else {
                 _.extend(originAxis[type], grid);
+                _.extend(cloneAxis[type], grid);
             }
 
             if(chart.isRender()) chart.render();
@@ -5640,6 +5646,18 @@ jui.define("chart.axis", [ "jquery", "util.base" ], function($, _) {
     }
 
     Axis.setup = function() {
+
+        /** @property {chart.grid.core} [x=null] Sets a grid on the X axis (see the grid tab). */
+        /** @property {chart.grid.core} [y=null] Sets a grid on the Y axis (see the grid tab). */
+        /** @property {chart.grid.core} [c=null] Sets a custom grid (see the grid tab). */
+        /** @property {chart.map} [map=null] Sets a chart map. */
+        /** @property {Array} [data=[]] Sets the row set data which constitute a chart. */
+        /** @property {Integer} [buffer=10000] Limits the number of elements shown on a chart. */
+        /** @property {Integer} [shift=1] Data shift count for the 'prev' or 'next' method of the chart builder. */
+        /** @property {Array} [origin=[]] [For read only] Original data initially set. */
+        /** @property {Integer} [page=1] [For read only] Page number of the data currently drawn. */
+        /** @property {Integer} [start=0] [For read only] Start index of the data currently drawn. */
+        /** @property {Integer} [end=0] [For read only] End index of the data currently drawn. */
 
         return {
             /** @cfg {Integer} [extend=null]  Configures the index of an applicable grid group when intending to use already configured axis options. */
@@ -6110,10 +6128,6 @@ jui.define("chart.map", [ "jquery", "util.base", "util.math", "util.svg" ], func
 jui.defineUI("chart.builder", [ "jquery", "util.base", "util.svg", "util.color", "chart.axis" ],
     function($, _, SVGUtil, ColorUtil, Axis) {
 
-    /**
-     * Common Logic
-     *
-     */
     var win_width = 0;
 
     _.resize(function() {
@@ -6158,18 +6172,6 @@ jui.defineUI("chart.builder", [ "jquery", "util.base", "util.svg", "util.color",
         var _initialize = false, _options = null, _handler = { render: [], renderAll: [] }; // 리셋 대상 커스텀 이벤트 핸들러
         var _scale = 1, _xbox = 0, _ybox = 0; // 줌인/아웃, 뷰박스X/Y 관련 변수
 
-        /**
-         * @method caculate
-         * 
-         * caculate chart's default area
-         *
-         * padding 을 제외한 영역에서  x,y,x2,y2,width,height 속성을 구함
-         *
-         * 기본적으로 모든 브러쉬와 그리드는 계산된 영역안에서 그려짐
-         *
-         * @param {chart.builder} self
-         * @private  
-         */
         function calculate(self) {
             var max = self.svg.size();
 
@@ -6191,14 +6193,6 @@ jui.defineUI("chart.builder", [ "jquery", "util.base", "util.svg", "util.color",
             _area = _chart;
         }
 
-        /**
-         * @method drawBefore 
-         * 
-         * option copy (brush, widget)
-         *  
-         * @param {chart.builder} self
-         * @private  
-         */
         function drawBefore(self) {
             _brush = _.deepClone(_options.brush);
             _widget = _.deepClone(_options.widget);
@@ -6210,12 +6204,6 @@ jui.defineUI("chart.builder", [ "jquery", "util.base", "util.svg", "util.color",
             _hash = {};
         }
 
-        /**
-         * @method drawAxis 
-         * implements axis draw 
-         * @param {chart.builder} self 
-         * @private
-         */
         function drawAxis(self) {
             
             // 엑시스 리스트 얻어오기
@@ -6235,13 +6223,6 @@ jui.defineUI("chart.builder", [ "jquery", "util.base", "util.svg", "util.color",
             }
         }
 
-        /**
-         * @method drawBrush
-         * brush 그리기
-         *
-         * brush 에 맞는 x, y 축(grid) 설정
-         * @private
-         */
         function drawBrush(self) {
             var draws = _brush;
 
@@ -6283,14 +6264,6 @@ jui.defineUI("chart.builder", [ "jquery", "util.base", "util.svg", "util.color",
             }
         }
 
-        /**
-         * @method drawWidget 
-         * implements widget draw 
-         *  
-         * @param {chart.builder} self
-         * @param {Boolean} isAll  Whether redraw widget
-         * @private  
-         */
         function drawWidget(self, isAll) {
             var draws = _widget;
 
@@ -6324,12 +6297,6 @@ jui.defineUI("chart.builder", [ "jquery", "util.base", "util.svg", "util.color",
             }
         }
 
-        /**
-         * @method setChartEvent
-         * define chart custom event
-         * @param {chart.builder} self
-         * @private
-         */
         function setChartEvent(self) {
             var elem = self.svg.root,
                 isMouseOver = false;
@@ -7036,11 +7003,6 @@ jui.defineUI("chart.builder", [ "jquery", "util.base", "util.svg", "util.color",
             _defs.append(elem);
         }
 
-        /*
-         * Brush & Widget 관련 메소드
-         *
-         */
-
         /**
          * @method addBrush 
          * 
@@ -7169,11 +7131,10 @@ jui.defineUI("chart.builder", [ "jquery", "util.base", "util.svg", "util.color",
 
     UI.setup = function() {
         return {
-            
             /** @cfg  {String/Number} [width="100%"] chart width */ 
-            width: "100%", // chart 기본 넓이
+            width: "100%",
             /** @cfg  {String/Number} [height="100%"] chart height */
-            height: "100%", // chart 기본 높이
+            height: "100%",
             /** 
              * @cfg  {Object} padding chart padding 
              * @cfg  {Number} [padding.top=50] chart padding 
@@ -7219,115 +7180,175 @@ jui.defineUI("chart.builder", [ "jquery", "util.base", "util.svg", "util.color",
     }
 
     /**
-     * @event bg_click
-     * Real name ``` bg.click ```
-     * Event that occurs when clicking on the chart area.
-     * @param {jQueryEvent} e The event object.
+     * @event click
+     * Event that occurs when clicking on the brush.
+     * @param {BrushData} obj Related brush data.
+     */
+    /**
+     * @event dblclick
+     * Event that occurs when double clicking on the brush.
+     * @param {BrushData} obj Related brush data.
+     */
+    /**
+     * @event rclick
+     * Event that occurs when right clicking on the brush.
+     * @param {BrushData} obj Related brush data.
+     */
+    /**
+     * @event mouseover
+     * Event that occurs when placing the mouse over the brush.
+     * @param {BrushData} obj Related brush data.
+     */
+    /**
+     * @event mouseout
+     * Event that occurs when moving the mouse out of the brush.
+     * @param {BrushData} obj Related brush data.
+     */
+    /**
+     * @event mousemove
+     * Event that occurs when moving the mouse over the brush.
+     * @param {BrushData} obj Related brush data.
+     */
+    /**
+     * @event mousedown
+     * Event that occurs when left clicking on the brush.
+     * @param {BrushData} obj Related brush data.
+     */
+    /**
+     * @event mouseup
+     * Event that occurs after left clicking on the brush.
+     * @param {BrushData} obj Related brush data.
      */
 
     /**
      * @event chart_click
-     * Real name ``` chart.click ```
-     * Event that occurs when clicking on the chart area.
+     * Event that occurs when clicking on the chart area. (real name ``` chart.click ```)
      * @param {jQueryEvent} e The event object.
      */
-
-    /**
-     * @event bg_rclick
-     * Real name ``` bg.rclick ```
-     * Event that occurs when right clicking on a chart margin.
-     * @param {jQueryEvent} e The event object.
-     */
-
-    /**
-     * @event chart_rclick
-     * Real name ``` chart.rclick ```
-     * Event that occurs when right clicking on the chart area.
-     * @param {jQueryEvent} e The event object.
-     */
-
-    /**
-     * @event bg_dblclick
-     * Real name ``` bg.dblclick ```
-     * Event that occurs when clicking on a chart margin.
-     * @param {jQueryEvent} e The event object.
-     */
-
     /**
      * @event chart_dblclick
-     * Real name ``` chart.dblclick ```
-     * Event that occurs when double clicking on the chart area.
+     * Event that occurs when double clicking on the chart area. (real name ``` chart.dblclick ```)
      * @param {jQueryEvent} e The event object.
      */
-
     /**
-     * @event bg_mousemove
-     * Real name ``` bg.mousemove```
-     * Event that occurs when moving the mouse over a chart margin.
+     * @event chart_rclick
+     * Event that occurs when right clicking on the chart area. (real name ``` chart.rclick ```)
      * @param {jQueryEvent} e The event object.
      */
-
-    /**
-     * @event chart_mousemove
-     * Real name ``` chart.mousemove ```
-     * Event that occurs when moving the mouse over the chart area.
-     * @param {jQueryEvent} e The event object.
-     */
-
-    /**
-     * @event bg_mousedown
-     * Real name ``` bg.mousedown ```
-     * Event that occurs when left clicking on a chart margin.
-     * @param {jQueryEvent} e The event object.
-     */
-
-    /**
-     * @event chart_mousedown
-     * Real name ``` chart.mousedown ```
-     * Event that occurs when left clicking on the chart area.
-     * @param {jQueryEvent} e The event object.
-     */
-
-    /**
-     * @event bg_mouseup
-     * Real name ``` bg.mouseup ```
-     * Event that occurs after left clicking on a chart margin.
-     * @param {jQueryEvent} e The event object.
-     */
-
-    /**
-     * @event chart_mouseup
-     * Real name ``` chart.mouseup ```
-     * Event that occurs after left clicking on the chart area.
-     * @param {jQueryEvent} e The event object.
-     */
-
-    /**
-     * @event bg_mouseover
-     * Real name ``` bg.mouseover ```
-     * Event that occurs when placing the mouse over a chart margin.
-     * @param {jQueryEvent} e The event object.
-     */
-
     /**
      * @event chart_mouseover
-     * Real name ``` chart.mouseover ```
-     * Event that occurs when placing the mouse over the chart area.
+     * Event that occurs when placing the mouse over the chart area. (real name ``` chart.mouseover ```)
      * @param {jQueryEvent} e The event object.
      */
-
-    /**
-     * @event bg_mouseout
-     * Real name ``` bg.mouseout ```
-     * Event that occurs when moving the mouse out of a chart margin.
-     * @param {jQueryEvent} e The event object.
-     */
-
     /**
      * @event chart_mouseout
-     * Real name ``` chart.mouseout ```
-     * Event that occurs when placing the mouse over the chart area.
+     * Event that occurs when moving the mouse out of the chart area. (real name ``` chart.mouseout ```)
      * @param {jQueryEvent} e The event object.
+     */
+    /**
+     * @event chart_mousemove
+     * Event that occurs when moving the mouse over the chart area. (real name ``` chart.mousemove ```)
+     * @param {jQueryEvent} e The event object.
+     */
+    /**
+     * @event chart_mousedown
+     * Event that occurs when left clicking on the chart area. (real name ``` chart.mousedown ```)
+     * @param {jQueryEvent} e The event object.
+     */
+    /**
+     * @event chart_mouseup
+     * Event that occurs after left clicking on the chart area. (real name ``` chart.mouseup ```)
+     * @param {jQueryEvent} e The event object.
+     */
+
+    /**
+     * @event bg_click
+     * Event that occurs when clicking on the chart margin. (real name ``` bg.click ```)
+     * @param {jQueryEvent} e The event object.
+     */
+    /**
+     * @event bg_dblclick
+     * Event that occurs when double clicking on the chart margin. (real name ``` bg.dblclick ```)
+     * @param {jQueryEvent} e The event object.
+     */
+    /**
+     * @event bg_rclick
+     * Event that occurs when right clicking on the chart margin. (real name ``` bg.rclick ```)
+     * @param {jQueryEvent} e The event object.
+     */
+    /**
+     * @event bg_mouseover
+     * Event that occurs when placing the mouse over the chart margin. (real name ``` bg.mouseover ```)
+     * @param {jQueryEvent} e The event object.
+     */
+    /**
+     * @event bg_mouseout
+     * Event that occurs when moving the mouse out of the chart margin. (real name ``` bg.mouseout ```)
+     * @param {jQueryEvent} e The event object.
+     */
+    /**
+     * @event bg_mousemove
+     * Event that occurs when moving the mouse over the chart margin. (real name ``` bg.mousemove ```)
+     * @param {jQueryEvent} e The event object.
+     */
+    /**
+     * @event bg_mousedown
+     * Event that occurs when left clicking on the chart margin. (real name ``` bg.mousedown ```)
+     * @param {jQueryEvent} e The event object.
+     */
+    /**
+     * @event bg_mouseup
+     * Event that occurs after left clicking on the chart margin. (real name ``` bg.mouseup ```)
+     * @param {jQueryEvent} e The event object.
+     */
+
+    /**
+     * @event axis_click
+     * Event that occurs when clicking on the axis area. (real name ``` axis.click ```)
+     * @param {jQueryEvent} e The event object.
+     * @param {Number} index Axis index.
+     */
+    /**
+     * @event axis_dblclick
+     * Event that occurs when double clicking on the axis area. (real name ``` axis.dblclick ```)
+     * @param {jQueryEvent} e The event object.
+     * @param {Number} index Axis index.
+     */
+    /**
+     * @event axis_rclick
+     * Event that occurs when right clicking on the axis area. (real name ``` axis.rclick ```)
+     * @param {jQueryEvent} e The event object.
+     * @param {Number} index Axis index.
+     */
+    /**
+     * @event axis_mouseover
+     * Event that occurs when placing the mouse over the axis area. (real name ``` axis.mouseover ```)
+     * @param {jQueryEvent} e The event object.
+     * @param {Number} index Axis index.
+     */
+    /**
+     * @event axis_mouseout
+     * Event that occurs when moving the mouse out of the axis area. (real name ``` axis.mouseout ```)
+     * @param {jQueryEvent} e The event object.
+     * @param {Number} index Axis index.
+     */
+    /**
+     * @event axis_mousemove
+     * Event that occurs when moving the mouse over the axis area. (real name ``` axis.mousemove ```)
+     * @param {jQueryEvent} e The event object.
+     * @param {Number} index Axis index.
+     */
+    /**
+     * @event axis_mousedown
+     * Event that occurs when left clicking on the axis area. (real name ``` axis.mousedown ```)
+     * @param {jQueryEvent} e The event object.
+     * @param {Number} index Axis index.
+     */
+    /**
+     * @event axis_mouseup
+     * Event that occurs after left clicking on the axis area. (real name ``` axis.mouseup ```)
+     * @param {jQueryEvent} e The event object.
+     * @param {Number} index Axis index.
      */
 
     return UI;
@@ -8636,9 +8657,6 @@ jui.define("chart.pattern.jennifer", [], function() {
 });
 jui.define("chart.icon.jennifer", [], function() {
 	return {
-		"bell" : "\ue662",
-		"like" : "\ue663",
-		"blogger" : "\ue661",
 		"add-dir" : "\ue600",
 		"add-dir2" : "\ue601",
 		"align-center" : "\ue602",
@@ -8649,93 +8667,99 @@ jui.define("chart.icon.jennifer", [], function() {
 		"arrow1" : "\ue607",
 		"arrow2" : "\ue608",
 		"arrow3" : "\ue609",
-		"bold" : "\ue60a",
-		"calendar" : "\ue60b",
-		"caution" : "\ue60c",
-		"caution2" : "\ue60d",
-		"chart-area" : "\ue60e",
-		"chart-bar" : "\ue60f",
-		"chart-candle" : "\ue610",
-		"chart-column" : "\ue611",
-		"chart-gauge" : "\ue612",
-		"chart-line" : "\ue613",
-		"chart-radar" : "\ue614",
-		"chart-scatter" : "\ue615",
-		"chart" : "\ue616",
-		"check" : "\ue617",
-		"checkmark" : "\ue618",
-		"chevron-left" : "\ue619",
-		"chevron-right" : "\ue61a",
-		"close" : "\ue61b",
-		"connection" : "\ue61c",
-		"dashboard" : "\ue61d",
-		"dashboardlist" : "\ue61e",
-		"db" : "\ue61f",
-		"device" : "\ue620",
-		"document" : "\ue621",
-		"download" : "\ue622",
-		"edit" : "\ue623",
-		"etc" : "\ue624",
-		"exit" : "\ue625",
-		"facebook" : "\ue626",
-		"gear" : "\ue627",
-		"github" : "\ue628",
-		"googleplus" : "\ue629",
-		"help" : "\ue62a",
-		"hide" : "\ue62b",
-		"home" : "\ue62c",
-		"html" : "\ue62d",
-		"image" : "\ue62e",
-		"info-message" : "\ue62f",
-		"info" : "\ue630",
-		"italic" : "\ue631",
-		"jennifer-server" : "\ue632",
-		"label" : "\ue633",
-		"left" : "\ue634",
-		"link" : "\ue635",
-		"loading" : "\ue636",
-		"menu" : "\ue637",
-		"message" : "\ue638",
-		"minus" : "\ue639",
-		"monitoring" : "\ue63a",
-		"more" : "\ue63b",
-		"new-window" : "\ue63c",
-		"orderedlist" : "\ue63d",
-		"pause" : "\ue63e",
-		"play" : "\ue63f",
-		"plus" : "\ue640",
-		"preview" : "\ue641",
-		"printer" : "\ue642",
-		"profile" : "\ue643",
-		"realtime" : "\ue644",
-		"refresh" : "\ue645",
-		"refresh2" : "\ue646",
-		"report-build" : "\ue647",
-		"report-link" : "\ue648",
-		"report" : "\ue649",
-		"resize" : "\ue64a",
-		"return" : "\ue64b",
-		"right" : "\ue64c",
-		"rule" : "\ue64d",
-		"save" : "\ue64e",
-		"search" : "\ue64f",
-		"server" : "\ue650",
-		"share" : "\ue651",
-		"statistics" : "\ue652",
-		"stop" : "\ue653",
-		"stoppage" : "\ue654",
-		"table" : "\ue655",
-		"text" : "\ue656",
-		"textcolor" : "\ue657",
-		"tool" : "\ue658",
-		"trashcan" : "\ue659",
-		"twitter" : "\ue65a",
-		"underline" : "\ue65b",
-		"unorderedlist" : "\ue65c",
-		"upload" : "\ue65d",
-		"user" : "\ue65e",
-		"was" : "\ue65f",
-		"ws" : "\ue660"
+		"bell" : "\ue60a",
+		"blogger" : "\ue60b",
+		"bold" : "\ue60c",
+		"calendar" : "\ue60d",
+		"caution" : "\ue60e",
+		"caution2" : "\ue60f",
+		"chart-area" : "\ue610",
+		"chart-bar" : "\ue611",
+		"chart-candle" : "\ue612",
+		"chart-column" : "\ue613",
+		"chart-gauge" : "\ue614",
+		"chart-line" : "\ue615",
+		"chart-radar" : "\ue616",
+		"chart-scatter" : "\ue617",
+		"chart" : "\ue618",
+		"check" : "\ue619",
+		"checkmark" : "\ue61a",
+		"chevron-left" : "\ue61b",
+		"chevron-right" : "\ue61c",
+		"close" : "\ue61d",
+		"connection" : "\ue61e",
+		"dashboard" : "\ue61f",
+		"dashboardlist" : "\ue620",
+		"db" : "\ue621",
+		"device" : "\ue622",
+		"document" : "\ue623",
+		"download" : "\ue624",
+		"edit" : "\ue625",
+		"etc" : "\ue626",
+		"exit" : "\ue627",
+		"facebook" : "\ue628",
+		"gear" : "\ue629",
+		"github" : "\ue62a",
+		"googleplus" : "\ue62b",
+		"help" : "\ue62c",
+		"hide" : "\ue62d",
+		"home" : "\ue62e",
+		"html" : "\ue62f",
+		"image" : "\ue630",
+		"indent" : "\ue631",
+		"info-message" : "\ue632",
+		"info" : "\ue633",
+		"italic" : "\ue634",
+		"jennifer-server" : "\ue635",
+		"label" : "\ue636",
+		"left" : "\ue637",
+		"like" : "\ue638",
+		"line-height" : "\ue639",
+		"link" : "\ue63a",
+		"loading" : "\ue63b",
+		"menu" : "\ue63c",
+		"message" : "\ue63d",
+		"minus" : "\ue63e",
+		"monitoring" : "\ue63f",
+		"more" : "\ue640",
+		"new-window" : "\ue641",
+		"orderedlist" : "\ue642",
+		"outdent" : "\ue643",
+		"pause" : "\ue644",
+		"play" : "\ue645",
+		"plus" : "\ue646",
+		"preview" : "\ue647",
+		"printer" : "\ue648",
+		"profile" : "\ue649",
+		"realtime" : "\ue64a",
+		"refresh" : "\ue64b",
+		"refresh2" : "\ue64c",
+		"report-build" : "\ue64d",
+		"report-link" : "\ue64e",
+		"report" : "\ue64f",
+		"resize" : "\ue650",
+		"return" : "\ue651",
+		"right" : "\ue652",
+		"rule" : "\ue653",
+		"save" : "\ue654",
+		"search" : "\ue655",
+		"server" : "\ue656",
+		"share" : "\ue657",
+		"statistics" : "\ue658",
+		"stop" : "\ue659",
+		"stoppage" : "\ue65a",
+		"table" : "\ue65b",
+		"text" : "\ue65c",
+		"textcolor" : "\ue65d",
+		"tool" : "\ue65e",
+		"trashcan" : "\ue65f",
+		"twitter" : "\ue660",
+		"underline" : "\ue661",
+		"unorderedlist" : "\ue662",
+		"upload" : "\ue663",
+		"user" : "\ue664",
+		"was" : "\ue665",
+		"ws" : "\ue666"
 	}
 });
 jui.define("chart.grid.core", [ "util.base", "util.math" ], function(_, math) {
@@ -14865,6 +14889,10 @@ jui.define("chart.brush.donut", [ "util.base", "util.math", "util.color" ], func
 
 			attr['stroke-width']= outerRadius - innerRadius;
 
+            if (endAngle >= 360) { // bugfix : if angle is 360 , donut cang't show
+                endAngle = 359.9999;
+            }
+
 			var g = this.chart.svg.group(),
 				path = this.chart.svg.path(attr),
 				dist = Math.abs(outerRadius - innerRadius);
@@ -19019,6 +19047,8 @@ jui.define("chart.widget.legend", [ "util.base" ], function(_) {
                 max_height = 0,
                 brushes = getIndexArray(widget.brush);
 
+            var total_widthes = [];
+
             for(var i = 0; i < brushes.length; i++) {
                 var index = brushes[i];
 
@@ -19033,8 +19063,17 @@ jui.define("chart.widget.legend", [ "util.base" ], function(_) {
                     arr[k].icon.translate(x, y);
 
                     if (widget.orient == "bottom" || widget.orient == "top") {
-                        x += arr[k].width;
-                        total_width += arr[k].width;
+
+                        if (x + arr[k].width > chart.area('x2')) {
+                            x = 0;
+                            y += arr[k].height;
+                            max_height += arr[k].height;
+                            total_widthes.push(total_width);
+                            total_width = 0; 
+                        } else {
+                            x += arr[k].width;
+                            total_width += arr[k].width;
+                        }
 
                         if (max_height < arr[k].height) {
                             max_height = arr[k].height;
@@ -19048,6 +19087,12 @@ jui.define("chart.widget.legend", [ "util.base" ], function(_) {
                         }
                     }
                 }
+                
+                if (total_width > 0) {
+                    total_widthes.push(total_width);
+                }
+                
+                total_width  = Math.max.apply(Math, total_widthes);
 
                 setLegendStatus(brush);
             }

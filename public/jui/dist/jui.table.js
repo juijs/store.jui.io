@@ -442,7 +442,7 @@
 		 * @property {Boolean} browser.mozilla  Mozilla 브라우저 체크
 		 * @property {Boolean} browser.msie  IE 브라우저 체크 */
 		browser: {
-			webkit: (typeof window.webkitURL != "undefined") ? true : false,
+			webkit: ('WebkitAppearance' in document.documentElement.style) ? true : false,
 			mozilla: (typeof window.mozInnerScreenX != "undefined") ? true : false,
 			msie: (navigator.userAgent.indexOf("Trident") != -1) ? true : false
 		},
@@ -3617,16 +3617,20 @@ jui.define("util.svg.element", [], function() {
             return this;
         }
 
-        this.html = function(html) {
+        this.html = function(html) { // @deprecated
             this.element.innerHTML = html;
 
             return this;
         }
 
         this.text = function(text) {
-            this.element.innerHTML = "";
-            this.element.appendChild(document.createTextNode(text));
+            var children = this.element.childNodes;
 
+            for(var i = 0; i < children.length; i++) {
+                this.element.removeChild(children[i]);
+            }
+
+            this.element.appendChild(document.createTextNode(text));
             return this;
         }
 
@@ -5598,7 +5602,7 @@ jui.define("uix.table.row", [ "jquery" ], function($) {
         /** @property {Array} list List of TD elements of a specified row. */
         this.list = [];			// 자신의 로우에 포함된 TD 태그 목록
 
-        /** @property {RowObject} parent Variable that refers to the parent row. */
+        /** @property {uix.table.row} parent Variable that refers to the parent row. */
         this.parent = (pRow) ? pRow : null;
 
         /** @property {Array} children List of child rows. */

@@ -60,7 +60,7 @@ $(function() {
 	window.view_type_list = function view_type_list(themeName, isChange) {
 		if (isChange)
 		{
-			select_theme_list("jennifer");
+			select_theme_list(themeName || "jennifer");
 		}
 	}
 
@@ -151,23 +151,31 @@ $(function() {
 			var style = [];
 
 			$("#table_style tbody .picker-value").each(function() {
-				var key = $(this).attr('data-key');
+				var key = $.trim($(this).attr('data-key'));
+				var postfix = $(this).attr('data-postfix') || "";
 				var value = $(this).val();
 				
-				style.push([key, value + ";"].join(" : "));
+				style.push([key, value + postfix + ";"].join(" : "));
 			});
 
 			var name = $("#name").val();
 			var template = jui.include("util.base").template($("#style_template").html());
 
+			//console.log( style.join("\r\n"));
 
 			var result = template({ style_doc : style.join("\r\n") });
 			componentCode.setValue(result);
 			componentCode.refresh();
 
+
 			coderun();
 			
 		}, 1000);
+	}
+
+	window.rp = function (value, postfix) {
+		postfix = postfix || "px";
+		return value.replace(postfix, "");
 	}
 
 	window.setStyleObject = function setStyleObject(arr) {
@@ -203,19 +211,19 @@ $(function() {
 			} else if (key.indexOf("Color") > -1) {
 				str = "<input type='text' class='color-picker input picker-value' style='width:80px;background:" + value + ";' data-key='" + key + "' value='" + (value || "") + "' /> ";
 			} else if (key.indexOf("FontSize") > -1) {
-				str = "<input type='text' value='"+str+"' class='font-size-range picker-value'  data-key='" + key + "'/>";
+				str = "<input type='text' value='"+rp(str)+"' class='font-size-range picker-value'  data-key='" + key + "' data-postfix='px' />";
 			} else if (key.indexOf("BorderWidth") > -1) {
-				str = "<input type='text' value='"+str+"' class='border-width-range picker-value'  data-key='" + key + "'/>";
+				str = "<input type='text' value='"+rp(str)+"' class='border-width-range picker-value'  data-key='" + key + "' data-postfix='px' />";
 			} else if (key.indexOf("BorderSize") > -1) {
-				str = "<input type='text' value='"+str+"' class='border-size-range picker-value'  data-key='" + key + "'/>";
+				str = "<input type='text' value='"+rp(str)+"' class='border-size-range picker-value'  data-key='" + key + "' data-postfix='px' />";
 			} else if (key.indexOf("HandleSize") > -1) {
-				str = "<input type='text' value='"+str+"' class='handle-size-range picker-value'  data-key='" + key + "'/>";
+				str = "<input type='text' value='"+rp(str)+"' class='handle-size-range picker-value'  data-key='" + key + "' data-postfix='px' />";
 			} else if (key.indexOf("Opacity") > -1) {
 				str = "<input type='text' value='"+str+"' class='opacity-range picker-value'  data-key='" + key + "'/>";
 			} else if (key.indexOf("Padding") > -1) {
-				str = "<input type='text' value='"+str+"' class='padding-range picker-value'  data-key='" + key + "'/>";
+				str = "<input type='text' value='"+rp(str)+"' class='padding-range picker-value'  data-key='" + key + "' data-postfix='px' />";
 			} else if (key.indexOf("Radius") > -1) {
-				str = "<input type='text' value='"+str+"' class='radius-range picker-value'  data-key='" + key + "'/>";
+				str = "<input type='text' value='"+rp(str)+"' class='radius-range picker-value'  data-key='" + key + "' data-postfix='px' />";
 			} else if (key.indexOf("DashArray") > -1) {
 				str = "<input type='text' value='"+str+"' class='dash-array input picker-value'  data-key='" + key + "'/>";
 			} else if (key.indexOf("FontWeight") > -1) {
@@ -427,6 +435,11 @@ $(function() {
 			<!--<img src="" width="100px" height="100px" />-->
 			<i class='icon-textcolor'></i>
 			<a >Jennifer</a>
+		</div>
+		<div class="window-item" data-theme="dark" >
+			<!--<img src="" width="100px" height="100px" />-->
+			<i class='icon-textcolor'></i>
+			<a >Dark</a>
 		</div>
     </div>
 	<div class="foot">
