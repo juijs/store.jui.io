@@ -153,7 +153,7 @@ $(function() {
 
 			var style = [];
 
-			$("#table_style tbody .picker-value").each(function() {
+			$(".property-item .picker-value").each(function() {
 				var key = $.trim($(this).attr('data-key'));
 				var postfix = $(this).attr('data-postfix') || "";
 				var value = $(this).val();
@@ -181,9 +181,16 @@ $(function() {
 		return value.replace(postfix, "");
 	}
 
+	function getKeyStringColor(key, keyString) {
+		return "<span class='key-str'>" + keyString + "</span><span class='key-name'>" + key.split(keyString)[1] + "</span>";
+	}
+
 	window.setStyleObject = function setStyleObject(arr) {
 		if(jui.include("util.base").browser.msie) return;
 
+		var $p = $(".property").empty();
+
+		/*
 		window.table_2 = jui.create("uix.table", "#table_style", {
 			fields: [ "key", "value" ],
             scroll : true,
@@ -196,7 +203,10 @@ $(function() {
 
 		// 테이블 초기화
 		table_2.reset();
+		*/
 
+		var keyString = '';
+		var keyList = [];
 		for(var i = 0, len = arr.length; i < len; i++) {
 			var item = arr[i];
 
@@ -205,6 +215,14 @@ $(function() {
 			}
 			var key = item.key;
 			var value = item.value; 
+			var keyStr = key.split(/[A-Z]/)[0];
+
+			if (keyString != keyStr)
+			{
+				$p.append("<div class='property-header' id='"+keyStr+"'>" + keyStr+"</div>");
+				keyString = keyStr;
+				keyList.push(keyString);
+			}
 
 			var str = value; 
 
@@ -248,7 +266,15 @@ $(function() {
 			} else {
 				str = "<input type='text' value='"+str+"' class='input picker-value' style='width:100%'  data-key='" + key + "'/>";
 			}
-			table_2.append({ key: key, value: str });
+			//table_2.append({ key: key, value: str });
+
+			
+			$p.append("<div class='property-item'><div class='property-key'>"  + getKeyStringColor(key, keyString) + "</div> <div class='property-value'>" +  str + "</div></div>");
+		}
+
+		var $keyList = $("#key-list").empty();
+		for(var i = 0, len = keyList.length; i < len; i++) {
+			$keyList.append("<option value='"  + keyList[i] + "'>"  + keyList[i] + "</option>");
 		}
 
 		$(".picker-value").change(function() {
@@ -376,6 +402,9 @@ $(function() {
 		var id = '<?php echo $_GET['id'] ?>';
 
 		if (id){
+
+			// 기본 속성 모두 로드 
+
 			$.get('/read.php', { id : id }, function(data) {
                 $("[value=" + data.access + "]").attr('checked', true);
 				$("#title").val(data.title);

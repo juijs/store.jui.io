@@ -98,7 +98,7 @@ html, body {
 			if ($type == 'style') {
 
 				if (!$sample_type) {
-					$sample_type = 'button';
+					$sample_type = 'buttons';
 				}
 				?>
 					<div style="padding:10px">

@@ -108,7 +108,7 @@ html, body {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-	width:70px;
+	width:80px;
 	text-align:center;
 }
 
@@ -127,6 +127,9 @@ html, body {
 			<a class="large nav-btn" data-target="component" onclick="select(this)"><?php echo $first ?></a>
 			<?php if ($row['type']) {  ?>
 			<a class="large nav-btn" data-target="sample" onclick="select(this)">JavaScript</a>
+				<?php if ($row['type'] == 'component') { ?>
+					<a class="large nav-btn" data-target="css" onclick="select(this)">CSS</a>
+				<?php } ?>
 			<a class="large nav-btn" data-target="html" onclick="select(this)">HTML</a>
 			<?php } else { ?>
             <a class="large nav-btn" data-target="sample" onclick="select(this)">Sample</a>
@@ -150,7 +153,7 @@ html, body {
 			if ($type == 'style') {
 
 				if (!$sample_type) {
-					$sample_type = 'button';
+					$sample_type = 'buttons';
 				}
 				?>
 					<div style="padding:10px">
@@ -169,6 +172,9 @@ html, body {
         </div>
         <div id='html' class='nav-content' >
             <textarea id="html_code"></textarea>
+        </div>
+        <div id='css' class='nav-content' >
+            <textarea id="css_code"></textarea>
         </div>
         <div id='component' class='nav-content'>
             <textarea id="component_code"></textarea>
@@ -216,7 +222,13 @@ $(function() {
       readOnly : true
 	});
 
-
+<?php if ($row['type'] == 'component') { ?>
+	var cssCode = window.cssCode = CodeMirror.fromTextArea($("#css_code")[0], {
+	  mode:  "css",
+	  lineNumbers : true,
+      readOnly : true
+	});
+<?php } ?>
 	function loadContent() {
 		var id = '<?php echo $_GET['id'] ?>';
 
@@ -225,6 +237,9 @@ $(function() {
 				componentCode.setValue(data.component_code || "");
 				sampleCode.setValue(data.sample_code || "");
 				htmlCode.setValue(data.html_code || "");
+				<?php if ($row['type'] == 'component') { ?>
+				cssCode.setValue(data.css_code || "");
+				<?php } ?>
 			});
 		}
 

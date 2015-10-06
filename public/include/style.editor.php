@@ -1,7 +1,9 @@
 <div class="editor-panel editor-panel-pull  editor-panel-border  view-component" style="background:#ffffff">
 
-	<div class="editor-tool" style="font-size:13px;border-bottom:0px;">
-		<a class='h2' style="display:inline-block"  data-view="component"><?php echo $type_text['style'] ?></a>
+	<div class="editor-tool" style="font-size:13px;">
+		<a class='h2' style="display:inline-block"  data-view="component"><?php echo $type_text['style'] ?>
+			<select id="key-list" class='input' onchange="location.href='#' + this.value;"></select>
+		</a>
 		<span class="editor-navbar">
 			<?php if ($isMy) { ?>
 			<div class="group" id="js_html_convert">
@@ -25,8 +27,9 @@
 				<input type="hidden" name="component_code" value="" />
 			</form>
 	</div>
-	<div id="tab_contents_1" class="tab-contents editor-codemirror">
-		<table class="table simple headline" id="table_style">
+	<div id="tab_contents_1" class="tab-contents editor-codemirror" style='overflow-y:auto'>
+	<!--
+		<table class="table simple headline" id="table_style" style='display:none'>
 		<colgroup>
 			<col width="40%" />
 			<col width="60%" />
@@ -41,6 +44,10 @@
 
 		</tbody>
 		</table>
+		-->
+		<div class='property'>
+		
+		</div>
 	</div>
 
 	<div class="tab-contents editor-codemirror" style="display:none">

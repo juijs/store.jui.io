@@ -124,26 +124,30 @@ $(function() {
                 } else {
                     var $item = $("<div class='window-item' />");
 
-					var chart_type = "";
+					var chart_type = "chart";
 					if (item.sample.indexOf("gauge") > -1) {
-						chart_type = "-gauge";
+						chart_type = "chart-gauge";
 					} else if (item.sample.indexOf("bar") > -1) 
 					{
-						chart_type = "-bar";
+						chart_type = "chart-bar";
 					} else if (item.sample.indexOf("column") > -1 || item.sample.indexOf("equalizer") > -1 || item.sample.indexOf("cylinder") > -1 || item.sample.indexOf("fullstack") > -1 || item.sample.indexOf("waterfall") > -1) {
-						chart_type = "-column";
+						chart_type = "chart-column";
 					} else if (item.sample.indexOf("line") > -1) {
-						chart_type = "-line";
+						chart_type = "chart-line";
 					} else if (item.sample.indexOf("radar") > -1) {
-						chart_type = "-radar";
+						chart_type = "chart-radar";
 					} else if (item.sample.indexOf("area") > -1) {
-						chart_type = "-area";
+						chart_type = "chart-area";
 					} else if (item.sample.indexOf("scatter") > -1 || item.sample.indexOf("bubble") > -1) {
-						chart_type = "-scatter";
+						chart_type = "chart-scatter";
+					} else if (item.sample.indexOf("candlestick") > -1 || item.sample.indexOf("ohlc") > -1) {
+						chart_type = "chart-candle";
+					} else if (item.sample.indexOf("dashboard") > -1  || item.sample.indexOf("mixed") > -1  ) {
+						chart_type = "analysis";
 					}
 
                     //$item.append("<img width='100px' height='100px' />");
-                    $item.append("<i class='icon-chart" + chart_type +"'></i>");
+                    $item.append("<i class='icon-" + chart_type +"'></i>");
                     $item.append("<a />");
 
                     $item.data('sample', item.sample);
@@ -203,7 +207,7 @@ $(function() {
 
 			var theme = { colors : [] };
 
-			$("#table_theme tbody .picker-value").each(function() {
+			$(".property-item .picker-value").each(function() {
 				var key = $(this).attr('data-key');
 				var value = $(this).val();
 				
@@ -229,9 +233,19 @@ $(function() {
 		}, 10);
 	}
 
+	window.rp = function (value, postfix) {
+		postfix = postfix || "px";
+		return value.replace(postfix, "");
+	}
+
+	function getKeyStringColor(key, keyString) {
+		return "<span class='key-str'>" + keyString + "</span><span class='key-name'>" + key.split(keyString)[1] + "</span>";
+	}
 	window.setThemeObject = function setThemeObject(obj) {
 		if(jui.include("util.base").browser.msie) return;
 
+		var $p = $(".property").empty();
+		/*
 		window.table_2 = jui.create("uix.table", "#table_theme", {
 			fields: [ "key", "value" ],
             scroll : true,
@@ -243,11 +257,21 @@ $(function() {
 		});
 
 		// 테이블 초기화
-		table_2.reset();
+		table_2.reset(); */
 
 		var lastGroup = "";
-
+		var keyString = '';
+		var keyList = [];
 		for(var key in obj) {
+
+			var keyStr = key.split(/[A-Z]/)[0];
+
+			if (keyString != keyStr)
+			{
+				$p.append("<div class='property-header' id='"+keyStr+"'>" + keyStr+"</div>");
+				keyString = keyStr;
+				keyList.push(keyString);
+			}
 
 			if (lastGroup != obj[key].group)
 			{
@@ -270,7 +294,10 @@ $(function() {
 
 				}
 
-				table_2.append({ key: key, value: list.join(" ") });
+				//table_2.append({ key: key, value: list.join(" ") });
+
+				$p.append("<div class='property-item colors'><div class='property-key'>"  + getKeyStringColor(key, keyString) + "</div> <div class='property-value'>" +  list.join(" ") + "</div></div>");
+
 			} else {
 				var str = obj[key].value;
 				if (key.indexOf("Color") > -1)
@@ -309,10 +336,16 @@ $(function() {
                 } else {
                     str = "<input type='text' value='"+str+"' class='input picker-value' style='width:100%'  data-key='" + key + "'/>";
 				}
-				table_2.append({ key: key, value: str });
+			//table_2.append({ key: key, value: str });
+
+			
+			$p.append("<div class='property-item'><div class='property-key'>"  + getKeyStringColor(key, keyString) + "</div> <div class='property-value'>" +  str + "</div></div>");
 			}
 		}
-
+		var $keyList = $("#key-list").empty();
+		for(var i = 0, len = keyList.length; i < len; i++) {
+			$keyList.append("<option value='"  + keyList[i] + "'>"  + keyList[i] + "</option>");
+		}
 		$(".picker-value").change(function() {
 			convertContent();
 		});

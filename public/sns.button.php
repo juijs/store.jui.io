@@ -15,6 +15,10 @@
 			</div>
 			<div class="embed-link" style='margin-top:12px'>
 				<label>Embed Link<label>
+				<div style='margin-top:5px;'><input type='text' class='input' style='width:175px' value='<?php echo $embed_url ?>'/> </div>
+			</div>
+			<div class="embed-link" style='margin-top:12px'>
+				<label>Embed Frame<label>
 				<div style='margin-top:5px;'><input type='text' class='input' style='width:175px' value='<iframe src="<?php echo $embed_url ?>" width="100%" height="400px"></iframe>'/> </div>
 			</div>
         </div>

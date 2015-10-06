@@ -1,7 +1,10 @@
 <div class="editor-panel-pull editor-panel-border view-component">
 
-	<div class="editor-tool" style="font-size:13px;border-bottom:0px;">
-		<a class='h2' style="display:inline-block"  data-view="component"><?php echo $type_text['theme'] ?></a>
+	<div class="editor-tool" style="font-size:13px;">
+		<a class='h2' style="display:inline-block"  data-view="component">
+			<?php echo $type_text['theme'] ?>
+			<select id="key-list" class='input' onchange="location.href='#' + this.value;"></select>
+		</a>
 		
 		<span class="editor-navbar">
 			<?php if ($isMy) { ?>
@@ -25,7 +28,8 @@
 				<input type="hidden" name="component_code" value="" />
 			</form>
 	</div>
-	<div id="tab_contents_1" class="tab-contents editor-codemirror">
+	<div id="tab_contents_1" class="tab-contents editor-codemirror" style="overflow:auto">
+		<!--
 		<table class="table simple headline" id="table_theme">
 			<thead>
 				<tr>
@@ -35,6 +39,11 @@
 			</thead>
 			<tbody></tbody>
 		</table>
+		-->
+
+		<div class='property theme'>
+		
+		</div>
 	</div>
 
 	<div class="tab-contents editor-codemirror" style="display:none">

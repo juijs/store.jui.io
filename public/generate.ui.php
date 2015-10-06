@@ -35,18 +35,23 @@ html,body {
 }
 </style>
 <?php
+
 $sample_type = $_POST['sample_type'];
 
 if (!$sample_type) {
-	$sample_type = "button";
+	$sample_type = "buttons";
 }
 
 $id = uniqid("temp".rand(0, 100));
 $code = $_POST['component_code'];
 
+$defaultTheme = "jui/less/theme/jennifer.less";
 $filename = "jui/less/theme/".$id.".less";
 
-file_put_contents(__DIR__."/".$filename, $code);
+$realCode = str_replace('@import "../theme.less";
+', '', file_get_contents($defaultTheme)).PHP_EOL.$code;
+
+file_put_contents(__DIR__."/".$filename, $realCode);
 
 try {
 	$parser = new Less_Parser();
