@@ -196,7 +196,7 @@ $(function() {
 			component_code : componentCode.getValue(),
 			sample_code : sampleCode.getValue(),
 			html_code : htmlCode.getValue(),
-			css_code : htmlCode.getValue(),
+			css_code : cssCode.getValue(),
 			sample : $("#sample").val(),
 			resources : getResourceList(),
 			preprocessor : getPreProcessorList()
@@ -260,8 +260,9 @@ $(function() {
 				componentCode.setValue(data.component_code || "");
 				sampleCode.setValue(data.sample_code || "");
 				htmlCode.setValue(data.html_code || "");
+				cssCode.setValue(data.css_code || "");
 				setResourceList(data.resources);
-				setPreProcessorList(data.proprocessor);
+				setPreProcessorList(data.preprocessor);
 				coderun();
 			});
 		}
