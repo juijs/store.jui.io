@@ -7,23 +7,38 @@ $(function() {
 	var componentCode = window.componentCode = CodeMirror.fromTextArea($("#component_code")[0], {
 	  mode:  "javascript",
 	  lineNumbers : true,
-	  extraKeys: {"Ctrl-Space": "autocomplete"}
+	  extraKeys: {
+		  "Ctrl-S":  function () {  savecode(); },
+		  "Ctrl-R":  function () {  coderun(); }
+	  }
 
 	});
 
 	var sampleCode = window.sampleCode = CodeMirror.fromTextArea($("#sample_code")[0], {
 	  mode:  "javascript",
-	  lineNumbers : true
+	  lineNumbers : true,
+	  extraKeys: {
+		  "Ctrl-S":  function () {  savecode(); },
+		  "Ctrl-R":  function () {  coderun(); }
+	  }
 	});
 
 	var htmlCode = window.htmlCode = CodeMirror.fromTextArea($("#html_code")[0], {
 	  mode:  "htmlmixed",
-	  lineNumbers : true
+	  lineNumbers : true,
+	  extraKeys: {
+		  "Ctrl-S":  function () {  savecode(); },
+		  "Ctrl-R":  function () {  coderun(); }
+	  }
 	});
 
 	var cssCode = window.cssCode = CodeMirror.fromTextArea($("#css_code")[0], {
 	  mode:  "css",
-	  lineNumbers : true
+	  lineNumbers : true,
+	  extraKeys: {
+		  "Ctrl-S":  function () {  savecode(); },
+		  "Ctrl-R":  function () {  coderun(); }
+	  }
 	});
 
 	jui.create("ui.button", "#js_html_convert", { 
