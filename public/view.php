@@ -51,7 +51,7 @@ $meta =<<<EOD
 	<!-- Facebook -->
 	<meta property="og:title" content="{$title}"/>
 	<meta property="og:type" content="article"/>
-	<meta property="og:url" content="http://store.jui.io/share.php?id={$id}"/>
+	<meta property="og:url" content="http://store.jui.io/view.php?id={$id}"/>
 	<meta property="og:description" content="{$description}"/>
 	<meta property="og:image" content="http://store.jui.io/thumbnail.php?id={$id}"/>
 
@@ -177,7 +177,7 @@ $color = $type_colors[$first];
 </div>
 <script>
 function setContentHeight (height) {
-	$("#result").height(height);
+	$("#result").height(height+20);
 }
 </script>
 </body>

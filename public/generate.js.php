@@ -26,7 +26,10 @@ if ($_GET['code'] == 'sample') {
 } else if ($_GET['code'] == 'html') {
 	echo $component['html_code'];
 } else if ($_GET['code'] == 'css') {
-	echo $component['css_code'];
+	header("Content-Type: text/css");
+	$data = $component;
+	include "include/preprocessor.php";
+	echo $data['css_code'];
 } else {
 	echo $component['component_code'];
 }

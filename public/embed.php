@@ -76,7 +76,6 @@ $meta = implode(PHP_EOL, $metaList);
 
 include_once "header.embed.php";
 
-
 $type = $row['type'];
 $first = $type_text[$type];
 
@@ -201,6 +200,12 @@ $(function() {
         componentCode.refresh();
         sampleCode.refresh();
         htmlCode.refresh();
+
+		if (cssCode)
+		{
+		cssCode.refresh();
+		}
+
    }
 
 	var componentCode = window.componentCode = CodeMirror.fromTextArea($("#component_code")[0], {
@@ -239,7 +244,31 @@ $(function() {
 				htmlCode.setValue(data.html_code || "");
 				<?php if ($row['type'] == 'component') { ?>
 				cssCode.setValue(data.css_code || "");
+
+				var arr = data.preprocessor.split(",");
+
+				var obj = {
+					less : 'LESS',
+					scss : 'SCSS',
+					css : 'CSS',
+					javascript: 'JavaScript',
+					html : 'HTML',
+					jade : 'Jade',
+					markdown : 'Markdown'
+				}
+
+				$("[data-target=html]").html(obj[arr[0]]);      // html 
+				$("[data-target=sample]").html(obj[arr[1]]);  // javascript 
+				$("[data-target=css]").html(obj[arr[2]]);          // css 
+					
+				if (componentCode.getValue() !== '') { $("[data-target=component]").hide(); $("#component").hide(); }
+				if (htmlCode.getValue() !== '') { $("[data-target=html]").hide(); $("#html").hide(); }
+				if (sampleCode.getValue() !== '') { $("[data-target=sample]").hide(); $("#sample").hide(); }
+				if (cssCode.getValue() !== '') { $("[data-target=css]").hide(); $("#css").hide(); }
+
 				<?php } ?>
+
+
 			});
 		}
 
@@ -266,7 +295,7 @@ $sample_code = str_replace("@path", "'".$map_link."'", $row['sample_code']) ;
 </script>
 
 <?php  } else { ?>
-
+<link rel="stylesheet" href="generate.js.php?id=<?php echo $_GET['id'] ?>&code=css" />
 <script type="text/javascript" src="generate.js.php?id=<?php echo $_GET['id'] ?>"></script>
 <script type="text/javascript" src="generate.js.php?id=<?php echo $_GET['id'] ?>&code=sample"></script>
 <script type="text/javascript">

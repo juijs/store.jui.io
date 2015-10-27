@@ -62,7 +62,7 @@ function CssPreprocessor($content, $type) {
 			$parser->parse($content);
 			$content = $parser->getCss();
 		} catch (Exception $e)  {
-		
+			var_dump($e->getMessage());
 		}
 
 	} else if ($type == 'sass') {
