@@ -25,12 +25,32 @@ $sort_type = $_GET['sort'] ? $_GET['sort'] : 'update_time';
 $sort = array();
 $sort[$sort_type] = -1; 
 
+
 $rows = $components->find(array(
 	'login_type' => $_SESSION['login_type'],
 	'userid' => $_SESSION['userid']
-))->sort($sort)->limit(20);
+));
+
+$total = $rows->count();
 
 
+$page = $_GET['page'];
+
+if (!$page) $page = 1;
+
+$page = intval($page);
+
+$nextPage = $page+1;
+$prevPage = $page-1;
+
+$limit = 12;
+$skip = ($page - 1) * $limit;
+
+if ($page * $limit > $total) {
+	$nextPage = -1; 
+}
+
+$rows = $rows->sort($sort)->skip($skip)->limit($limit);
 
 ?>
 <div>

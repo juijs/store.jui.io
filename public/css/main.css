@@ -186,6 +186,10 @@ footer .link [class*=icon-] {
 	margin: 0 auto;
     box-sizing: border-box;
     text-align:center;
+	position:relative;
+	max-width:1200px;
+	display:flex !important;
+	flex-wrap:wrap;
 }
 /*btn-simple*/
 .btn-simple{
@@ -241,15 +245,34 @@ footer .link [class*=icon-] {
 /*item summary*/
 .summary-box {
 	/*box-shadow: 0 5px 10px 0 rgba(0,0,0,0.22); */
-	width: 236px;
+	width: 30%;
 	border:1px solid #ddd;
 	/*border-radius: 5px;*/
-	display: inline-block;
+	display:block;
 	margin:7px 4px 7px 4px;
 	font-size:12px;
     position: relative;
 }
 
+@media only screen and (max-width: 320px) {
+  .summary-box {
+    width:100%;
+	margin:10 auto;
+  }
+}
+@media only screen and (min-width: 321px) and (max-width: 480px) {
+   .summary-box {
+    width:50%;
+	margin:10 auto;
+  }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+   .summary-box {
+    width:45%;
+	margin:10 auto;
+  }
+}
 
 .summary-box.large {
 	width:100%;

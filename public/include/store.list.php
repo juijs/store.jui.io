@@ -1,74 +1,9 @@
-<script>
-$(function() {
-	var url = (location.pathname == "/mylist.php") ? "load-my-box.php" : "load-box.php";
-	var $container = $('#content-container');
-	
-	$container.masonry({
-	  // options
-	  itemSelector: '.summary-box',
-		isFitWidth : true 
-	});
-
-	window.isLast = false; 
-
-	window.lazyLoadFrame = function() {
-		if (window.isLazyLoad) return;
-
-		window.isLazyLoad = true;
-		$("iframe[data-src]").each(function(i) {
-			var $self = $(this); 
-
-			(function($self, i) {
-				setTimeout(function() {
-					$self.attr('src', $self.attr('data-src'));
-					$self.removeAttr('data-src');
-				}, 200*i);
-			})($self, i);
-
-		});
-
-		window.isLazyLoad = false;
-	}
-
-	lazyLoadFrame();
-
-	window.loadLastList = function loadLastList(isLast) {
-		if (isLast == true) {
-			window.isLast = true;
-		}
-
-		var lastId = $(".summary-box:last").data('id');
-		var sort = '<?php echo $sort_type ?>';
-
-		var h = Math.floor($(window).height() / 303);
-		var w = Math.floor($(window).width() / 238);
-		var max = h * w + 1;
-
-		$.get(url, { lastId : lastId, sort : sort, max : max }, function(data) {
-	        var $moreBlocks = jQuery( data );
-
-		    $container.append( $moreBlocks );
-
-			lazyLoadFrame();
-
-	        $container.masonry( 'appended', $moreBlocks );         
-		});
-	}
-
-	setTimeout(function() {
-		loadLastList();
-
-		setTimeout(function() {
-			loadLastList(true);
-		},2000);
-	}, 1000);
-
-    $(window).scroll(function(e) {
-		var height = $(document.body)[0].scrollHeight - $(document.body)[0].scrollTop - $(window).height();
-
-		if (height == 0 && isLast) {
-			loadLastList();
-		}
-    });
-});
-</script>
+<div style="text-align:center">
+<?php if ($prevPage > 0) { ?>
+	<a href="?page=<?php echo $prevPage ?>&sort=<?php echo $_GET['sort'] ?>" class="btn-simple form-btn-off"><i class="icon icon-chevron-left"></i> Prev Page </a>
+<?php } ?>
+<?php if ($nextPage > 0) { ?>
+	<a href="?page=<?php echo $nextPage ?>" class="btn-simple form-btn-on">Next Page <i class="icon icon-chevron-right"></i></a>
+<?php } ?>
+</div>
+=

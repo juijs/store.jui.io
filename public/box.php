@@ -42,7 +42,7 @@ $first = $type_text[$type];
 					$embed_url = $static_file;
 				}
 			?>		
-			<iframe data-src="<?php echo $embed_url ?>" class='iframe-wrap' id="result"></iframe>
+			<iframe src="<?php echo $embed_url ?>" class='iframe-wrap' id="result"></iframe>
 	
 			<a href="<?php echo $link ?>" class='box-a'>&nbsp;</a>
 </div>

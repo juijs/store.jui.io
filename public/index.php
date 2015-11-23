@@ -29,7 +29,28 @@ $sort[$sort_type] = -1;
 
 $rows = $components->find(array(
     'access' => 'public'            
-))->sort($sort)->limit(5);
+));
+
+$total = $rows->count();
+
+
+$page = $_GET['page'];
+
+if (!$page) $page = 1;
+
+$page = intval($page);
+
+$nextPage = $page+1;
+$prevPage = $page-1;
+
+$limit = 12;
+$skip = ($page - 1) * $limit;
+
+if ($page * $limit > $total) {
+	$nextPage = -1; 
+}
+
+$rows = $rows->sort($sort)->skip($skip)->limit($limit);
 
 ?>
 

@@ -1,0 +1,17 @@
+<div id="colorpicker1" class="colorpicker">
+
+</div>
+
+    <script>
+        jui.ready([ "ui.colorpicker" ], function(colorpicker) {
+
+            colorpicker1 = colorpicker("#colorpicker1", {
+                event : {
+                    "change" : function(c, rgb) {
+                        console.log(c, this.getColor("hex"));
+                    }
+                }
+            });
+
+        });
+    </script>
