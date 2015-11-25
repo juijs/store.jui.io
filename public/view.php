@@ -31,7 +31,7 @@ if ($_GET['id'] && ($row['login_type'] != $_SESSION['login_type'] || $row['useri
 
 //var_dump($row);
 
-if (($row['access'] == 'private' || $row['access'] == 'share') && !$isMy) {
+if (($row['access'] == 'private') && !$isMy) {
 	header("HTTP/1.0 404 Not Found");
 	exit;
 }

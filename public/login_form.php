@@ -20,7 +20,7 @@
 <div style="padding-top:30px"></div>
 
 <div id="content-container">
-	<div style="padding-top: 70px;">
+	<div style="padding-top: 70px;margin:0 auto;">
 		<div><a href="javascript:void(login('facebook'))" class="btn large plat btn-sns btn-facebook"><i class="icon-facebook"></i> Connect with Facebook</a></div>
 		<div><a href="javascript:void(login('twitter'))" class="btn large rect btn-sns btn-twitter"><i class="icon-twitter"></i> Connect with Twitter</a> </div>
 		<div><a href="javascript:void(login('github'))" class="btn large rect btn-sns btn-github"><i class="icon-github"></i> Connect with Github</a> </div>

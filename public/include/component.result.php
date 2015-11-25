@@ -4,7 +4,7 @@
 		<a class='h2' style="display:inline-block"  data-view="result">Result</a>
 		<div style="float:right">
 			<?php if ($_GET['id']) { ?>
-			<a class='btn' href="/view.php?id=<?php echo $_GET['id'] ?>">View!</a>
+			<a class='btn' href="/view.php?id=<?php echo $_GET['id'] ?>">View</a>
 			<?php } ?>
 		</div>
 	</div>
