@@ -3,11 +3,6 @@
 	<div class="editor-tool" style="font-size:13px;">
 		<a class='h2' style="display:inline-block"  data-view="result">Result</a>
 		<span class="editor-navbar">
-			<?php if ($isMy) { ?>
-			<select id="sample_list" class="input">
-				<option value="">Select Sample</option>
-			</select>
-			<?php } ?>
 		</span>
 	</div>
 

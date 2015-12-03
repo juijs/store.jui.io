@@ -12,7 +12,7 @@ $username = $data['username'];
 
 if (!$data['type']) $data['type'] = 'component';
 
-include_once "include/genenate.meta.php";
+include "include/generate.meta.php";
 
 $metaList[] =<<<EOD
 	<!-- Facebook -->
@@ -38,10 +38,10 @@ EOD;
 
 $meta = implode(PHP_EOL, $metaList);
 
-include_once "header.static.php";
+include "header.static.php";
 
 
-include_once "include/preprocessor.php";
+include "include/preprocessor.php";
 
 $type = $data['type'];
 $first = $type_text[$type];
@@ -54,6 +54,7 @@ $color = $type_colors[$first];
 <style type="text/css">
 html, body {
 	background:white;
+	height:100%;
 }
 
 .CodeMirror {
@@ -180,5 +181,4 @@ $root = getcwd()."/static/".$id;
 @mkdir($root, 0777, true);
 
 file_put_contents($root."/embed.html", $static);
-
 ?>

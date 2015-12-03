@@ -11,7 +11,6 @@
 				<a class='btn' value='css'>CSS</a>
 			</div>
 	
-			<a class='btn' onclick="coderun()">Run <i class="icon-play"></i></a>
 			<form id="chart_form" action="generate.php" method="post" target="chart_frame" enctype="multipart/form-data" style="display:none">
 				<input type="hidden" name="component_code" value="" />
 				<input type="hidden" name="sample_code" value="" />

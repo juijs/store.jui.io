@@ -50,6 +50,9 @@ foreach($arr as $val) {
 	}
 }
 
+include_once "include/generate.meta.php";
+
+
 $metaList[] =<<<EOD
 	<!-- Facebook -->
 	<meta property="og:title" content="{$title}"/>
@@ -100,14 +103,13 @@ html, body {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    padding: 0 12px;
     font-size: 12px;
     height: 28px;
     line-height: 28px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-	width:80px;
+	width:70px;
 	text-align:center;
 }
 
@@ -139,7 +141,7 @@ html, body {
         </span> 
 
         <span style="float:right">
-			<?php $link = ($row['access'] == 'share') ? "/" : "view.php?id=".$_GET['id'] ?>
+			<?php $link = "view.php?id=".$_GET['id'] ?>
             <a class='large nav-btn nav-edit' href="<?php echo $link ?>" target="_blank">Edit in JUI Store</a>
         </span>
     </div>
@@ -261,10 +263,10 @@ $(function() {
 				$("[data-target=sample]").html(obj[arr[1]]);  // javascript 
 				$("[data-target=css]").html(obj[arr[2]]);          // css 
 					
-				if (componentCode.getValue() !== '') { $("[data-target=component]").hide(); $("#component").hide(); }
-				if (htmlCode.getValue() !== '') { $("[data-target=html]").hide(); $("#html").hide(); }
-				if (sampleCode.getValue() !== '') { $("[data-target=sample]").hide(); $("#sample").hide(); }
-				if (cssCode.getValue() !== '') { $("[data-target=css]").hide(); $("#css").hide(); }
+				if (componentCode.getValue() == '') { $("[data-target=component]").hide(); $("#component").hide(); }
+				if (htmlCode.getValue() == '') { $("[data-target=html]").hide(); $("#html").hide(); }
+				if (sampleCode.getValue() == '') { $("[data-target=sample]").hide(); $("#sample").hide(); }
+				if (cssCode.getValue() == '') { $("[data-target=css]").hide(); $("#css").hide(); }
 
 				<?php } ?>
 

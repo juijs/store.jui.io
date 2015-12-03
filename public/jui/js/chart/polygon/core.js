@@ -1,22 +1,8 @@
-jui.define("chart.polygon.core", [ "util.transform", "util.math" ], function(Transform, math) {
+jui.define("chart.polygon.core", [ "chart.vector", "util.transform", "util.math", "util.base" ],
+    function(Vector, Transform, math, _) {
+
     var PolygonCore = function() {
         this.perspective = 0.9;
-        this.vertices = [];
-        this.faces = [];
-        this.edges = [];
-
-        this.normalize = function() {
-            for(var i = 0; i < this.vertices.length; i++) {
-                var x = this.vertices[i][0],
-                    y = this.vertices[i][1],
-                    z = this.vertices[i][2],
-                    u = Math.sqrt(x*x + y*y + z*z);
-
-                this.vertices[i][0] /= u;
-                this.vertices[i][1] /= u;
-                this.vertices[i][2] /= u;
-            }
-        }
 
         this.rotate = function(width, height, depth, degree) {
             var t = new Transform(this.vertices),
@@ -25,18 +11,34 @@ jui.define("chart.polygon.core", [ "util.transform", "util.math" ], function(Tra
                 cy = height / 2,
                 cz = depth / 2;
 
-            t.merge2(function(x, y, z, w) {
-                var s = math.scaleValue(z, 0, depth, 1, p);
+            // 5가지 항목 미리 합성
+            var M = t.matrix("move3d", cx, cy, cz),
+                M3 = t.matrix("move3d", -cx, -cy, -cz);
+            M = math.matrix3d(M, t.matrix("rotate3dx", degree.x));
+            M = math.matrix3d(M, t.matrix("rotate3dy", degree.y));
+            M = math.matrix3d(M, t.matrix("rotate3dz", degree.z));
 
-                return [
-                    [ "move3d", cx, cy, cz ],
-                    [ "rotate3dx", degree.x ],
-                    [ "rotate3dy", degree.y ],
-                    [ "rotate3dz", degree.z ],
-                    [ "scale3d", s, s, 1 ],
-                    [ "move3d", -cx, -cy, -cz ]
-                ]
-            });
+            // scale 만 따로 합성
+            for(var i = 0, count = this.vertices.length; i < count; i++) {
+                var z = this.vertices[i][2],
+                    s = math.scaleValue(z, 0, depth, 1, p);
+
+                var M2 = math.matrix3d(M, t.matrix("scale3d", s, s, 1));
+                M2 = math.matrix3d(M2, M3);
+
+                this.vertices[i] = math.matrix3d(M2, this.vertices[i]);
+
+                // 벡터 객체 생성 및 갱신
+                if(_.typeCheck("array", this.vectors)) {
+                    if (this.vectors[i] == null) {
+                        this.vectors[i] = new Vector(this.vertices[i][0], this.vertices[i][1], this.vertices[i][2]);
+                    } else {
+                        this.vectors[i].x = this.vertices[i][0];
+                        this.vectors[i].y = this.vertices[i][1];
+                        this.vectors[i].z = this.vertices[i][2];
+                    }
+                }
+            }
         }
 
         this.min = function() {

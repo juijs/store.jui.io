@@ -4,14 +4,6 @@
 		<a class='h2' style="display:inline-block"  data-view="information">Information</a>
 
 		<div class="editor-navbar">
-			<?php if ($isMy) { ?>
-			<div class='group'>
-				<a class="btn" onclick="savecode()">Save</a>
-				<a class="btn" onclick="deletecode()">Delete</a>
-			</div>
-			<?php } else { ?>
-
-			<?php } ?>
 		</div>
 	</div>
 

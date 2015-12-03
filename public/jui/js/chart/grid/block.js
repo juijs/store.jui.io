@@ -79,6 +79,18 @@ jui.define("chart.grid.block", [ "util.scale", "util.base" ], function(UtilScale
 
 		}
 
+		this.wrapper = function(scale, key) {
+			var old_scale = scale;
+			var self = this;
+			var len = self.domain.length;
+
+			function new_scale(i) {
+				return old_scale(len - i - 1);
+			}
+
+			return (this.grid.reverse) ? $.extend(new_scale, old_scale) : old_scale;
+		}
+
 		this.drawBefore = function() {
 			var domain = this.initDomain(),
 				obj = this.getGridSize(),

@@ -18,7 +18,8 @@ $(function() {
 
 		$("#access_message").html(html).css({
 			border : '1px solid ' + color,
-			color : color        
+			color : color ,
+				padding: " 3px 10px"
         });
 
    }

@@ -38,9 +38,13 @@ jui.define("chart.brush.polygon.scatter",
 				r: r * MathUtil.scaleValue(z, 0, this.axis.depth, 1, p.perspective),
 				fill: color,
 				"fill-opacity": this.chart.theme("polygonScatterBackgroundOpacity"),
-				cx: p.vertices[0][0],
-				cy: p.vertices[0][1]
+				cx: p.vectors[0].x,
+				cy: p.vectors[0].y
 			});
+
+			if(data[target] != 0) {
+				this.addEvent(elem, dataIndex, targetIndex);
+			}
 
 			return elem;
 		}
@@ -53,8 +57,6 @@ jui.define("chart.brush.polygon.scatter",
 			for(var i = 0; i < datas.length; i++) {
 				for(var j = 0; j < targets.length; j++) {
 					var p = this.createScatter(datas[i], targets[j], i, j);
-
-					this.addEvent(p, i, j);
 					g.append(p);
 				}
 			}

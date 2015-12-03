@@ -61,6 +61,11 @@ function changeLayout (type) {
 		closeFullscreen('sample');
 		closeFullscreen('information');
 	}
+
+	if (window.localStorage)
+	{
+		window.localStorage.setItem("component.layout", type);
+	}
 }
 </script>
 
@@ -74,10 +79,76 @@ body { overflow: hidden; }
 </style>
 
 <div class="editor-container view-all <?php echo $isMy ? 'my' : '' ?>">
-	<div class="editor-content has-toolbar">
+	<div class="editor-content has-toolbar has-statusbar">
 		<div class="editor-toolbar">
 			<div style='float:left;padding:10px;'>
 				<a class="btn" id="library"><i class='icon-gear'></i> Setting</a>
+			</div>
+			<div style="float:right;padding:10px;padding-top:15px;">
+				<?php if ($_GET['id']) { ?>
+				<a class='btn' href="/view.php?id=<?php echo $_GET['id'] ?>">View</a>
+				<?php } ?>			
+
+				<a class='btn' onclick="coderun()">Run <i class="icon-play"></i></a>
+
+				<?php if ($isMy) { ?>
+				<div class='group'>
+					<a class="btn" onclick="savecode()">Save</a>
+					<?php if ($_GET['id']) { ?>
+					<a class="btn" onclick="deletecode()">Delete</a>
+					<?php } ?>
+				</div>
+				<?php } else { ?>
+
+				<?php } ?>
+
+			</div>
+
+		</div>
+		<div class="editor-area">
+			<div class="editor-left">
+
+				<?php include_once "include/component.editor.php" ?>
+
+				<?php include_once "include/component.sample.php" ?>
+
+			</div>
+
+			<div class="editor-right">
+                
+				<?php include_once "include/component.information.php" ?>
+
+
+				<?php include_once "include/component.result.php" ?>
+			</div>
+
+		</div>
+	</div>
+
+		<div class="editor-statusbar">
+			<div class="group" style="float:left; padding:10px;">
+
+				<label style='margin-right:10px'><small><strong>Ctrl-F / Cmd-F</strong> Start searching</small> </label>
+				<label style='margin-right:10px'><small><strong>Ctrl-G / Cmd-G</strong> Find Next</small> </label>
+				<label style='margin-right:10px'><small><strong>Shift-Ctrl-F / Cmd-Option-F</strong> Replace</small> </label>
+				
+				<i class="icon-help"></i>
+<!--
+				<dl>
+					<dt>Ctrl-F / Cmd-F</dt>
+					<dd>Start searching</dd>
+					<dt>Ctrl-G / Cmd-G</dt>
+					<dd>Find next</dd>
+					<dt>Shift-Ctrl-G / Shift-Cmd-G</dt>
+					<dd>Find previous</dd>
+					<dt>Shift-Ctrl-F / Cmd-Option-F</dt>
+					<dd>Replace</dd>
+					<dt>Shift-Ctrl-R / Shift-Cmd-Option-F</dt>
+					<dd>Replace all</dd>
+					<dt>Alt-F</dt>
+					<dd>Persistent search (dialog doesn't autoclose, enter to find next, shift-enter to find previous)</dd>
+				</dl>
+-->
 			</div>
 			<div class="group" style="float:right;padding:10px;">
 				<a href="javascript:void(changeLayout('module+result'))" class="btn" title="module + result">
@@ -118,24 +189,6 @@ body { overflow: hidden; }
 			<div style="float:right;padding:10px;padding-top:15px;">Layout : </div>
 
 		</div>
-		<div class="editor-area">
-			<div class="editor-left">
-
-				<?php include_once "include/component.editor.php" ?>
-
-				<?php include_once "include/component.sample.php" ?>
-
-			</div>
-
-			<div class="editor-right">
-                
-				<?php include_once "include/component.information.php" ?>
-
-
-				<?php include_once "include/component.result.php" ?>
-			</div>
-		</div>
-	</div>
 </div>
 <?php include_once "include/component.script.php" ?>
 <?php include_once "footer.php" ?>

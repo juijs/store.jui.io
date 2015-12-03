@@ -33,15 +33,22 @@ jui.define("chart.brush.polygon.column",
 					"stroke-opacity": this.chart.theme("polygonColumnBorderOpacity")
 				});
 
-				for(var j = 0; j < key.length; j++) {
-					var value = p.vertices[key[j]];
-					face.point(value[0], value[1]);
+				for (var j = 0; j < key.length; j++) {
+					var vector = p.vectors[key[j]];
+					face.point(vector.x, vector.y);
 				}
 
 				g.append(face);
 			}
 
-			return g;
+			if(data[target] != 0) {
+				this.addEvent(g, dataIndex, targetIndex);
+			}
+
+			return {
+				element: g,
+				depth: p.max().z / 2
+			};
 		}
 
 		this.drawBefore = function() {
@@ -61,19 +68,17 @@ jui.define("chart.brush.polygon.column",
 
 			for(var i = 0; i < datas.length; i++) {
 				for(var j = 0; j < targets.length; j++) {
-					var p = this.createColumn(datas[i], targets[j], i, j);
-
-					this.addEvent(p, i, j);
-
-					if(!groups[j]) groups[j] = [];
-					groups[j].push(p);
+					var obj = this.createColumn(datas[i], targets[j], i, j);
+					groups.push(obj);
 				}
 			}
 
-			for(var i = groups.length - 1; i >= 0; i--) {
-				for(var j = 0; j < groups[i].length; j++) {
-					g.append(groups[i][j]);
-				}
+			groups.sort(function(a, b) {
+				return b.depth - a.depth;
+			});
+
+			for(var i = 0; i < groups.length; i++) {
+				g.append(groups[i].element);
 			}
 
 			return g;

@@ -19,6 +19,7 @@ jui.defineUI("ui.colorpicker", [ "jquery", "util.base", "util.color" ], function
             { rgb : '#ff00ff', start : .83 },
             { rgb : '#ff0000', start : 1 }
         ];
+
         var $root, $hue, $color, $value, $saturation, $drag_pointer, $drag_bar,
             $control, $controlPattern, $controlColor, $hueContainer, $opacity, $opacityContainer,
             $opacityInput, $opacity_drag_bar, $information, $informationTitle1, $informationTitle2,
@@ -26,37 +27,44 @@ jui.defineUI("ui.colorpicker", [ "jquery", "util.base", "util.color" ], function
             $informationInput3, $informationInput4;
 
         function setInputColor(evtType) {
+            var rgb = null;
 
-            if (evtType == 'HEX') {
-                var rgb = color.rgb(str);
+            if (evtType == 'hex') {
+                rgb = color.rgb($informationInput1.val());
+
                 $informationInput2.val(rgb.r);
                 $informationInput3.val(rgb.g);
                 $informationInput4.val(rgb.b);
-            } else if (evtType == 'RGB') {
 
+            } else if (evtType == 'rgb') {
                 $informationInput1.val(color.format({
                     r : parseInt($informationInput2.val(), 10),
                     g : parseInt($informationInput3.val(), 10),
                     b : parseInt($informationInput4.val(), 10)
                 }, 'hex'));
 
+                rgb = color.rgb($informationInput1.val());
+
             } else {
-                // init color without rgb or hex
-                var rgb = calculateColor(),
-                    str = self.getColor('hex');
+                var str = self.getColor('hex');
 
                 $informationInput1.val(str);
 
-                var rgb = color.rgb($informationInput1.val());
+                rgb = color.rgb($informationInput1.val());
                 $informationInput2.val(rgb.r);
                 $informationInput3.val(rgb.g);
                 $informationInput4.val(rgb.b);
             }
 
-            $controlColor.css("background-color", self.getColor('hex'));
+            // set alpha
+            rgb.a = caculateOpacity();
 
+            // set background
+            $controlColor.css("background-color", color.format(rgb, 'hex'));
             $opacityInput.val(Math.floor(rgb.a * 100) + "%");
-            self.emit("change", [str, rgb]);
+
+            // emit change
+            self.emit("change", [ color.format(rgb, 'hex' ), rgb ]);
         }
 
         function setMainColor(e) {
@@ -148,10 +156,16 @@ jui.defineUI("ui.colorpicker", [ "jquery", "util.base", "util.color" ], function
             setInputColor();
         }
 
+        function caculateOpacity() {
+            var opacityPos = $opacity_drag_bar.data('pos') || { x : 0 };
+            var a = Math.round((opacityPos.x / $opacity.width()) * 100) / 100;
+
+            return a;
+        }
+
         function calculateColor() {
             var pos = $drag_pointer.data('pos') || { x : 0, y : 0 };
             var huePos = $drag_bar.data('pos') || { x : 0 };
-            var opacityPos = $opacity_drag_bar.data('pos') || { x : 0 };
 
             var width = $color.width();
             var height = $color.height();
@@ -160,11 +174,8 @@ jui.defineUI("ui.colorpicker", [ "jquery", "util.base", "util.color" ], function
             var s = (pos.x / width);
             var v = ((height - pos.y) / height);
 
-            var a = Math.round((opacityPos.x / $opacity.width()) * 100) / 100;
-
             var rgb = color.HSVtoRGB(h, s, v);
-
-            rgb.a = a;
+            rgb.a = caculateOpacity();
 
             return rgb;
         }
@@ -221,7 +232,7 @@ jui.defineUI("ui.colorpicker", [ "jquery", "util.base", "util.color" ], function
                 r: parseInt($informationInput2.val()),
                 g: parseInt($informationInput3.val()),
                 b: parseInt($informationInput4.val())
-            }, "hex"), "RGB");
+            }, "hex"), "rgb");
         }
 
         function initColor(newColor, evtType) {
@@ -293,7 +304,7 @@ jui.defineUI("ui.colorpicker", [ "jquery", "util.base", "util.color" ], function
                 var code = $(this).val();
 
                 if(code.charAt(0) == '#' && code.length == 7) {
-                    initColor(code, 'HEX');
+                    initColor(code, 'hex');
                 }
             });
 
@@ -388,15 +399,24 @@ jui.defineUI("ui.colorpicker", [ "jquery", "util.base", "util.color" ], function
             initColor();
         }
 
-        this.setColor = function(hex) {
-            initColor(hex);
+        this.setColor = function(value) {
+            if(typeof(value) == "object") {
+                if(!value.r || !value.g || !value.b)
+                    return;
+
+                initColor(color.format(value, "hex"));
+            } else if(typeof(value) == "string") {
+                if(value.length != 7 || value.charAt(0) != "#")
+                    return;
+
+                initColor(value);
+            }
         }
 
         this.getColor = function(type) {
             var rgb = calculateColor();
 
             if (type) {
-
                 if (type == 'hex') {
                     if (rgb.a < 1) {
                         type = 'rgb';

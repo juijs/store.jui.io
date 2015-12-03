@@ -3,6 +3,7 @@ $arr = explode(",", $data['resources']);
 $metaList = array();
 foreach($arr as $val) {
 
+	$val = trim($val);
 	$path = "frameworks/{$val}.php";
 	if (file_exists($path)) {
 		$metaList[] = file_get_contents($path);

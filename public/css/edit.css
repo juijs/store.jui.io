@@ -28,6 +28,14 @@
 	right:0px;
 }
 
+.editor-statusbar {
+	position:absolute;
+	left:0px;
+	bottom:0px;
+	height:50px;
+	right:0px;
+}
+
 .editor-area {
 	position:absolute;
 	left:0px;
@@ -38,6 +46,10 @@
 
 .editor-content.has-toolbar .editor-area {
 	top:50px;
+}
+
+.editor-content.has-statusbar .editor-area {
+	bottom:50px;
 }
 
 /** new layout **/
@@ -204,6 +216,7 @@
 	display:block;
 }
 
+/*
 .editor-statusbar {
 	border-top:1px solid #ddd;
 	position:absolute;
@@ -214,6 +227,7 @@
 	padding:3px;
 	padding-left:10px;
 }
+*/
 
 .select-chart {
 	position:absolute;

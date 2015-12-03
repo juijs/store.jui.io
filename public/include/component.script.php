@@ -110,7 +110,7 @@ $(function() {
 
 	<?php include_once "error.view.php" ?>
 
-	window.forkcode = function savecode() {
+	window.forkcode = function forkcode() {
 
 		var data = {
             type : 'component',
@@ -220,6 +220,9 @@ $(function() {
 		if (data.name == '')
 		{
 			alert("Input a ID String (ex : my.module.name)");
+			$(".blockUI").hide();
+			changeLayout('all');
+			$("#name").focus().select();
 			return;
 		}
 
@@ -475,6 +478,13 @@ $(function() {
 		});
 
 	});
+
+	var layout =  "sample+result";
+	if (window.localStorage)
+	{
+		layout = window.localStorage.getItem("component.layout");
+	}
+	changeLayout(layout);
 });
 </script>
 

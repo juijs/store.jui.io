@@ -439,6 +439,11 @@ footer .link [class*=icon-] {
 	overflow:hidden;
 }
 
+.summary-box.large .summary-normal .content{
+	max-height:none;
+	overflow:auto;
+}
+
 .summary-normal:hover .imagesfield > img {
 	opacity: 0.9;
 }

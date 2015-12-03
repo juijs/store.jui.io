@@ -21,6 +21,11 @@
 	<script src="/bower_components/codemirror/mode/sass/sass.js"></script>
 	<script src="/bower_components/codemirror/mode/stylus/stylus.js"></script>
 
+	<script src="/bower_components/codemirror/addon/dialog/dialog.js"></script>
+	<script src="/bower_components/codemirror/addon/search/search.js"></script>
+	<script src="/bower_components/codemirror/addon/search/searchcursor.js"></script>
+
+	<link href="/bower_components/codemirror/addon/dialog/dialog.css" rel="stylesheet" />
 	<link href="/bower_components/codemirror/theme/twilight.css" rel="stylesheet" />
 	<?php } ?>
 

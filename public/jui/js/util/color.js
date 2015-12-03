@@ -118,13 +118,14 @@ jui.define("util.color", ["jquery"], function($) {
 			else if (300 <= H && H < 360) { temp = [C, 0, X]; }
 
 			return {
-				r : parseInt((temp[0] + m) * 255),
-				g : parseInt((temp[1] + m) * 255),
-				b : parseInt((temp[2] + m) * 255)
+				r : Math.ceil((temp[0] + m) * 255),
+				g : Math.ceil((temp[1] + m) * 255),
+				b : Math.ceil((temp[2] + m) * 255)
 			};
 		},
 
 		RGBtoHSV : function (R, G, B) {
+
 			var R1 = R / 255;
 			var G1 = G / 255;
 			var B1 = B / 255;
@@ -143,6 +144,10 @@ jui.define("util.color", ["jquery"], function($) {
 				H  = 60 * (( (B1 - R1) / DeltaC) + 2);
 			} else if (MaxC == B1) {
 				H  = 60 * (( (R1 - G1) / DeltaC) + 4);
+			}
+
+			if (H < 0) {
+				H = 360 + H;
 			}
 
 			var S = 0;
