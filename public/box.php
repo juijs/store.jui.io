@@ -7,10 +7,13 @@ if (!$type) $type = 'component';
 
 $first = $type_text[$type];
 
+
+$avatar = $data['avatar'];
+
 ?>
 <div class="summary-box" data-id="<?php echo $id ?>"><div class="summary-normal">
 		<div class="name">
-			<span><img src="<?php echo $data['avatar'] ?>" width="30" height="30" class='avatar' align='absmiddle'/>&nbsp;<?php echo $data['username'] ?></span>
+			<span><img src="<?php echo $avatar ?>" width="30" height="30" class='avatar' align='absmiddle'/>&nbsp;<?php echo $data['username'] ?></span>
 
 			<?php
 					$share_text = urlencode($description)." #store #jui #js" ;
@@ -32,7 +35,7 @@ $first = $type_text[$type];
 		<?php if (/*!$data['sample'] ||*/ true) { // only iframe view ?>
 		<div class="imagesfield" >
 			<?php
-				$embed_url = "embed.php?id=".$id."&only=result";
+				$embed_url = "/embed.php?id=".$id."&only=result";
 
 										// generate static file 
 				$root = getcwd();
@@ -42,7 +45,7 @@ $first = $type_text[$type];
 					$embed_url = $static_file;
 				}
 			?>		
-			<iframe src="<?php echo $embed_url ?>" class='iframe-wrap' id="result"></iframe>
+			<iframe src="<?php echo $embed_url ?>" class="iframe-wrap" id="result"></iframe>
 	
 			<a href="<?php echo $link ?>" class='box-a'>&nbsp;</a>
 </div>

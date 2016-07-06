@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/>
+    <script src="../lib/core.js"></script>
+    <script src="../dist/chart.js"></script>
+</head>
+<body >
+
+<div id="chart"></div>
+
+<script id="script_code">
+    jui.ready([ "chart.builder" ], function(chart) {
+
+        chart("#chart", {
+            padding: 100,
+            width: 400,
+            height : 400,
+            theme : "jennifer",
+            axis : {
+                data : [
+                    { yellow : 36, red : 45, black : 18, blue : 10, green : 5, cyan : 100, cross : 33, xxx : 30, ddd : 2 }
+                ]
+            },
+            brush : [{
+                type : "pie",
+                showText : "outside",
+                format : function(k, v, max) {
+                    //return this.icon("check") + k + ": " + v + "(" + ((v/max)*100).toFixed(2) + "%)";
+                    return ((v/max)*100).toFixed(2) + "%";
+                },
+                active : [ "yellow", "red" ],
+                activeEvent : "click"
+            }],
+            widget : [{
+                type : "legend",
+                orient : "bottom"
+            }, {
+                type : "tooltip"
+            }]
+        });
+	})
+</script>
+
+
+</body>
+</html>

@@ -66,20 +66,24 @@ $(function() {
 
 	window.select_theme_list = function(value) {
 		var path = value.replace(/\./g, '/');
-		$.get("/jui/less/theme/" + path + ".less").success(function(code) {
-			$("#theme_name").val(path);
+		$.get("/jui-all/jui/less/theme/" + path + ".less").success(function(code) {
 
-			componentCode.setValue(code); 	
+			$.get("/jui-all/jui-grid/less/theme/" + path + ".less").success(function(code2) {
 
-			getStyleObject();
+				$("#theme_name").val(path);
 
-			coderun();
+				componentCode.setValue(code + "\r\n" + code2); 	
+
+				getStyleObject();
+
+				coderun();
+			});
 		});
 	}
 
 
 	window.select_theme = function(btn) {
-		var win = jui.create('uix.window', "#theme_select_win", {
+		var win = jui.create('ui.window', "#theme_select_win", {
 			width: 280,
 			height: 260,
 			modal : true

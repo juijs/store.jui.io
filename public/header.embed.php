@@ -19,10 +19,15 @@
 
 	<link href="/bower_components/codemirror/theme/twilight.css" rel="stylesheet" />
     <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
-	<link href="/jui/dist/jui.min.css" rel="stylesheet" />
-	<link href="/jui/dist/jennifer.theme.min.css" rel="stylesheet" />
+	<link href="/jui-all/jui/dist/ui.min.css" rel="stylesheet" />
+	<link href="/jui-all/jui/dist/ui-jennifer.min.css" rel="stylesheet" />
+	<link href="/jui-all/jui-grid/dist/grid.min.css" rel="stylesheet" />
+	<link href="/jui-all/jui-grid/dist/grid.jennifer.min.css" rel="stylesheet" />
 	<link href="/css/embed.css" rel="stylesheet" />
-	<script type="text/javascript" src="/jui/dist/jui.min.js"></script>
+	<script type="text/javascript" src="/jui-all/jui-core/dist/core.min.js"></script>
+	<script type="text/javascript" src="/jui-all/jui/dist/ui.min.js"></script>
+	<script type="text/javascript" src="/jui-all/jui-grid/dist/grid.min.js"></script>
+	<script type="text/javascript" src="/jui-all/jui-chart/dist/chart.min.js"></script>
 	<?php echo $meta ?>
 </head>
 <body class="jui">

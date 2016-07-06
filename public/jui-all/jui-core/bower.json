@@ -1,0 +1,11 @@
+{
+  "name": "jui-core",
+  "version": "2.0.4",
+  "main": [
+    "dist/core.min.js"
+  ],
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ]
+}

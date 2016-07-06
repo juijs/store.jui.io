@@ -1,0 +1,48 @@
+.accordion {
+  color: @accordionFontColor;
+  border-style: solid;
+  border-color: @accordionBorderColor;
+  .box-shadow(@accordionBoxShadow);
+
+  > *:not(:last-child) {
+    border-bottom: 1px solid @accordionBorderColor;
+  }
+
+  > .title {
+    .btn-bgcolor-2(@accordionTitleBackgroundColor1, @accordionTitleBackgroundColor2);
+
+    &:hover {
+      .btn-bgcolor-2(@accordionTitleHoverBackgroundColor1, @accordionTitleHoverBackgroundColor2);
+    }
+  }
+
+  > .title.active {
+    background-color: @accordionTitleActiveBackgroundColor;
+    background-image: none;
+    cursor: default;
+  }
+
+  > .content {
+    .box-shadow(@accordionContentBoxShadow);
+  }
+}
+
+.accordion.simple {
+  > .title {
+    background-color: @accordionSimpleTitleBackgroundColor;
+
+    &:hover:not(.active) {
+      background-color: @accordionSimpleTitleHoverBackgroundColor;
+    }
+  }
+
+  > .title.active {
+    background-color: @accordionSimpleTitleActiveBackgroundColor;
+    background-image: none;
+    cursor: default;
+  }
+
+  &.accordion-white {
+    .box-shadow(none);
+  }
+}

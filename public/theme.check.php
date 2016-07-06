@@ -11,7 +11,7 @@ include_once "header.php"
 
 jui.ready(function() { 
 	// 테마 설정 
-	var obj = lastTheme();
+	var obj = jui.include("chart.theme.<?php echo $_POST['theme_name'] ?>");
 
 	for(var key in obj) {
 		var arr = key.split(/[A-Z]+/);

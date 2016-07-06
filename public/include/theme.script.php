@@ -64,7 +64,7 @@ $(function() {
 	window.select_theme_list = function(value) {
 
 		var path = value.replace(/\./g, '/');
-		$.get("/jui/js/chart/theme/" + path + ".js").success(function(code) {
+		$.get("/jui-all/jui-chart/js/theme/" + path + ".js").success(function(code) {
 			componentCode.setValue(code); 	
 
 			window.selected_theme_name = value; 
@@ -77,7 +77,7 @@ $(function() {
 
 
 	window.select_theme = function(btn) {
-		var win = jui.create('uix.window', "#theme_select_win", {
+		var win = jui.create('ui.window', "#theme_select_win", {
 			width: 650,
 			height: 260,
 			modal : true
@@ -100,7 +100,7 @@ $(function() {
 	}
 
 	window.select_sample = function(btn) {
-		var win = jui.create('uix.window', "#sample_select_win", {
+		var win = jui.create('ui.window', "#sample_select_win", {
 			width: 650,
 			height: 500,
 			modal : true
@@ -184,7 +184,15 @@ $(function() {
 
         $("#chart_form [name=component_code]").val(window.coderun.componentCodeText);
         $("#chart_form [name=sample_code]").val(window.coderun.sampleCodeText);
-        $("#chart_form [name=name]").val($("#name").val());
+
+
+		var name = $("#name").val();
+		
+		if (name == "") {  name = "temp"; }
+
+		window.coderun.componentCodeText = window.coderun.componentCodeText.replace("chart.theme." + window.selected_theme_name, "chart.theme." + name);
+
+        $("#chart_form [name=name]").val(name); 
 
         $("#chart_form").submit();
 	}
@@ -192,8 +200,16 @@ $(function() {
 	window.getThemeObject = function getThemeObject () {
 		window.coderun.componentCodeText = componentCode.getValue();
 
-		window.coderun.componentCodeText = 	window.coderun.componentCodeText.replace(window.selected_theme_name, "chart.theme." + $("#name").val());
+		var name = $("#name").val();
+		
+		if (name == "")
+		{
+			name = "temp";
+		}
 
+		window.coderun.componentCodeText = 	window.coderun.componentCodeText.replace("chart.theme." + window.selected_theme_name, "chart.theme." + name);
+
+		$("#theme_form [name=theme_name]").val(name);
         $("#theme_form [name=component_code]").val(window.coderun.componentCodeText);
 
         $("#theme_form").submit();
@@ -230,7 +246,7 @@ $(function() {
 
 			coderun();
 			
-		}, 10);
+		}, 200);
 	}
 
 	window.rp = function (value, postfix) {
@@ -391,19 +407,31 @@ $(function() {
 	}
 
 	window.savecode = function savecode() {
+		var componentCodeText = componentCode.getValue();
 
+		var name = $("#name").val();
+		
+		if (name == "")
+		{
+			name = "temp";
+		}
+
+		componentCodeText = 	componentCodeText.replace("chart.theme." + window.selected_theme_name, "chart.theme." + name);
+	
 		var data = {
 			type : 'theme',
 			id : '<?php echo $_GET['id'] ?>',
             access : $("[name=access]:checked").val(),
 			title : $("#title").val(),
-			name : $.trim($("#name").val()),
+			name : $.trim(name),
 			description : $("#description").val(),
 			license : $("#license").val(),
-			component_code : componentCode.getValue(),
+			component_code : componentCodeText,
 			sample_code : sampleCode.getValue(),
 			sample : $("#sample").val()
 		}
+
+
 
 		
 		if (data.name == '')
@@ -411,7 +439,6 @@ $(function() {
 			alert("Input a ID String (ex : my.module.name)");
 			return;
 		}
-
 
 		$.post("/save.php", data, function(res) {
 			

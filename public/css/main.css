@@ -75,6 +75,11 @@ footer .link [class*=icon-] {
 	height: 52px;
 	position: absolute;
 	cursor: pointer;
+	top: -2px;
+}
+
+.logo img {
+	vertical-align: middle;
 }
 .logo-link {
 	display: block;

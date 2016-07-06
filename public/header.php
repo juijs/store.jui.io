@@ -34,16 +34,20 @@
 	<script type="text/javascript" src="/js/main.js"></script>
 	
 	<?php if ($page_id != 'generate.ui') { ?>
-	<link href="/jui/dist/jui.min.css" rel="stylesheet" />
-	<link href="/jui/dist/jennifer.theme.min.css" rel="stylesheet" />
+	<link href="/jui-all/jui/dist/ui.min.css" rel="stylesheet" />
+	<link href="/jui-all/jui-grid/dist/grid.min.css" rel="stylesheet" />
+	<link href="/jui-all/jui/dist/ui-jennifer.min.css" rel="stylesheet" />
+	<link href="/jui-all/jui-grid/dist/grid-jennifer.min.css" rel="stylesheet" />
 	<?php } ?>
 	<link href="/css/main.css" rel="stylesheet" />
 
 	<?php if ($type_text[$page_id]) { ?>
 	<link href="/css/edit.css" rel="stylesheet" />
 	<?php } ?>
-
-	<script type="text/javascript" src="/jui/dist/jui.min.js"></script>
+	<script type="text/javascript" src="/jui-all/jui-core/dist/core.min.js"></script>
+	<script type="text/javascript" src="/jui-all/jui/dist/ui.min.js"></script>
+	<script type="text/javascript" src="/jui-all/jui-grid/dist/grid.min.js"></script>
+	<script type="text/javascript" src="/jui-all/jui-chart/dist/chart.js"></script>
 <?php if ($page_id != 'generate' && $page_id != 'generate.ui' && $page_id != 'view'  && $page_id != 'list' && $page_id != 'mylist'  ) { ?>
 	<script src="/bower_components/tinyColorPicker/colors.js"></script>
 	<script src="/bower_components/tinyColorPicker/jqColorPicker.js"></script>

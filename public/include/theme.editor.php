@@ -25,6 +25,7 @@
 				<input type="hidden" name="type" value="theme" />
 			</form>
 			<form id="theme_form" action="theme.check.php" method="post" target="theme_frame" enctype="multipart/form-data" style="display:none">
+				<input type="hidden" name="theme_name" value="" />
 				<input type="hidden" name="component_code" value="" />
 			</form>
 	</div>

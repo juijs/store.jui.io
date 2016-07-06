@@ -1,0 +1,82 @@
+{
+  "name": "jui",
+  "version": "2.0.2",
+  "description": "JUI provide all kinds of UI components that are used in web pages. However, charts and grids are not included.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "main": [
+    "dist/ui.min.js",
+    "dist/ui.min.css",
+    "dist/ui-jennifer.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juijs/jui.git"
+  },
+  "keywords": [
+    "HTML5",
+    "CSS",
+    "JS",
+    "JavaScript",
+    "framework",
+    "bootstrap",
+    "front-end",
+    "frontend",
+    "web development",
+    "free",
+    "MIT"
+  ],
+  "author": "seogi1004",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/juijs/jui/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-concat": "~0.5.1",
+    "grunt-contrib-copy": "~0.8.2",
+    "grunt-contrib-cssmin": "~0.14.0",
+    "grunt-contrib-less": "~1.1.0",
+    "grunt-contrib-qunit": "~0.7.0",
+    "grunt-contrib-uglify": "~0.11.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "load-grunt-tasks": "~3.4.0"
+  },
+  "categories": [
+    "Frameworks",
+    "UI"
+  ],
+  "maintainers": [
+    {
+      "name": "Alvin",
+      "email": "alvin@jennifersoft.com"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Jayden",
+      "email": "jayden@jennifersoft.com"
+    },
+    {
+      "name": "Yoha",
+      "email": "yoha@jennifersoft.com"
+    }
+  ],
+  "jam": {
+    "dependencies": {
+      "jquery": ">=1.8.0"
+    },
+    "main": [
+      "dist/ui.min.js",
+      "dist/ui.min.css",
+      "dist/ui-jennifer.css"
+    ],
+    "shim": {
+      "deps": [
+        "jquery"
+      ],
+      "exports": "jui"
+    }
+  }
+}

@@ -290,7 +290,7 @@ $(function() {
 
 	loadContent();
 
-	var fileListWin = jui.create("uix.window", "#file-list", {
+	var fileListWin = jui.create("ui.window", "#file-list", {
 		width : 600,
 		height : 400,
 		modal : true,
@@ -378,7 +378,7 @@ $(function() {
 
 	});
 
-	var resourceTab = jui.create('uix.tab', ".import-toolbar", {
+	var resourceTab = jui.create('ui.tab', ".import-toolbar", {
 		target: ".import-content",
 	});
 

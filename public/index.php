@@ -56,7 +56,14 @@ $rows = $rows->sort($sort)->skip($skip)->limit($limit);
 
 <div style="margin-top:28px"></div>
 <div id="content-container">
-<?php  foreach ($rows as $data) {  include "box.php";   } ?>
+<?php  
+
+$boxCount = 0; 
+foreach ($rows as $data) {  
+//	if ($boxCount++ > 0) break;
+
+	include "box.php";   
+} ?>
 </div>
 
 <?php include_once "include/store.list.php" ?>

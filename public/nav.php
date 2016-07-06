@@ -32,7 +32,7 @@
 		<?php } ?>
 
 	<span class="logo-link">
-			<a class="logo" href="/"><img style="margin-top:3px" src="images/logo-jui.png"></a>
+			<a class="logo" href="/"><img src="images/jui-logo-white.svg" width="52px" height="52px"></a>
 	</span>
 	<span class="login">
 		<?php include_once __DIR__."/login.php" ?>
@@ -45,7 +45,7 @@
 	</span>
 
 	<span class="logo-link">
-		<a class="logo" href="/"><img style="margin-top:3px" src="images/logo-jui.png"></a>
+		<a class="logo" href="/"><img src="images/jui-logo-white.svg" width="52px" height="52px"></a>
 	</span>
 	<?php } ?>
 
