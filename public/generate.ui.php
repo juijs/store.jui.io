@@ -12,8 +12,10 @@ if ($_POST['theme_name'] == 'dark') {
 	$backgroundColor = 'black';
 }
 
-$metaList[] = '<link rel="stylesheet" href="/jui/dist/jui.min.css" />';
-$metaList[] = '<link rel="stylesheet" href="/jui/dist/'.$_POST['theme_name'].'.theme.min.css" />';
+$metaList[] = '<link rel="stylesheet" href="/jui-all/jui/dist/ui.min.css" />';
+$metaList[] = '<link rel="stylesheet" href="/jui-all/jui/dist/ui-'.$_POST['theme_name'].'.min.css" />';
+$metaList[] = '<script type="text/javascript" src="/jui-all/jui-core/dist/core.min.js"></script>';
+$metaList[] = '<script type="text/javascript" src="/jui-all/jui/dist/ui.min.js"></script>';
 $meta = implode(PHP_EOL, $metaList);
 
 ?>

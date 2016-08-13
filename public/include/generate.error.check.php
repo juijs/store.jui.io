@@ -3,11 +3,12 @@ window.onerror = function(message, path, line, column, error) {
 
 	var $noti = $('<div class="notify danger"><div class="image"><i class="icon-caution" style="font-size: 18px;"></i></div><div class="title"></div><div class="message"><pre></pre></div></div>');
 
-	$noti.width($(window).width()-200);
 	$noti.find(".title").html([message, path, line, column].join('-'));
 	$noti.find(".message pre").html(error.stack);
 	$noti.css({
 		position: 'absolute',
+		width: 'auto',
+		left: 10,
 		right : 10,
 		bottom : 10
 	});

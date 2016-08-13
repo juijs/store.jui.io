@@ -1,4 +1,4 @@
-jui.defineUI("grid.table", [ "jquery", "util.base", "ui.dropdown", "grid.base" ], function($, _, dropdown, Base) {
+jui.defineUI("grid.table", [ "jquery", "util.base", "ui.dropdown", "grid.base", "grid.row" ], function($, _, dropdown, Base, Row) {
 
     _.resize(function() {
         var call_list = jui.get("grid.table");
@@ -24,7 +24,7 @@ jui.defineUI("grid.table", [ "jquery", "util.base", "ui.dropdown", "grid.base" ]
      */
     var UI = function() {
         var $obj = null, ddUi = null; // table/thead/tbody 구성요소, 컬럼 설정 UI (Dropdown)
-        var selectedIndex = null, expandedIndex = null, editableIndex = null, dragIndex = null, checkedIndexes = {};
+        var selectedIndex = null, editableIndex = null, dragIndex = null, expandedIndex = null, checkedIndexes = {}; // TODO: 로우 객체 기반으로 변경하기 (#8)
         var is_resize = false;
 
 
@@ -165,6 +165,8 @@ jui.defineUI("grid.table", [ "jquery", "util.base", "ui.dropdown", "grid.base" ]
 
             for(var i = 0; i < rows.length; i++) {
                 (function(row) {
+                    if(row.element == null) return;
+
                     if(row.children.length > 0) {
                         setEventRow(self, row);
                         setEventRows(self, row.children);
@@ -185,14 +187,16 @@ jui.defineUI("grid.table", [ "jquery", "util.base", "ui.dropdown", "grid.base" ]
                 if(self.options.expand) {
                     if(self.options.expandEvent === false) return;
 
-                    if(expandedIndex === row.index) {
+                    var expandedRow = (expandedIndex instanceof Row) ? expandedIndex : self.get(expandedIndex); // TODO: #8 가상스크롤 지원 이슈로 인한 사이드이펙트
+
+                    if(expandedRow === row) {
                         self.hideExpand(e);
                     } else {
                         if(expandedIndex != null) {
                             self.hideExpand(e);
                         }
 
-                        self.showExpand(row.index, undefined, e);
+                        self.showExpand(row, undefined, e);
                     }
                 }
             });
@@ -788,6 +792,12 @@ jui.defineUI("grid.table", [ "jquery", "util.base", "ui.dropdown", "grid.base" ]
          * Removes all rows.
          */
         this.reset = function() {
+            selectedIndex = null;
+            expandedIndex = null;
+            editableIndex = null;
+            dragIndex = null;
+            checkedIndexes = {};
+
             this.uit.removeRows();
             this.scroll();
         }
@@ -1193,7 +1203,7 @@ jui.defineUI("grid.table", [ "jquery", "util.base", "ui.dropdown", "grid.base" ]
             resetRowStatus(this);
 
             var expandSel = "#EXPAND_" + this.timestamp,
-                row = this.get(index),
+                row = (index instanceof Row) ? index : this.get(index),
                 obj = (typeof(obj) != "object") ? $.extend({ row: row }, row.data) : obj,
                 $expand = $(expandSel).parent().show();
 
@@ -1219,7 +1229,8 @@ jui.defineUI("grid.table", [ "jquery", "util.base", "ui.dropdown", "grid.base" ]
          */
         this.hideExpand = function(e) {
             if(expandedIndex == null) return;
-            var row = this.get(expandedIndex);
+
+            var row = (expandedIndex instanceof Row) ? expandedIndex : this.get(expandedIndex);
 
             $('#EXPAND_' + this.timestamp).parent().hide();
             $obj.tbody.find("tr").removeClass("open");
@@ -1239,7 +1250,8 @@ jui.defineUI("grid.table", [ "jquery", "util.base", "ui.dropdown", "grid.base" ]
          */
         this.getExpand = function() {
             if(expandedIndex == null) return null;
-            return this.get(expandedIndex);
+
+            return (expandedIndex instanceof Row) ? expandedIndex : this.get(expandedIndex);
         }
 
         /**
@@ -1431,7 +1443,11 @@ jui.defineUI("grid.table", [ "jquery", "util.base", "ui.dropdown", "grid.base" ]
          * @return {Integer} index
          */
         this.activeIndex = function() { // 활성화된 확장/수정/선택 상태의 로우 인덱스를 리턴
-            return selectedIndex || expandedIndex || editableIndex;
+            if(expandedIndex != null) {
+                return (expandedIndex instanceof Row) ? expandedIndex.index : expandedIndex;
+            }
+
+            return selectedIndex || editableIndex;
         }
     }
 

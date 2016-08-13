@@ -45,6 +45,11 @@ $document = array(
 	'update_time' => time()
 );
 
+$type = $_POST['type'];
+
+include_once PLUGIN."/$type/save.php";
+
+
 if ($_POST['id']) {
 	$prevData = $components->findOne(array(
 		'_id' => new MongoId($_POST['id'])
@@ -82,6 +87,7 @@ if ($_POST['id']) {
 
 } else {
 
+	/*
 	$prevData = $components->findOne(array(
 		'name' => $_POST['name']
 	));
@@ -89,7 +95,7 @@ if ($_POST['id']) {
 	if ($prevData['_id']) {
 		echo json_encode(array('result' => false, 'message' => 'Name is already exists.'));
 		exit;
-	}
+	} */
 
 	$components->insert($document);
 
@@ -112,7 +118,13 @@ if ($result['ok']) {
 	echo json_encode(array('id' => $id, 'result' => true));
 	// create static file 
 	$data = $document;
-	include_once "make.static.file.php";
+
+	if (file_exists(PLUGIN."/$type/make.static.file.php")) {
+		include_once PLUGIN."/$type/make.static.file.php";
+	} else {
+		include_once "make.static.file.php";
+	}
+
 
 } else {
 	echo json_encode(array('result' => false));

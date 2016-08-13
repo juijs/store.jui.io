@@ -1,3 +1,3 @@
-<link rel="stylesheet" href="https://rawgit.com/seogi1004/jui/develop/dist/jui.min.css" />
-<link rel="stylesheet" href="https://rawgit.com/seogi1004/jui/develop/dist/jennifer.theme.css" />
-<script type="text/javascript" src="https://rawgit.com/seogi1004/jui/develop/dist/jui.min.js" ></script>
+<link rel="stylesheet" href="http://store.jui.io/jui/dist/jui.min.css" />
+<link rel="stylesheet" href="http://store.jui.io/jui/dist/jennifer.theme.min.css" />
+<script type="text/javascript" src="http://store.jui.io/jui/dist/jui.min.js" ></script>

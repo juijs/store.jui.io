@@ -25,7 +25,6 @@ jui.define("chart.brush.donut", [ "util.base", "util.math", "util.color" ], func
 				startX = obj.x,
 				startY = obj.y;
 
-
 			// 시작 하는 위치로 옮김
 			path.MoveTo(startX, startY);
 
@@ -37,6 +36,11 @@ jui.define("chart.brush.donut", [ "util.base", "util.math", "util.color" ], func
 
 			// outer arc 그림
 			path.Arc(outerRadius, outerRadius, 0, (endAngle > 180) ? 1 : 0, 1, obj.x, obj.y);
+
+            // 마우스 이벤트 빈공간 제외
+            path.css({
+                "pointer-events": "stroke"
+            });
 
 			g.append(path);
             g.order = 1;
@@ -150,33 +154,18 @@ jui.define("chart.brush.donut", [ "util.base", "util.math", "util.color" ], func
 		}
 
         this.drawUnit = function (index, data, g) {
-            var obj = this.axis.c(index);
-
-            var width = obj.width,
-                height = obj.height,
-                x = obj.x,
-                y = obj.y,
-                min = width;
-
-            if (height < min) {
-                min = height;
-            }
-          
-            if (this.brush.size >= min/2) {
-              this.brush.size = min/4;
-            }
-
-            // center
-            var centerX = width / 2 + x,
-                centerY = height / 2 + y,
-                outerRadius = min / 2 - this.brush.size / 2,
-                innerRadius = outerRadius - this.brush.size;
+            var props = this.getProperty(index),
+                centerX = props.centerX,
+                centerY = props.centerY,
+                innerRadius = props.innerRadius,
+                outerRadius = props.outerRadius;
 
             var target = this.brush.target,
                 active = this.brush.active,
                 all = 360,
                 startAngle = 0,
-                max = 0;
+                max = 0,
+                totalValue = 0;
 
             for (var i = 0; i < target.length; i++) {
                 max += data[target[i]];
@@ -211,6 +200,8 @@ jui.define("chart.brush.donut", [ "util.base", "util.math", "util.color" ], func
             startAngle = 0;
 
             for (var i = 0; i < target.length; i++) {
+                if(data[target[i]] == 0) continue;
+
                 var value = data[target[i]],
                     endAngle = all * (value / max),
                     centerAngle = startAngle + (endAngle / 2) - 90,
@@ -261,6 +252,68 @@ jui.define("chart.brush.donut", [ "util.base", "util.math", "util.color" ], func
                 g.append(text);
 
                 startAngle += endAngle;
+                totalValue += value;
+            }
+
+            // Show total value
+            if(this.brush.showValue) {
+                this.drawTotalValue(g, centerX, centerY, totalValue);
+            }
+        }
+
+        this.drawNoData = function(g) {
+            var props = this.getProperty(0);
+
+            g.append(this.drawDonut(props.centerX, props.centerY, props.innerRadius, props.outerRadius, 0, 360, {
+                stroke : this.chart.theme("pieNoDataBackgroundColor"),
+                fill : "transparent"
+            }));
+
+            // Show total value
+            if(this.brush.showValue) {
+                this.drawTotalValue(g, props.centerX, props.centerY, 0);
+            }
+        }
+
+        this.drawTotalValue = function(g, centerX, centerY, value) {
+            var size = this.chart.theme("pieTotalValueFontSize");
+
+            var text = this.chart.text({
+                "font-size": size,
+                "font-weight": this.chart.theme("pieTotalValueFontWeight"),
+                fill: this.chart.theme("pieTotalValueFontColor"),
+                "text-anchor": "middle",
+                dy: size / 3
+            }, this.format(value));
+
+            text.translate(centerX, centerY);
+            g.append(text)
+        }
+
+        this.getProperty = function(index) {
+            var obj = this.axis.c(index);
+
+            var width = obj.width,
+                height = obj.height,
+                x = obj.x,
+                y = obj.y,
+                min = width;
+
+            if (height < min) {
+                min = height;
+            }
+
+            if (this.brush.size >= min/2) {
+                this.brush.size = min/4;
+            }
+
+            var outerRadius = min / 2 - this.brush.size / 2;
+
+            return {
+                centerX : width / 2 + x,
+                centerY : height / 2 + y,
+                outerRadius : outerRadius,
+                innerRadius : outerRadius - this.brush.size
             }
         }
 	}
@@ -268,7 +321,9 @@ jui.define("chart.brush.donut", [ "util.base", "util.math", "util.color" ], func
 	DonutBrush.setup = function() {
 		return {
             /** @cfg {Number} [size=50] donut stroke width  */
-			size: 50
+			size: 50,
+            /** @cfg {Boolean} [showValue=false] donut stroke width  */
+            showValue: false
 		};
 	}
 

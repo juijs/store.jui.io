@@ -1,13 +1,13 @@
 jui.define("chart.brush.pie", [ "util.base", "util.math", "util.color" ], function(_, math, ColorUtil) {
 
-	/**
-	 * @class chart.brush.pie
+    /**
+     * @class chart.brush.pie
      * @extends chart.brush.core
-	 */
-	var PieBrush = function() {
+     */
+    var PieBrush = function() {
         var self = this, textY = 3;
-        var g;
-        var cache_active = {};
+        var preAngle = 0, preRate = 0, preOpacity = 1;
+        var g, cache_active = {};
 
         this.setActiveEvent = function(pie, centerX, centerY, centerAngle) {
             var dist = this.chart.theme("pieActiveDistance"),
@@ -39,8 +39,8 @@ jui.define("chart.brush.pie", [ "util.base", "util.math", "util.color" ], functi
             }
         }
 
-		this.drawPie = function(centerX, centerY, outerRadius, startAngle, endAngle, color) {
-			var pie = this.chart.svg.group();
+        this.drawPie = function(centerX, centerY, outerRadius, startAngle, endAngle, color) {
+            var pie = this.chart.svg.group();
 
             if (endAngle == 360) { // if pie is full size, draw a circle as pie brush
                 var circle = this.chart.svg.circle({
@@ -56,60 +56,60 @@ jui.define("chart.brush.pie", [ "util.base", "util.math", "util.color" ], functi
 
                 return pie;
             }
-            
+
             var path = this.chart.svg.path({
                 fill : color,
                 stroke : this.chart.theme("pieBorderColor") || color,
                 "stroke-width" : this.chart.theme("pieBorderWidth")
             });
 
-			// 바깥 지름 부터 그림
-			var obj = math.rotate(0, -outerRadius, math.radian(startAngle)),
-				startX = obj.x,
+            // 바깥 지름 부터 그림
+            var obj = math.rotate(0, -outerRadius, math.radian(startAngle)),
+                startX = obj.x,
                 startY = obj.y;
-			
-			// 시작 하는 위치로 옮김
-			path.MoveTo(startX, startY);
 
-			// outer arc 에 대한 지점 설정
-			obj = math.rotate(startX, startY, math.radian(endAngle));
+            // 시작 하는 위치로 옮김
+            path.MoveTo(startX, startY);
 
-			pie.translate(centerX, centerY);
+            // outer arc 에 대한 지점 설정
+            obj = math.rotate(startX, startY, math.radian(endAngle));
 
-			// arc 그림
-			path.Arc(outerRadius, outerRadius, 0, (endAngle > 180) ? 1 : 0, 1, obj.x, obj.y)
+            pie.translate(centerX, centerY);
+
+            // arc 그림
+            path.Arc(outerRadius, outerRadius, 0, (endAngle > 180) ? 1 : 0, 1, obj.x, obj.y)
                 .LineTo(0, 0)
                 .ClosePath();
 
             pie.append(path);
             pie.order = 1;
 
-			return pie;
-		}
+            return pie;
+        }
 
-		this.drawPie3d = function(centerX, centerY, outerRadius, startAngle, endAngle, color) {
-			var pie = this.chart.svg.group(),
-				path = this.chart.svg.path({
+        this.drawPie3d = function(centerX, centerY, outerRadius, startAngle, endAngle, color) {
+            var pie = this.chart.svg.group(),
+                path = this.chart.svg.path({
                     fill : color,
                     stroke : this.chart.theme("pieBorderColor") || color,
                     "stroke-width" : this.chart.theme("pieBorderWidth")
                 });
 
-			// 바깥 지름 부터 그림
-			var obj = math.rotate(0, -outerRadius, math.radian(startAngle)),
-				startX = obj.x,
+            // 바깥 지름 부터 그림
+            var obj = math.rotate(0, -outerRadius, math.radian(startAngle)),
+                startX = obj.x,
                 startY = obj.y;
 
-			// 시작 하는 위치로 옮김
-			path.MoveTo(startX, startY);
+            // 시작 하는 위치로 옮김
+            path.MoveTo(startX, startY);
 
-			// outer arc 에 대한 지점 설정
-			obj = math.rotate(startX, startY, math.radian(endAngle));
+            // outer arc 에 대한 지점 설정
+            obj = math.rotate(startX, startY, math.radian(endAngle));
 
-			pie.translate(centerX, centerY);
+            pie.translate(centerX, centerY);
 
-			// arc 그림
-			path.Arc(outerRadius, outerRadius, 0, (endAngle > 180) ? 1 : 0, 1, obj.x, obj.y)
+            // arc 그림
+            path.Arc(outerRadius, outerRadius, 0, (endAngle > 180) ? 1 : 0, 1, obj.x, obj.y)
 
             var y = obj.y + 10,
                 x = obj.x + 5,
@@ -123,8 +123,8 @@ jui.define("chart.brush.pie", [ "util.base", "util.math", "util.color" ], functi
             pie.append(path);
             pie.order = 1;
 
-			return pie;
-		}
+            return pie;
+        }
 
         this.drawText = function(centerX, centerY, centerAngle, outerRadius, text) {
             var g = this.svg.group({
@@ -148,70 +148,84 @@ jui.define("chart.brush.pie", [ "util.base", "util.math", "util.color" ], functi
                 g.append(text);
                 g.order = 2;
             } else {
-                var dist = this.chart.theme("pieOuterLineSize"),
-                    r = outerRadius * this.chart.theme("pieOuterLineRate"),
-                    cx = centerX + (Math.cos(math.radian(centerAngle)) * outerRadius),
-                    cy = centerY + (Math.sin(math.radian(centerAngle)) * outerRadius),
-                    tx = centerX + (Math.cos(math.radian(centerAngle)) * r),
-                    ty = centerY + (Math.sin(math.radian(centerAngle)) * r),
-                    ex = (isLeft) ? tx - dist : tx + dist;
+                // TODO: 각도가 좁을 때, 텍스트와 라인을 보정하는 코드 개선 필요
 
-                var path = this.svg.path({
-                    fill: "transparent",
-                    stroke: this.chart.theme("pieOuterLineColor"),
-                    "stroke-width": 0.7
-                });
+                var rate = this.chart.theme("pieOuterLineRate"),
+                    diffAngle = Math.abs(centerAngle - preAngle);
 
-                path.MoveTo(cx, cy)
-                    .LineTo(tx, ty)
-                    .LineTo(ex, ty);
+                if(diffAngle < 2) {
+                    if(preRate == 0) {
+                        preRate = rate;
+                    }
 
-                var text = this.chart.text({
-                    "font-size": this.chart.theme("pieOuterFontSize"),
-                    fill: this.chart.theme("pieOuterFontColor"),
-                    "text-anchor": (isLeft) ? "end" : "start",
-                    y: textY
-                }, text);
+                    var tick = rate * 0.05;
+                    preRate -= tick;
+                    preOpacity -= 0.25;
+                } else {
+                    preRate = rate;
+                    preOpacity = 1;
+                }
 
-                text.translate(ex + (isLeft ? -3 : 3), ty);
+                if(preRate > 1.2) {
+                    var dist = this.chart.theme("pieOuterLineSize"),
+                        r = outerRadius * preRate,
+                        cx = centerX + (Math.cos(math.radian(centerAngle)) * outerRadius),
+                        cy = centerY + (Math.sin(math.radian(centerAngle)) * outerRadius),
+                        tx = centerX + (Math.cos(math.radian(centerAngle)) * r),
+                        ty = centerY + (Math.sin(math.radian(centerAngle)) * r),
+                        ex = (isLeft) ? tx - dist : tx + dist;
 
-                g.append(text);
-                g.append(path);
-                g.order = 0;
+                    var path = this.svg.path({
+                        fill: "transparent",
+                        stroke: this.chart.theme("pieOuterLineColor"),
+                        "stroke-width": this.chart.theme("pieOuterLineWidth"),
+                        "stroke-opacity": preOpacity
+                    });
+
+                    path.MoveTo(cx, cy)
+                        .LineTo(tx, ty)
+                        .LineTo(ex, ty);
+
+                    var text = this.chart.text({
+                        "font-size": this.chart.theme("pieOuterFontSize"),
+                        "fill": this.chart.theme("pieOuterFontColor"),
+                        "fill-opacity": preOpacity,
+                        "text-anchor": (isLeft) ? "end" : "start",
+                        y: textY
+                    }, text);
+
+                    text.translate(ex + (isLeft ? -3 : 3), ty);
+
+                    g.append(text);
+                    g.append(path);
+                    g.order = 0;
+
+                    preAngle = centerAngle;
+                }
             }
 
             return g;
         }
 
-		this.drawUnit = function (index, data, g) {
-			var obj = this.axis.c(index);
+        this.drawUnit = function (index, data, g) {
+            var props = this.getProperty(index),
+                centerX = props.centerX,
+                centerY = props.centerY,
+                outerRadius = props.outerRadius;
 
-			var width = obj.width,
-                height = obj.height,
-                x = obj.x,
-                y = obj.y,
-                min = width;
-
-			if (height < min) {
-				min = height;
-			}
-
-			// center
-			var centerX = width / 2 + x,
-                centerY = height / 2 + y,
-                outerRadius = min / 2;
-
-			var target = this.brush.target,
+            var target = this.brush.target,
                 active = this.brush.active,
-				all = 360,
-				startAngle = 0,
-				max = 0;
+                all = 360,
+                startAngle = 0,
+                max = 0;
 
-			for (var i = 0; i < target.length; i++) {
-				max += data[target[i]];
-			}
+            for (var i = 0; i < target.length; i++) {
+                max += data[target[i]];
+            }
 
-			for (var i = 0; i < target.length; i++) {
+            for (var i = 0; i < target.length; i++) {
+                if(data[target[i]] == 0) continue;
+
                 var value = data[target[i]],
                     endAngle = all * (value / max);
 
@@ -220,12 +234,12 @@ jui.define("chart.brush.pie", [ "util.base", "util.math", "util.color" ], functi
                     g.append(pie3d);
                 }
 
-				startAngle += endAngle;
-			}
+                startAngle += endAngle;
+            }
 
             startAngle = 0;
 
-			for (var i = 0; i < target.length; i++) {
+            for (var i = 0; i < target.length; i++) {
                 var value = data[target[i]],
                     endAngle = all * (value / max),
                     centerAngle = startAngle + (endAngle / 2) - 90,
@@ -271,22 +285,52 @@ jui.define("chart.brush.pie", [ "util.base", "util.math", "util.color" ], functi
                 g.append(pie);
                 g.append(text);
 
-				startAngle += endAngle;
-			}
-		}
+                startAngle += endAngle;
+            }
+        }
+
+        this.drawNoData = function(g) {
+            var props = this.getProperty(0);
+
+            g.append(this.drawPie(props.centerX, props.centerY, props.outerRadius, 0, 360, this.chart.theme("pieNoDataBackgroundColor")));
+        }
 
         this.drawBefore = function() {
             g = this.chart.svg.group();
         }
 
-		this.draw = function() {
-			this.eachData(function(i, data) {
-				this.drawUnit(i, data, g);
-			});
+        this.draw = function() {
+            if(this.listData().length == 0) {
+                this.drawNoData(g);
+            } else {
+                this.eachData(function(data, i) {
+                    this.drawUnit(i, data, g);
+                });
+            }
 
             return g;
-		}
-	}
+        }
+
+        this.getProperty = function(index) {
+            var obj = this.axis.c(index);
+
+            var width = obj.width,
+                height = obj.height,
+                x = obj.x,
+                y = obj.y,
+                min = width;
+
+            if (height < min) {
+                min = height;
+            }
+
+            return {
+                centerX: width / 2 + x,
+                centerY: height / 2 + y,
+                outerRadius: min / 2
+            }
+        }
+    }
 
     PieBrush.setup = function() {
         return {
@@ -305,5 +349,5 @@ jui.define("chart.brush.pie", [ "util.base", "util.math", "util.color" ], functi
         }
     }
 
-	return PieBrush;
+    return PieBrush;
 }, "chart.brush.core");

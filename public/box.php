@@ -9,7 +9,11 @@ $first = $type_text[$type];
 
 
 $avatar = $data['avatar'];
-
+$isMy = true;
+//var_dump($data, $_SESSION);
+if (($data['login_type'] != $_SESSION['login_type'] || $data['userid'] != $_SESSION['userid']) ) {
+    $isMy = false;
+}
 ?>
 <div class="summary-box" data-id="<?php echo $id ?>"><div class="summary-normal">
 		<div class="name">
@@ -45,9 +49,10 @@ $avatar = $data['avatar'];
 					$embed_url = $static_file;
 				}
 			?>		
-			<iframe src="<?php echo $embed_url ?>" class="iframe-wrap" id="result"></iframe>
+			<img src="<?php echo $thumbnail_url ?>" class="iframe-wrap" id="result"/>
 	
 			<a href="<?php echo $link ?>" class='box-a'>&nbsp;</a>
+			<?php if ($isMy) { ?><a href="#" onclick="deletecode('<?php echo $id ?>')" class='box-delete-btn'><i class='icon-trashcan'></i> Delete</a><?php } ?>
 </div>
 
 		<?php } else { ?>

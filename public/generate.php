@@ -7,7 +7,7 @@ $data = $_POST;
 
 include_once "include/generate.meta.php";
 
-$metaList[] = "<script>define.amd=true;</script>";
+//$metaList[] = "<script>if (define) define.amd=true;</script>";
 $meta = implode(PHP_EOL, $metaList);
 
 
@@ -28,14 +28,12 @@ html,body {
 #embedResult {
     position:absolute;
     width:100%;
-    height:100%;
-    
+	height:98%;
 }
 </style>
 
-<?php if ($data['type'] == 'component') { ?>
+<?php if (in_array($data['type'], array('page', 'component'))) { ?>
 <?php echo $data['html_code'] ?>
-
 <?php } else {?>
 <div id="embedResult"></div>
 <?php } ?>

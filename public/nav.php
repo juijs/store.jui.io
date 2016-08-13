@@ -5,6 +5,10 @@
 		<?php  if ($page_id == 'mylist') { ?>
 		<span class="nav-loadchart" style="text-align:center;">
 			<div class='group'>
+				<a href="editor.php?type=page" class='btn create-button'>
+					<div class='button-image'><i class='icon-check'></i> <?php echo $type_text['page'] ?></div> 
+				</a>
+
 				<a href="component.php" class='btn create-button'>
 					<div class='button-image'><i class='icon-check'></i> <?php echo $type_text['component'] ?></div> 
 				</a>
@@ -22,12 +26,12 @@
 
 		<?php } else if ($page_id != 'manager') { ?>
 		<span class="nav-loadchart">Sharing a component.
-			<a id="btn-chart-upload" class="form-btn form-btn-dpurple form-btn-small" href="<?php echo !$_SESSION['login'] ? "/login_form.php?url=".urlencode($_SERVER['PHP_SELF']) : "/mylist.php" ?>">New</a>
+			<a id="btn-chart-upload" class="form-btn form-btn-dpurple form-btn-small" href="<?php echo !$_SESSION['login'] ? "/login_form.php?url=".urlencode($_SERVER['PHP_SELF']) : "/dashboard.php" ?>">Dashboard</a>
 		</span>
 		<?php } else { ?>
 
 		<span class="nav-loadchart">Sharing a component.
-			<a id="btn-chart-upload" class="form-btn form-btn-dpurple form-btn-small" href="<?php echo !$_SESSION['login'] ? "/login_form.php?url=".urlencode($_SERVER['PHP_SELF']) : "/mylist.php" ?>">New</a>
+			<a id="btn-chart-upload" class="form-btn form-btn-dpurple form-btn-small" href="<?php echo !$_SESSION['login'] ? "/login_form.php?url=".urlencode($_SERVER['PHP_SELF']) : "/dashboard.php" ?>">Dashboard</a>
 		</span>
 		<?php } ?>
 

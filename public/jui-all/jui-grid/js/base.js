@@ -37,7 +37,7 @@ jui.define("grid.base", [ "jquery", "util.base", "grid.column", "grid.row" ], fu
             for(var i = 0; i < tmpColumns.length; i++) {
                 var column = new Column(i);
 
-                if(columns[i]) { // ������ �÷� ������ ���� ��쿡�� ����Ʈ�� �ʱ�ȭ �Ѵ�.
+                if(columns[i]) {
                     column.element = columns[i].element;
                     column.order = columns[i].order;
                     column.name = columns[i].name;
@@ -85,21 +85,25 @@ jui.define("grid.base", [ "jquery", "util.base", "grid.column", "grid.row" ], fu
         }
 
         function createRow(data, no, pRow) {
-            var row = new Row(data, $tpl.row, pRow);
-            row.reload(no, false, columns);
+            if(data instanceof Row) return data;
+
+            var row = new Row();
+            row.init(data, $tpl.row, pRow);
+            row.setIndex(no);
+            row.reload(columns);
 
             return row;
         }
 
         function setRowChildAll(dataList, row) {
-            var c_rows = row.children;
+            var child_rows = row.children;
 
-            if(c_rows.length > 0) {
-                for(var i = 0; i < c_rows.length; i++) {
-                    dataList.push(c_rows[i]);
+            if(child_rows.length > 0) {
+                for(var i = 0; i < child_rows.length; i++) {
+                    dataList.push(child_rows[i]);
 
-                    if(c_rows[i].children.length > 0) {
-                        setRowChildAll(dataList, c_rows[i]);
+                    if(child_rows[i].children.length > 0) {
+                        setRowChildAll(dataList, child_rows[i]);
                     }
                 }
             }
@@ -127,7 +131,8 @@ jui.define("grid.base", [ "jquery", "util.base", "grid.column", "grid.row" ], fu
             }
 
             for(var i = index; i < rows.length; i++) {
-                rows[i].reload(i);
+                rows[i].setIndex(i);
+                rows[i].reload();
                 initColumnRows("reload", rows[i]);
 
                 if(typeof(callback) == "function") {
@@ -150,7 +155,7 @@ jui.define("grid.base", [ "jquery", "util.base", "grid.column", "grid.row" ], fu
             preRows.push(row);
             rows = preRows.concat(rows);
 
-            // Rows UI ����
+            // Rows UI
             reloadRows(index);
 
             return row;
@@ -160,8 +165,8 @@ jui.define("grid.base", [ "jquery", "util.base", "grid.column", "grid.row" ], fu
             var keys = iParser.getIndexList(index);
 
             var pRow = self.getRowParent(index),
-                rownum = keys[keys.length - 1];
-            row = createRow(data, rownum, pRow);
+                rownum = keys[keys.length - 1],
+                row = createRow(data, rownum, pRow);
 
             pRow.insertChild(rownum, row);
 
@@ -169,14 +174,10 @@ jui.define("grid.base", [ "jquery", "util.base", "grid.column", "grid.row" ], fu
         }
 
         function appendRowData(data) {
-            // Row �迭 ����
             var row = createRow(data, rows.length);
             rows.push(row);
 
-            // ���� HTML�� �߰�
             $obj.tbody.append(row.element);
-
-            // Column �迭 ����
             initColumnRows("append", row);
 
             return row;
@@ -207,6 +208,17 @@ jui.define("grid.base", [ "jquery", "util.base", "grid.column", "grid.row" ], fu
             }
 
             return true;
+        }
+
+        function getIndexToRow(index) {
+            for(var i = 0, len = rows.length; i < len; i++) {
+                if(rows[i].index == ("" + index)) {
+                    return rows[i];
+                    break;
+                }
+            }
+
+            return null;
         }
 
         this.appendRow = function() {
@@ -244,7 +256,7 @@ jui.define("grid.base", [ "jquery", "util.base", "grid.column", "grid.row" ], fu
                 row.data[key] = data[key];
             }
 
-            row.reload(null, true);
+            row.reload();
             initColumnRows("reload", row);
 
             return row;
@@ -270,7 +282,7 @@ jui.define("grid.base", [ "jquery", "util.base", "grid.column", "grid.row" ], fu
         }
 
         this.removeRow = function(index) {
-            var row = this.getRow(index);		// �ڽ� ��ü
+            var row = this.getRow(index);
 
             if(!iParser.isIndexDepth(index)) {
                 row.destroy();
@@ -447,13 +459,23 @@ jui.define("grid.base", [ "jquery", "util.base", "grid.column", "grid.row" ], fu
         }
 
         this.getRow = function(index) {
-            if(index == null) return rows;
-            else {
-                if(iParser.isIndexDepth(index)) {
-                    var keys = iParser.getIndexList(index);
-                    return getRowChildLeaf(keys, rows[keys.shift()]);
+            if(index == null) {
+                return rows;
+            } else {
+                var row = getIndexToRow(index);
+
+                if(!row) {
+                    var keys = iParser.getIndexList(index),
+                        row = getIndexToRow(keys[0]);
+
+                    for(var i = 1, len = keys.length; i < len; i++) {
+                        if(!row) break;
+                        row = row.children[keys[i]];
+                    }
+
+                    return row;
                 } else {
-                    return (rows[index]) ? rows[index] : null;
+                    return row;
                 }
             }
         }
@@ -475,7 +497,7 @@ jui.define("grid.base", [ "jquery", "util.base", "grid.column", "grid.row" ], fu
             return dataList;
         }
 
-        this.getRowParent = function(index) { // Ʈ�� ������ Ű���� Ű �ο��� �θ� �������� �Լ�
+        this.getRowParent = function(index) {
             if(!iParser.isIndexDepth(index)) return null;
             return this.getRow(iParser.getParentIndex(index));
         }

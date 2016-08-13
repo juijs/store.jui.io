@@ -1,4 +1,4 @@
-<div class="editor-panel-pull editor-panel-border view-component">
+<div class="editor-panel-full editor-panel-border view-component" style="background-color:#fff;">
 
 	<div class="editor-tool" style="font-size:13px;">
 		<a class='h2' style="display:inline-block"  data-view="component">
@@ -10,10 +10,11 @@
 			<?php if ($isMy) { ?>
 			<div class="group">
 				<a class="btn"><i class="icon-upload"></i> Upload File</a> 
-				<a class="btn" onclick="select_theme(this)">Select Theme</a>
+				<input type="file" accept=".js" id="component_load" />
 			</div>
-			<input type="file" accept=".js" id="component_load" />
 			<?php } ?>
+			<a class="btn" onclick="select_theme(this)"><i class="icon-search"></i> Select Theme</a>
+			<a class='btn' onclick='select_sample(this)'>Select Sample <i class="icon-chevron-right"></i> </a>
 		</span>
 	</div>
 	<div id="tab_contents_2" class="tab-contents editor-codemirror" style="background:#ffffff">

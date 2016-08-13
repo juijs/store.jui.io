@@ -1,6 +1,5 @@
 <?php
-
-
+error_reporting(E_ALL);
 function directoryList($path, $omit = '') {
 	$arr = scandir($path);
 	
@@ -21,9 +20,20 @@ function directoryList($path, $omit = '') {
 				'path' => $real_name
 			);
 		} else {
+			
+			$content = file_get_contents($real_path);
+			$temp = explode("-->", $content);
+
+			$json = array();
+			if (count($temp) > 1) {
+				$temp2 = explode("<!--", $temp[0]);
+				$json = (array)json_decode($temp2[1]);
+			}
+
 			$list[] = array(
 				'is_dir' => false,
 				'name' => str_replace(".php", "", $file),
+				'info' => $json,
 				'path' => $real_name
 			);
 		}

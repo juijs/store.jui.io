@@ -1,7 +1,10 @@
 <?php $page_id = "generate"; ?>
 <?php 
 
-$meta = "<script>define.amd=true;</script>";
+include_once "include/generate.meta.php";
+
+$metaList[] = "<script>if (define) define.amd=true;</script>";
+$meta = implode(PHP_EOL, $metaList);
 include_once "header.php";
 
 $map_link = "data:image/svg+xml;base64,".base64_encode($_POST['component_code']);

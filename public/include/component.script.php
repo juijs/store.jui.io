@@ -41,35 +41,40 @@ $(function() {
 	  }
 	});
 
-	jui.create("ui.button", "#js_html_convert", { 
-		type : "radio",
-		event : {
-			change : function(data) {
-				$("#js_html_convert a").removeClass('focus');
-				$("#js_html_convert a[value=" + data.value + "]").addClass('focus');
-				if (data.value == 'js') {
-					$("#tab_contents_js").show();
-					$("#tab_contents_html").hide();
-					$("#tab_contents_css").hide();
+	var editor_list = ['component', 'js', 'html', 'css'];
+	var code_editor_list = [componentCode, sampleCode, htmlCode, cssCode];
 
-					sampleCode.refresh();
+	window.splitter_move_done = function () {
+		for(var i = 0, len = code_editor_list.length; i < len; i++) {
+			code_editor_list[i].refresh();
+		}
+	}
 
-				} else if (data.value == 'html') {
-					$("#tab_contents_js").hide();
-					$("#tab_contents_html").show();
-					$("#tab_contents_css").hide();
 
-					htmlCode.refresh();
+	$("#module_convert").on("click", "a", function () {
 
-				} else if (data.value == 'css') {
-					$("#tab_contents_js").hide();
-					$("#tab_contents_html").hide();
-					$("#tab_contents_css").show();
+			var  value = $(this).attr('value');
+			var $parent = $(this).parent();
+			var $container = $parent.parent();
+			$container.find("li.active").removeClass("active");
+			$parent.addClass('active');
 
-					cssCode.refresh();
+			for (var i = 0, len = editor_list.length; i < len ; i++ )
+			{
+				var editor = editor_list[i];
+				$("#tab_contents_" + editor).toggle(editor == value);
+				code_editor_list[i].refresh();
+			}
+
+			if ($('.editor-splitter').css('display') == 'none') {
+				if (value == 'result') {
+					$('.editor-right').show();
+					coderun();
+				} else {
+					$('.editor-right').hide();
+
 				}
 			}
-		}
 	});
 
 	$("#component_load").change(function(e) {
@@ -86,6 +91,21 @@ $(function() {
 		}
 
 	});
+
+	window.code_name_list = {
+		"markdown": "Markdown",
+		"javascript": "Javascript",
+		"css": "CSS",
+		"stylus": "stylus",
+		"jade": "Jade",
+		"less": "LESS",
+		"scss": "SCSS",
+		"sass": "SASS",
+		"coffeescript": "Coffescript",
+		"html": "HTML",
+		"haml": "Haml",
+		"typescript": "Typescript"
+	};
 
 	window.coderun = function coderun () {
 
@@ -109,14 +129,6 @@ $(function() {
 	}
 
 	<?php include_once "error.view.php" ?>
-
-	window.forkcode = function forkcode() {
-
-		var data = {
-            type : 'component',
-			id : '<?php echo $_GET['id'] ?>'
-		}
-	}
 
 	window.getResourceList = function getResoureList() {
 		return $(".external-item input[type=text]").map(function() {
@@ -170,9 +182,11 @@ $(function() {
 		var javascript = arr[1];
 		var css = arr[2];
 
-		$("#js_html_convert [value=js]").html(javascript);
-		$("#js_html_convert [value=html]").html(html);
-		$("#js_html_convert [value=css]").html(css);
+		console.log(css);
+
+		$("#module_convert [value=js]").html(code_name_list[javascript]);
+		$("#module_convert [value=html]").html(code_name_list[html]);
+		$("#module_convert [value=css]").html(code_name_list[css]);
 
 		var htmlMode = html;
 		var javascriptMode = javascript;
@@ -193,6 +207,7 @@ $(function() {
 		// set syntax highlighting
 	    sampleCode.setOption("mode", javascriptMode);
 	    htmlCode.setOption("mode", htmlMode);
+		cssCode.setOption("mode", cssMode);
 
 	}
 
@@ -217,6 +232,7 @@ $(function() {
 			preprocessor : getPreProcessorList()
 		}
 
+		/*
 		if (data.name == '')
 		{
 			alert("Input a ID String (ex : my.module.name)");
@@ -224,7 +240,7 @@ $(function() {
 			changeLayout('all');
 			$("#name").focus().select();
 			return;
-		}
+		}*/
 
 
 		$.post("/save.php", data, function(res) {
@@ -290,13 +306,14 @@ $(function() {
 
 	loadContent();
 
-	var fileListWin = jui.create("ui.window", "#file-list", {
+	var fileListWin = window.fileListWin =  jui.create("ui.window", "#file-list", {
 		width : 600,
-		height : 400,
+		height : 500,
 		modal : true,
 		event : {
-			hide : function() {
+			apply : function() {
 				updatePreProcessorList();
+				this.hide();
 			}
 		}
 	});
@@ -321,7 +338,10 @@ $(function() {
 			}
 
 			if ($currentOpt) {
-				var $opt = $("<option />").val(file.name).html(file.name);
+
+				var name = file.info.name || file.name;
+
+				var $opt = $("<option />").val(file.name).html(name);
 
 				$currentOpt.append($opt);
 			}
@@ -479,16 +499,17 @@ $(function() {
 
 	});
 
+	/*
 	var layout =  "sample+result";
 	if (window.localStorage)
 	{
 		layout = window.localStorage.getItem("component.layout");
 	}
-	changeLayout(layout);
+	changeLayout(layout); */
 });
 </script>
 
-	<div id="file-list" class='window <?php echo $isMy ? 'my' : '' ?>' style='display:none'>
+<div id="file-list" class='window <?php echo $isMy ? 'my' : '' ?>' style='display:none'>
     <div class="head">
         <div class="left"><i class='icon-gear'></i> Setting</div>
         <div class="right">
@@ -498,18 +519,52 @@ $(function() {
 	<div class="body" style="padding:10px;">
 		<div style="position:relative;width:100%;height:100%">
 		<ul class="tab import-toolbar">
-			<li class='active'><a href="#external-resources">External Resources</a></li>
+			<li class='active'><a href="#information">Information</a></li>
+			<li ><a href="#external-resources">External Resources</a></li>
 			<li><a href="#preprocessor">Preprocessor</a></li>
 			<li>
 				<a href="#jui-resources">Load JUI Resources</a>
 			</li>
 		</ul>
 		<div id="tab_contents_1" class='import-content'>
+			<div id="information">
+				<div>
+					<div style="padding:10px">
+						<?php if ($isMy) { ?>
+						<div class="row" style="padding:5px">
+							<div class="col col-2">Access </div>
+							<div class="col col-10">
+								<label><input type="radio" name="access" value="public" checked onclick="viewAccessMessage()" <?php echo $data['access'] == 'public' ? 'checked' : '' ?>/> Public</label>
+								<label><input type="radio" name="access" value="private" onclick="viewAccessMessage()" <?php echo $data['access'] == 'private' ? 'checked' : '' ?>/> Private </label>
+								<label><input type="radio" name="access" value="share" onclick="viewAccessMessage()" <?php echo $data['access'] == 'share' ? 'checked' : '' ?>/> Share </label>
+								<span id="access_message" style="font-size:11px;padding:5px;"></span>
+							</div>
+						</div>
+						<?php } ?>
+						<div class="row" style="padding:5px">
+							<div class="col col-2">Name <i class="icon-help" title="Set the file name"></i></div>
+							<div class="col col-10"><input type="text" class="input" style="width:100%;" id="name" require="true" <?php if (!$isMy) { ?>disabled<?php } ?> /></div>
+						</div>
+						<div class="row" style="padding:5px;">
+							<div class="col col-2">Title </div>
+							<div class="col col-10"><input type="text" class="input" style="width:100%;" id="title"  <?php if (!$isMy) { ?>disabled<?php } ?>  /></div>
+						</div>
+						<div class="row" style="padding:5px">
+							<div class="col col-2">Description </div>
+							<div class="col col-10">
+								<textarea style="width:100%;height: 100px;" class="input" id="description" <?php if (!$isMy) { ?>disabled<?php } ?> ></textarea>
+							</div>
+						</div>
+						<?php include_once "include/license.php" ?>
+						<input type="hidden" id="sample" name="sample" value="" />
+						<input type="hidden" name="resources" value="" />
+					</div>
+				</div>
+			</div>
 			<div id="jui-resources">
 				<div id="loaded-file-list" class='submenu-content'></div>
 			</div>
 			<div id="preprocessor">
-				<div class='preprocessor-help'>Sample Code </div>
 				<div class='p-list'>
 					<div class="p-item">
 						<label>HTML</label>
@@ -540,7 +595,6 @@ $(function() {
 				</div>
 			</div>
 			<div id="external-resources">
-				<div class='external-help'>It can import  external css and js files. </div>
 				<div class="external-list">
 					<div class='external-item'>
 						<span title="drag me for ordering" class=
@@ -551,7 +605,7 @@ $(function() {
 					<div style="float:left">
 						<a class='btn add-form-btn'><i class='icon-plus' ></i> Add Resource</a>					
 					</div>
-					<div style="float:right;display:none;">
+					<div style="float:right;">
 					Quick Reference : 
 
 						<select class='input framework-list'>
@@ -561,6 +615,10 @@ $(function() {
 			</div>
 		</div>
 		</div>
+	</div>
+	<div class="foot" style="text-align:right;padding-right:10px;">
+		<a href="#" class="btn">Close</a>
+		<a href="#" class="btn focus" onclick="fileListWin.emit('apply')">Apply</a>
 	</div>
 </div>
 

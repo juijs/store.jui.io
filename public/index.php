@@ -1,6 +1,12 @@
 <?php 
 
 $page_id = 'list';
+
+
+
+include_once "include/generate.meta.php";
+$meta = implode(PHP_EOL, $metaList);
+
 include_once "header.php" ;
 
 ?>

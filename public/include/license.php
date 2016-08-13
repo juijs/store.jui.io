@@ -19,7 +19,7 @@
 			</div>
 			<div class="col col-4" style="padding-left: 5px;">
 				<a class='btn' onclick="more_info_license()" style="width: 100%;">
-					<i class="icon-link"></i> More info for licenses
+					<i class="icon-link"></i> Read more info
 				</a>
 			</div>
 		</div>

@@ -1,4 +1,4 @@
-jui.define("chart.brush.line", [], function() {
+jui.define("chart.brush.line", [ "util.base" ], function(_) {
 
     /**
      * @class chart.brush.line
@@ -13,7 +13,7 @@ jui.define("chart.brush.line", [], function() {
 
             for(var i = 0; i < lines.length; i++) {
                 var opacity = (elem == lines[i].element) ? 1 : disableOpacity,
-                    color = lines[i].element.attr("stroke");
+                    color = lines[i].element.get(0).attr("stroke");
 
                 if(lines[i].tooltip != null) {
                     lines[i].tooltip.style(color, circleColor, opacity);
@@ -31,43 +31,73 @@ jui.define("chart.brush.line", [], function() {
             this.lineList.push(elem);
         }
 
-        this.createLine = function(pos, index) {
+        this.createLine = function(pos, tIndex) {
             var x = pos.x,
-                y = pos.y;
+                y = pos.y,
+                v = pos.value,
+                px = (this.brush.symbol == "curve") ? this.curvePoints(x) : null,
+                py = (this.brush.symbol == "curve") ? this.curvePoints(y) : null,
+                color = null,
+                opts = {
+                    "stroke-width" : lineBorderWidth,
+                    "stroke-dasharray" : lineBorderDashArray,
+                    fill : "transparent",
+                    "cursor" : (this.brush.activeEvent != null) ? "pointer" : "normal"
+                };
 
-            var p = this.chart.svg.path({
-                stroke : this.color(index),
-                "stroke-width" : lineBorderWidth,
-                "stroke-dasharray" : lineBorderDashArray,
-                fill : "transparent",
-                "cursor" : (this.brush.activeEvent != null) ? "pointer" : "normal"
-            });
+            var g = this.svg.group(),
+                p = null;
 
             if(pos.length > 0) {
-                p.MoveTo(x[0], y[0]);
+                var start = null, end = null;
 
-                if (this.brush.symbol == "curve") {
-                    var px = this.curvePoints(x),
-                        py = this.curvePoints(y);
+                for (var i = 0; i < x.length - 1; i++) {
+                    if(!_.typeCheck([ "undefined", "null" ], v[i]))
+                        start = i;
+                    if(!_.typeCheck([ "undefined", "null" ], v[i + 1]))
+                        end = i + 1;
 
-                    for (var i = 0; i < x.length - 1; i++) {
-                        p.CurveTo(px.p1[i], py.p1[i], px.p2[i], py.p2[i], x[i + 1], y[i + 1]);
+                    if(start == null || end == null || start == end)
+                        continue;
+
+                    var newColor = this.color(i, tIndex);
+
+                    if(color != newColor) {
+                        p = this.svg.path(_.extend({
+                            stroke: newColor,
+                            x1: x[start] // Start coordinates of area brush
+                        }, opts));
+
+                        p.css({
+                            "pointer-events": "stroke"
+                        });
+
+                        p.MoveTo(x[start], y[start]);
+                        g.append(p);
+
+                        color = newColor;
+                    } else {
+                        p.attr({
+                            x2: x[end] // End coordinates of area brush
+                        });
                     }
-                } else {
-                    for (var i = 0; i < x.length - 1; i++) {
-                        if (this.brush.symbol == "step") {
-                            var sx = x[i] + ((x[i + 1] - x[i]) / 2);
 
-                            p.LineTo(sx, y[i]);
-                            p.LineTo(sx, y[i + 1]);
+                    if (this.brush.symbol == "curve") {
+                        p.CurveTo(px.p1[start], py.p1[start], px.p2[start], py.p2[start], x[end], y[end]);
+                    } else {
+                        if (this.brush.symbol == "step") {
+                            var sx = x[start] + ((x[end] - x[start]) / 2);
+
+                            p.LineTo(sx, y[start]);
+                            p.LineTo(sx, y[end]);
                         }
 
-                        p.LineTo(x[i + 1], y[i + 1]);
+                        p.LineTo(x[end], y[end]);
                     }
                 }
             }
 
-            return p;
+            return g;
         }
 
         this.createTooltip = function(g, pos, index) {
@@ -78,7 +108,7 @@ jui.define("chart.brush.line", [], function() {
                     var orient = (display == "max" && pos.max[i]) ? "top" : "bottom";
 
                     var minmax = this.drawTooltip(this.color(index), circleColor, 1);
-                    minmax.control(orient, pos.x[i], pos.y[i], this.format(pos.value[i]));
+                    minmax.control(orient, +pos.x[i], +pos.y[i], this.format(pos.value[i]));
 
                     g.append(minmax.tooltip);
 

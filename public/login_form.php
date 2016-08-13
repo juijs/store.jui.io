@@ -1,5 +1,11 @@
 <?php $page_id = "login_form" ?>
-<?php include_once "header.php" ?>
+<?php 
+
+include_once "include/generate.meta.php";
+$meta = implode(PHP_EOL, $metaList);
+include_once "header.php";
+
+?>
 
 <style type="text/css">
 .btn-sns {

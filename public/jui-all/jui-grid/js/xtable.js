@@ -1,11 +1,11 @@
-jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "grid.base" ], function($, _, modal, table, Base) {
+jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "grid.row" ], function($, _, modal, table, Row) {
 
 	_.resize(function() {
 		var call_list = jui.get("grid.xtable");
-		
+
 		for(var i = 0; i < call_list.length; i++) {
 			var ui_list = call_list[i];
-			
+
 			for(var j = 0; j < ui_list.length; j++) {
 				ui_list[j].resize();
 			}
@@ -23,30 +23,54 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
      */
 	var UI = function() {
 		var head = null, body = null;
-		var rows = [], o_rows = null;
+		var rows = [], c_rows = [],	t_rows = [], o_rows = null; // 루트 rows, 루트 rows 인덱스, 자식 포함 rows, 자식 제외 + 필터 rows (리펙토링 필요함!!!)
 		var ui_modal = null, page = 1;
         var is_loading = false, is_resize = false;
-		var w_resize = 8;
+		var w_resize = 8, select_row = null;
+		var iParser = _.index();
+		var vscroll_info = null;
 
-		var vscroll_info = {
-			height: 0,
-			content_height: 0,
-			count: 0,
-			scroll_count: 0,
-			prev_scroll_left: 0,
-			prev_scroll_top: 0,
-			current_row_index: 0,
-			start_index: 0,
-			end_index: 0,
-			is_focus: true
-		};
+		function createRows(data, no, pRow, type) {
+			var tmp_rows = [];
+
+			for(var i = 0, len = data.length; i < len; i++) {
+				var row = new Row(),
+					rownum = no + i;
+
+				// row 객체 초기화
+				row.init(data[i], head.tpl["row"], pRow);
+				row.setIndex(rownum);
+
+				// row 상태 설정
+				if(type == "open" || type == "fold") {
+					row.type = type;
+				}
+
+				// 루트 row만 캐싱함
+				if(pRow == null) {
+					c_rows[rownum] = row;
+				}
+
+				tmp_rows.push(row);
+			}
+
+			return tmp_rows;
+		}
 
 		function createTableList(self) {
-			var exceptOpts = [ 
-               "buffer", "bufferCount", "csvCount", "sortLoading", "sortCache", "sortIndex", "sortOrder",
-               "event", "rows", "scrollWidth", "width", "rowHeight"
+			var exceptOpts = [
+			   "buffer", "bufferCount", "csvCount", "sortLoading", "sortCache", "sortIndex", "sortOrder",
+			   "event", "rows", "scrollWidth", "width", "rowHeight"
 			];
+
 			var $root = $(self.root);
+
+			// 루트 기본 스타일 설정
+			if(self.options.buffer == "vscroll") {
+				if(!$root.hasClass("nowrap")) {
+					$root.addClass("nowrap");
+				}
+			}
 
 			// 기본 테이블 마크업 복사해서 추가하기
 			$root.append($root.children("table").clone());
@@ -59,7 +83,7 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 
 			// 공통 테이블 스타일 정의
 			setTableAllStyle(self, head, body);
-			
+
 			// 테이블 옵션 필터링 함수
 			function getExceptOptions(self, exceptOpts) {
 				var options = {};
@@ -77,7 +101,7 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 
 				return options;
 			}
-			
+
 			function setTableAllStyle(self, head, body) {
 				var opts = self.options;
 
@@ -128,16 +152,16 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 				}
 			}
 		}
-		
+
 		function setCustomEvent(self) {
 			head.on("colresize", function(column, e) { // 컬럼 리사이징 관련
 				var cols = head.listColumn(),
 					bodyCols = body.listColumn(),
 					isLast = false;
-				
+
 				for(var j = cols.length - 1; j >= 0; j--) {
 					var hw = $(cols[j].element).outerWidth();
-					
+
 					if(self.options.buffer != "page" && cols[j].type == "show" && !isLast) {
 						if(_.browser.msie) {
 							$(bodyCols[j].element).outerWidth(hw - getScrollBarWidth(self));
@@ -151,16 +175,17 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 						$(bodyCols[j].element).outerWidth(hw);
 					}
 				}
-				
+
+				reloadScrollWidthResizeBar(500);
 				self.emit("colresize", [ column, e ]);
 			});
-			
+
 			head.on("colshow", function(column, e) {
 				body.uit.showColumn(column.index);
 				self.resize();
 				self.emit("colshow", [ column, e ]);
 			});
-			
+
 			head.on("colhide", function(column, e) {
 				body.uit.hideColumn(column.index);
 				self.resize();
@@ -178,20 +203,20 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 			head.on("colmenu", function(column, e) {
 				self.emit("colmenu", [ column, e ]);
 			});
-			
+
 			head.on("sort", function(column, e) {
 				self.sort(column.index, column.order, e);
 				self.emit("sort", [ column, e ]);
-				
-				// 소팅 후, 현재 소팅 상태 캐싱 처리 
-				if(self.options.sortCache) { 
+
+				// 소팅 후, 현재 소팅 상태 캐싱 처리
+				if(self.options.sortCache) {
 					self.setOption({
 						sortIndex: column.index,
 						sortOrder: column.order
 					});
 				}
 			});
-			
+
 			body.on("select", function(obj, e) {
 				self.emit("select", [ obj, e ]);
 			});
@@ -203,11 +228,11 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 			body.on("dblclick", function(obj, e) {
 				self.emit("dblclick", [ obj, e ]);
 			});
-			
+
 			body.on("rowmenu", function(obj, e) {
 				self.emit("rowmenu", [ obj, e ]);
 			});
-			
+
 			body.on("expand", function(obj, e) {
 				self.emit("expand", [ obj, e ]);
 			});
@@ -216,7 +241,7 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 				self.emit("expandend", [ obj, e ]);
 			});
 		}
-		
+
 		function setScrollEvent(self, width, height) {
 			var opts = self.options;
 
@@ -407,7 +432,7 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		}
 
 		function renderVirtualScroll(self) {
-			var $viewport = $(self.root).find(".body");
+			var $viewport = $(self.root).children(".body");
 			var viewportHeight = self.options.scrollHeight,
 				scrollTop = $viewport.scrollTop(),
 				scrollHeight = $viewport[0].scrollHeight;
@@ -493,12 +518,70 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 			vscroll_info.prev_scroll_top = scrollTop;
 
 			// set real content height
-			$viewport.height(endRowHeight);
-			body.root.style.top = (vscroll_info.prev_scroll_top + moveHeight) + "px";
+			$viewport.css({ "max-height": endRowHeight });
+			$(body.root).css({ top: (vscroll_info.prev_scroll_top + moveHeight) + "px" });
 
-			//console.log('start', startIndex, endIndex);
 			vscroll_info.start_index = startIndex;
-			vscroll_info.end_index = endIndex;
+			vscroll_info.end_index = endIndex + 1;
+		}
+
+		function setVirtualScrollInfo(self) {
+			vscroll_info.height = self.options.rowHeight;
+			vscroll_info.count = t_rows.length;
+			vscroll_info.scroll_count = Math.floor(self.options.scrollHeight / vscroll_info.height);
+			vscroll_info.content_height = vscroll_info.count * vscroll_info.height;
+
+			$(body.root).parent().height(vscroll_info.content_height > 0 ? vscroll_info.content_height : "auto");
+		}
+
+		function resetVirtualScrollInfo(self) {
+			$(self.root).find(".body").scrollTop(0);
+			$(body.root).css({ top: "0px" });
+
+			vscroll_info = {
+				height: 0,
+				content_height: 0,
+				count: 0,
+				scroll_count: 0,
+				prev_scroll_left: 0,
+				prev_scroll_top: 0,
+				current_row_index: 0,
+				start_index: 0,
+				end_index: 0,
+				is_focus: true
+			};
+		}
+
+		function setOpenChildRows(rows) {
+			for(var i = 0; i < rows.length; i++) {
+				t_rows.push(rows[i]);
+
+				if(rows[i].type == "open" && rows[i].children.length > 0) {
+					setOpenChildRows(rows[i].children);
+				}
+			}
+		}
+
+		function appendChildRows(p_row, data, type) {
+			var no = p_row.children.length,
+				c_rows = createRows(_.typeCheck("array", data) ? data : [ data ], no, p_row, type);
+
+			for(var i = 0, len = c_rows.length; i < len; i++) {
+				p_row.children.push(c_rows[i]);
+			}
+		}
+
+		function calculateRows(self, isTree) {
+			if(isTree) {
+				t_rows = [];
+				setOpenChildRows(rows);
+			} else {
+				t_rows = rows;
+			}
+
+			if(self.options.buffer == "vscroll") { // 가상 스크롤 설정
+				setVirtualScrollInfo(self);
+			}
 		}
 
 		this.init = function() {
@@ -524,22 +607,22 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 			if(opts.data) {
 				this.update(opts.data);
 			}
-			
+
 			// 로딩 템플릿 체크 (opts.sortLoading으로 체크하지 않음)
-			if(opts.tpl.loading && modal != null) {
-				var $loading = $(opts.tpl.loading);
+			if(head.tpl["loading"] && modal != null) {
+				var $loading = $(head.tpl["loading"]());
 				$(this.root).append($loading);
-				
-				ui_modal = modal($loading, { 
+
+				ui_modal = modal($loading, {
 					target: this.selector,
 					opacity: 0.1,
-					autoHide: false 
+					autoHide: false
 				});
-				
+
 				// 기본 로딩 시간 (ms)
-				opts.sortLoading = (opts.sortLoading === true) ? 500 : opts.sortLoading; 
+				opts.sortLoading = (opts.sortLoading === true) ? 500 : opts.sortLoading;
 			}
-			
+
 			// 컬럼 리사이징 (기본)
 			if(opts.resize) {
 				if(opts.scrollWidth > 0) {
@@ -551,6 +634,11 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 			}
 		}
 
+		this.render = function(isTree) {
+			calculateRows(this, isTree);
+			this.next();
+		}
+
 		/**
 		 * @method select
 		 * Adds a selected class to a row at a specified index and gets an instance of the applicable row.
@@ -559,7 +647,31 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 * @return {RowObject} row
 		 */
 		this.select = function(index) {
-			return body.select(index);
+			if(select_row != null) {
+				$(select_row.element).removeClass("selected");
+			}
+
+			var row = this.get(index);
+			select_row = row;
+
+			if(row.element != null) {
+				$(row.element).addClass("selected");
+			}
+
+			return row;
+		}
+
+		/**
+		 * @method unselect
+		 * Removes a selected class from a selected row and gets an instance of the row in question.
+		 *
+		 * @return {RowObject} row
+		 */
+		this.unselect = function() {
+			if(select_row != null) {
+				$(select_row.element).removeClass("selected");
+				select_row = null;
+			}
 		}
 
 		/**
@@ -569,26 +681,134 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 * @param {Array} rows
 		 */
 		this.update = function(dataList) {
-			rows = dataList;
+			this.reset();
+			rows = createRows(dataList, 0, null);
 
-			// 가상스크롤 설정
-			if(this.options.buffer == "vscroll") {
-				vscroll_info.height = this.options.rowHeight;
-				vscroll_info.count = rows.length;
-				vscroll_info.scroll_count = Math.floor(this.options.scrollHeight / vscroll_info.height),
-				vscroll_info.content_height = vscroll_info.count * vscroll_info.height;
-
-				$(body.root).parent().height(vscroll_info.content_height > 0 ? vscroll_info.content_height : "auto");
-			}
-
-			this.clear();
-			this.next();
+			this.render();
 			this.emit("update");
 			head.emit("colresize");
-			
+
 			// 정렬 인덱스가 옵션에 있을 경우, 해당 인덱스의 컬럼 정렬 (not loading)
 			if(this.options.sortIndex) {
 				this.sort(this.options.sortIndex, this.options.sortOrder, undefined, true);
+			}
+		}
+
+		/**
+		 * @method updateTree
+		 * It is possible to configure a tree table using an object array with the index and data properties.
+		 *
+		 * @param {Array} rows
+		 */
+		this.updateTree = function(tree) {
+			this.reset();
+
+			for(var i = 0; i < tree.length; i++) {
+				var pIndex = iParser.getParentIndex(tree[i].index);
+
+				if(pIndex == null) {
+					rows.push(createRows([ tree[i].data ], 0, null, tree[i].type)[0]);
+				} else {
+					var pRow = this.get(pIndex);
+
+					if(pRow) {
+						appendChildRows(pRow, tree[i].data, tree[i].type);
+					}
+				}
+			}
+
+			this.render(true);
+			this.emit("updateTree");
+		}
+
+		/**
+		 * @method append
+		 * Add a row or a child row to at a specified index.
+		 *
+		 * @param {RowObject} row
+		 * @param {RowObject} row
+		 */
+		this.append = function(index, data) {
+			var row = this.get(index);
+
+			if(row) {
+				appendChildRows(row, data);
+
+				this.clear();
+				this.render(true);
+				this.emit("append");
+			}
+		}
+
+		/**
+		 * @method open
+		 * Shows a child row of a specified index.
+		 *
+		 * @param {Integer} index
+		 */
+		this.open = function(index) { // 로트 제외, 하위 모든 노드 대상
+			var row = this.get(index);
+
+			if(row) {
+				row.type = "open";
+
+				this.clear();
+				this.render(true);
+				this.emit("open", [row]);
+			}
+		}
+
+		/**
+		 * @method fold
+		 * Hides a child row of a specified index.
+		 *
+		 * @param {Integer} index
+		 */
+		this.fold = function(index) {
+			var row = this.get(index);
+
+			if(row) {
+				row.type = "fold";
+
+				this.clear();
+				this.render(true);
+				this.emit("fold", [row]);
+			}
+		}
+
+		/**
+		 * @method openAll
+		 * Shows all child rows of a specified index.
+		 */
+		this.openAll = function(index) {
+			var list = this.getAll(index);
+
+			if(list) {
+				for(var i = 0, len = list.length; i < len; i++) {
+					list[i].type = "open";
+				}
+
+				this.clear();
+				this.render(true);
+				this.emit("openall");
+			}
+		}
+
+		/**
+		 * @method foldAll
+		 * Hides all child rows of a specified index.
+		 */
+		this.foldAll = function(index) {
+			var list = this.getAll(index);
+
+			if(list) {
+				for(var i = 0, len = list.length; i < len; i++) {
+					list[i].type = "fold";
+				}
+
+				this.clear();
+				this.render(true);
+				this.emit("foldall");
 			}
 		}
 
@@ -600,6 +820,7 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 			var start = (page - 1) * this.options.bufferCount,
 				end = start + this.options.bufferCount;
 
+			// 가상스크롤일 때만 처리
 			if(this.options.buffer == "vscroll") {
 				body.reset();
 
@@ -610,18 +831,25 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 			}
 
 			// 마지막 페이지 처리
-			end = (end > rows.length) ? rows.length : end;
+			end = (end > t_rows.length) ? t_rows.length : end;
 
-			if(end <= rows.length) {
+			if(end <= t_rows.length) {
 				var tmpDataList = [];
-				for(var i = start; i < end; i++) {
-					tmpDataList.push(rows[i]);
-				}
-				
-				body.append(tmpDataList);
-				this.emit("next", [ page ]);
 
-				if(tmpDataList.length > 0) page++;
+				for(var i = start; i < end; i++) {
+					var r = t_rows[i];
+
+					r.reload(head.uit.getColumn());
+					tmpDataList.push(r);
+				}
+
+				body.append(tmpDataList);
+
+				// 가상스크롤이 아닐 경우에만 추가
+				if(this.options.buffer != "vscroll") {
+					this.emit("next", [ page ]);
+					if (tmpDataList.length > 0) page++;
+				}
 			}
 		}
 
@@ -632,12 +860,14 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 * @param {Integer} index
 		 */
 		this.page = function(pNo) {
-			if(this.options.buffer == "scroll") return false;
+			if(this.options.buffer == "scroll" || this.options.buffer == "vscroll")
+				return false;
+
 			if(this.getPage() == pNo) return false;
-			
+
 			this.clear();
 			page = (pNo < 1) ? 1 : pNo;
-			this.next();
+			this.render();
 		}
 
 		/**
@@ -649,17 +879,17 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 */
 		this.sort = function(index, order, e, isNotLoading) { // index는 컬럼 key 또는 컬럼 name
 			if(!this.options.fields || !this.options.sort || is_resize) return;
-			
-			var self = this, 
+
+			var self = this,
 				column = head.getColumn(index);
-			
-			if(typeof(column.name) == "string") {			
+
+			if(typeof(column.name) == "string") {
 				column.order = (order) ? order : (column.order == "asc") ? "desc" : "asc";
 				head.uit.setColumn(index, column);
-	
+
 				if(this.options.sortLoading && !isNotLoading) {
 					self.showLoading();
-					
+
 					setTimeout(function() {
 						process();
 					}, this.options.sortLoading);
@@ -667,11 +897,11 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 					process();
 				}
 			}
-			
+
 			// 정렬 프로세싱 함수
 			function process() {
 				var qs = _.sort(rows);
-				
+
 				if(column.order == "desc") {
 					qs.setCompare(function(a, b) {
 						return (getValue(a) > getValue(b)) ? true : false;
@@ -681,20 +911,20 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 						return (getValue(a) < getValue(b)) ? true : false;
 					});
 				}
-				
+
 				// 정렬
 				qs.run();
 
 				// 데이터 초기화 및 입력, 그리고 로딩
-				self.emit("sortend", [ column, e ]);
 				self.clear();
-				self.next();
+				self.render(true);
+				self.emit("sortend", [ column, e ]);
 				self.hideLoading();
 			}
-			
+
 		    // 해당 컬럼에 해당하는 값 가져오기
-			function getValue(data) {
-		    	var value = data[column.name];
+			function getValue(row) {
+		    	var value = row.data[column.name];
 
                 if(typeof(value) == "string") {
                     return value.toLowerCase();
@@ -703,7 +933,7 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
                         return value;
                     }
                 }
-    			
+
     			return "";
 		    }
 		}
@@ -715,22 +945,22 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 * @param {Function} callback
 		 */
         this.filter = function(callback) {
-            if(typeof(callback) != "function") return;
+			if(o_rows == null) o_rows = t_rows;
+			else t_rows = o_rows;
 
-            if(o_rows == null) o_rows = rows;
-            else rows = o_rows;
+            var a_rows = t_rows.slice(),
+                f_data = [];
 
-            var t_rows = rows.slice(),
-                s_rows = [];
+            for(var i = 0, len = a_rows.length; i < len; i++) {
+				var d = a_rows[i].data;
 
-            for(var i = 0, len = t_rows.length; i < len; i++) {
-                if(callback(t_rows[i]) === true) {
-                    s_rows.push(t_rows[i]);
+                if((typeof(callback) == "function" && callback(d) === true) || !callback) {
+					f_data.push(d);
                 }
             }
 
-            this.update(s_rows);
-            this.emit("filter", [ s_rows ]);
+            this.update(f_data);
+            this.emit("filter", [ f_data ]);
         }
 
 		/**
@@ -738,11 +968,8 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 * Returns filtered rows to the original state.
 		 */
         this.rollback = function() {
-            if(o_rows != null) {
-                this.update(o_rows);
-
-                o_rows = null;
-            }
+            this.filter(null);
+			o_rows = null;
         }
 
 		/**
@@ -760,10 +987,16 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 * Remove all data
 		 */
 		this.reset = function() {
+			if(this.options.buffer == "vscroll") {
+				resetVirtualScrollInfo(this);
+			}
+
 			this.clear();
 
 			rows = [];
-			o_rows = null;
+			c_rows = [];
+			t_rows = [];
+			select_row = null;
 		}
 
 		/**
@@ -819,9 +1052,50 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 */
 		this.scrollHeight = function(h) {
 			if(this.options.buffer == "page") return;
+
 			$(this.root).find(".body").css("max-height", h + "px");
+			this.setOption("scrollHeight", h);
 
 			setScrollEvent(this, this.options.scrollWidth, h);
+		}
+
+		/**
+		 * @method scrollTop
+		 * Sets the scroll based on the height of a table.
+		 *
+		 * @param {Integer|String} index
+		 * @param {Integer} dist
+		 */
+		this.scrollTop = function(index, dist) {
+			if(this.options.buffer != "vscroll") return;
+
+			var $viewport = $(this.root).children(".body");
+
+			// 기존의 로우 그릴 수 있는 형태로 계산하기
+			calculateRows(this, true);
+
+			for(var i = 0, len = t_rows.length; i < len; i++) {
+				var row = t_rows[i];
+
+				if(("" + index) == row.index) {
+					vscroll_info.prev_scroll_top = 0;
+					vscroll_info.current_row_index = 0;
+
+					var scrollTop = i * vscroll_info.height,
+						scrollHeight = $viewport.height(),
+						distTop = _.typeCheck("integer", dist) ? dist : 0;
+
+					if(scrollTop + distTop > scrollHeight) {
+						scrollTop += distTop;
+					}
+
+					$viewport.scrollTop(scrollTop);
+					this.clear();
+					this.next();
+
+					break;
+				}
+			}
 		}
 
 		/**
@@ -862,7 +1136,7 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 * @return {Array} rows
 		 */
 		this.list = function() {
-			return body.list();
+			return rows;
 		}
 
 		/**
@@ -882,19 +1156,70 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 * @return {Array} datas
 		 */
 		this.listData = function() {
-			return rows;
+			var datas = [];
+
+			for(var i = 0; i < rows.length; i++) {
+				datas.push(rows[i].data);
+			}
+
+			return datas;
 		}
 
 		/**
 		 * @method get
 		 * Gets the row at the specified index.
 		 *
-		 * @param {Integer} index
+		 * @param {Integer|String} index
 		 * @return {RowObject} row
 		 */
 		this.get = function(index) {
-			if(index == null) return null;
-			return body.get(index);
+			if(index == null) {
+				return null;
+			} else {
+				var row = c_rows[index];
+
+				if(!row) {
+					var keys = iParser.getIndexList(index),
+						row = c_rows[keys[0]];
+
+					for(var i = 1, len = keys.length; i < len; i++) {
+						if(!row) break;
+						row = row.children[keys[i]];
+					}
+
+					return row;
+				} else {
+					return row;
+				}
+			}
+		}
+
+		/**
+		 * @method getAll
+		 * Gets all rows of at the specified index including child rows.
+		 *
+		 * @param {Integer} index
+		 * @return {Array} rows
+		 */
+		this.getAll = function(index, _result) {
+			var row = this.get(index);
+
+			if(row != null) {
+				if(!_.typeCheck("array", _result)) {
+					_result = [ row ];
+				}
+
+				for(var i = 0; i < row.children.length; i++) {
+					var child = row.children[i];
+					_result.push(child);
+
+					if(child.children.length > 0) {
+						return this.getAll(child.index, _result);
+					}
+				}
+			}
+
+			return _result;
 		}
 
 		/**
@@ -907,9 +1232,17 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		this.getColumn = function(index) {
 			return head.getColumn(index);
 		}
-		
+
+		/**
+		 * @method getData
+		 * Gets the data at the specified index.
+		 *
+		 * @param {"Integer"/"String"} key index
+		 * @return {ColumnObject} data
+		 */
 		this.getData = function(index) {
-			return rows[index];
+			var row = this.get(index);
+			return (row) ? row.data : null;
 		}
 
 		/**
@@ -1011,13 +1344,13 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 */
 		this.showLoading = function(delay) {
 			if(!ui_modal || is_loading) return;
-			
+
 			ui_modal.show();
 			is_loading = true;
-			
+
 			if(delay > 0) {
 				var self = this;
-				
+
 				setTimeout(function() {
 					self.hideLoading();
 				}, delay);
@@ -1030,7 +1363,7 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 */
 		this.hideLoading = function() {
 			if(!ui_modal || !is_loading) return;
-			
+
 			ui_modal.hide();
 			is_loading = false;
 		}
@@ -1042,7 +1375,7 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		this.setCsv = function(csv) {
             var opts = this.options;
 			if(!opts.fields && !opts.csv) return;
-			
+
 			var fields = _.getCsvFields(opts.fields, opts.csv),
                 csvNumber = (opts.csvNumber) ? _.getCsvFields(opts.fields, opts.csvNumber) : null;
 
@@ -1055,7 +1388,7 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 */
 		this.setCsvFile = function(file) {
 			if(!this.options.fields && !this.options.csv) return;
-			
+
 			var self = this;
 			_.fileToCsv(file, function(csv) {
 	            self.setCsv(csv);
@@ -1071,13 +1404,13 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 */
 		this.getCsv = function() {
 			if(!this.options.fields && !this.options.csv) return;
-			
+
 			var fields = _.getCsvFields(this.options.fields, this.options.csv),
 				len = (rows.length > this.options.csvCount) ? this.options.csvCount : rows.length;
 
 			return _.dataToCsv2({
 				fields: fields,
-				rows: rows,
+				rows: this.listData(),
 				count: len,
 				names: this.options.csvNames
 			});
@@ -1092,7 +1425,7 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 */
 		this.getCsvBase64 = function() {
 			if(!this.options.fields && !this.options.csv) return;
-			
+
 			return _.csvToBase64(this.getCsv());
 		}
 
@@ -1127,16 +1460,17 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 */
 		this.rowFunc = function(type, index, callback) {
 			if(!this.options.fields) return;
-			
+
 			var isCallback = (typeof(callback) == "function") ? true : false;
 			var result = 0,
 				count = (isCallback) ? 0 : rows.length,
 				column = head.getColumn(index);
-			
+
 			if(column.name) {
 				for(var i = 0; i < rows.length; i++) {
-					var value = rows[i][column.name];
-					
+					var data = rows[i].data,
+						value = data[column.name];
+
 					if(!isNaN(value)) {
 						if(isCallback) {
 							if(callback(rows[i])) {
@@ -1149,11 +1483,11 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 					}
 				}
 			}
-			
+
 			// 현재는 합계와 평균만 지원함
 			if(type == "sum") return result;
 			else if(type == "avg") return result / count;
-			
+
 			return null;
 		}
 
@@ -1161,7 +1495,7 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 * @method getPage
 		 * Gets the current page of a table.
 		 *
-		 * @return {Ingeger} page
+		 * @return {Integer} page
 		 */
 		this.getPage = function() {
 			return page - 1;
@@ -1174,7 +1508,8 @@ jui.defineUI("grid.xtable", [ "jquery", "util.base", "ui.modal", "grid.table", "
 		 * @return {Integer} index
 		 */
 		this.activeIndex = function() {
-			return body.activeIndex();
+			if(!select_row) return null;
+			return select_row.index;
 		}
 	}
 

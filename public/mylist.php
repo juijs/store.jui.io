@@ -1,11 +1,12 @@
-<?php 
+<?php
+error_reporting(E_ALL);
 
 $page_id = "mylist";
 
-?>
-<?php include_once "header.php" ?>
- 
-<?php 
+include_once "include/generate.meta.php";
+$meta = implode(PHP_EOL, $metaList);
+include_once "header.php";
+
 if (!$_SESSION['login']) {
 	echo "<script>alert('Please login.');location.href='/login_form.php';</script>";
 	exit;
@@ -52,25 +53,66 @@ if ($page * $limit > $total) {
 
 $rows = $rows->sort($sort)->skip($skip)->limit($limit);
 
+$mode = $_GET['mode'] ? $_GET['mode'] : 'list';
+
+$modeName = $mode == 'list' ? 'Preview' : 'List';
+
 ?>
 <div>
 	<span class="content-btn">
-		<a href="?sort=update_time" class="btn-simple form-btn-<?php echo $_GET['sort'] != 'good' ? 'on' : 'off' ?>">Sort by date</a>
-		<a href="?sort=good" class="btn-simple form-btn-<?php echo $_GET['sort'] == 'good' ? 'on' : 'off' ?>">Sort by score</a>
+		<a href="?mode=<?php echo ($mode == 'list' ? 'preview' : 'list') ?>" class="btn-simple"><?php echo $modeName ?> Mode</a>
+		<a href="?sort=update_time&mode=<?php echo $mode ?>" class="btn-simple form-btn-<?php echo $_GET['sort'] != 'good' ? 'on' : 'off' ?>">Sort by date</a>
+		<a href="?sort=good&mode=<?php echo $mode ?>" class="btn-simple form-btn-<?php echo $_GET['sort'] == 'good' ? 'on' : 'off' ?>">Sort by score</a>
 	</span>
 </div>
 
 <div style='margin-top:28px;'></div>
 
 <div id="content-container">
-	<?php 
-	foreach ($rows as $data) { 
-		include "box.php";
+<?php 
+
+	if ($rows->count() > 0) { 
+		foreach ($rows as $data) { 
+			if ($mode == 'list') { 
+				include "box.list.php";
+			} else { 
+				include "box.php";
+			}
+
 	} 
+	} else {
+?>
+<div class="summary-box box-list">
+	<div class="summary-normal">
+		<div class="summary-info">
+			<div class="title"></div>
+			<div class="content"> Create a your new code.</div>
+		</div>
+	</div>
+</div>
+
+
+	<?
+	}
 	?>
 </div>
 
 <?php include_once "include/store.list.php" ?>
+
+
+<script type="text/javascript">
+window.deletecode = function deletecode (id) {
+	if (confirm("Delete this component?\r\ngood count is also deleted.")) {
+		$.post("/delete.php", { id : id }, function(res) {
+			if (res.result) {
+				location.href = '/mylist.php'; 	
+			} else {
+				alert(res.message ? res.message : 'Failed to delete');
+			}
+		});
+	}
+}
+</script>
 
 </body>
 </html>

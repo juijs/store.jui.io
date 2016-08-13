@@ -5,8 +5,12 @@ ini_set('display_errors', 1);
 */
 session_start();
 
+define("STORE", "STORE");
 define("ROOT", __DIR__);
-define("INC", ROOT."/public/inc");
+define("ABSPATH", ROOT."/public");
+define("INC", ABSPATH."/include");
+define("PLUGIN", ABSPATH."/plugins");
+define("PLUGIN_URL", "/plugins");
 
 require_once ROOT."/vendor/autoload.php";
 
@@ -17,9 +21,10 @@ $currentUri->setQuery('');
 require_once ROOT."/init.php";
 
 $type_text = array(
+	'page' => 'Page',
 	'component' => 'Module',
-	'theme' => 'Chart Theme',
-	'style' => 'UI Theme',
+	'theme' => 'Chart',
+	'style' => 'UI',
 	'map' => 'Map',
 	'data' => 'Data'
 );
@@ -76,4 +81,5 @@ function CssPreprocessor($content, $type) {
 	return $content;
 }
 
+$detect = new Mobile_Detect;
 ?>

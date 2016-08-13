@@ -1,64 +1,12 @@
 jui.define("grid.row", [ "jquery" ], function($) {
 
-    /**
-     * @class grid.row
-     *
-     * Grid's Row Class
-     *
-     * @alias Table Row
-     * @requires jquery
-     */
-    var Row = function(data, tplFunc, pRow) {
-        var self = this,
-            cellkeys = {};
-
-        /** @property {Array} data Data of a specifiedrow. */
-        this.data = data;
-
-        /** @property {Integer} [rownum=null] The unique number of a child row under the specified parent row if a parent row exists. */
-        this.rownum = null;
-
-        /** @property {String/Integer} [index=null] Index of a specified row. In the case of a tree structure, a depth is given. */
-        this.index = null;
-
-        /** @property {HTMLElement} [element=null] TR element of a specified row. */
-        this.element = null;
-
-        /** @property {Array} list List of TD elements of a specified row. */
-        this.list = [];
-
-        /** @property {uix.table.row} parent Variable that refers to the parent row. */
-        this.parent = (pRow) ? pRow : null;
-
-        /** @property {Array} children List of child rows. */
-        this.children = [];
-
-        /** @property {Integer} [depth=0] The depth of the current row in the case of a tree structure. */
-        this.depth = 0;
-
-        /** @property {"open"/"fold"} [type="fold"] State value that indicates whether a child row is shown or hidden. */
-        this.type = "fold";
-
-        function setIndex(rownum) {
-            self.rownum = (!isNaN(rownum)) ? rownum : self.rownum;
-
-            if(!self.parent) self.index = "" + self.rownum;
-            else self.index = self.parent.index + "." + self.rownum;
-
-            if(self.parent && typeof(self.index) == "string") {
-                self.depth = self.index.split(".").length - 1;
-            }
-
-            if(!self.isLeaf()) {
-                setIndexChild(self);
-            }
-        }
-
+    var Base = function() {
         function setIndexChild(row) {
             var clist = row.children;
 
             for(var i = 0; i < clist.length; i++) {
-                clist[i].reload(i);
+                clist[i].setIndex(i);
+                clist[i].reload();
 
                 if(!clist[i].isLeaf()) {
                     setIndexChild(clist[i]);
@@ -66,23 +14,31 @@ jui.define("grid.row", [ "jquery" ], function($) {
             }
         }
 
-        function setElementCells() {
+        function setElementCells(self) {
             self.list = [];
 
             $(self.element).find("td").each(function(i) {
                 self.list[i] = this;
 
-                if(cellkeys[i]) {
+                if(self.hidden[i]) {
                     this.style.display = "none";
                 }
             });
         }
 
-        function getElement() {
-            if(!tplFunc) return self.element;
+        function getElement(self) {
+            if(!self.tpl) return self.element;
 
-            var element = $(tplFunc(
-                    $.extend({ row: { index: self.index, data: self.data, depth: self.depth } }, self.data))
+            var element = $(self.tpl(
+                $.extend({
+                    row: {
+                        type: self.type,
+                        index: self.index,
+                        data: self.data,
+                        depth: self.depth,
+                        children: self.children
+                    }
+                }, self.data))
             ).get(0);
 
             return element;
@@ -102,17 +58,34 @@ jui.define("grid.row", [ "jquery" ], function($) {
             }
         }
 
-        function reloadChildAll() {
-            for(var i = 0; i < self.children.length; i++) {
-                self.children[i].reload(i);
+        function reloadChildAll(children) {
+            for(var i = 0; i < children.length; i++) {
+                children[i].setIndex(i);
+                children[i].reload();
             }
         }
 
-        this.reload = function(rownum, isUpdate, columns) {
-            if(!isUpdate) setIndex(rownum); // ��� �ε��� ����
+        this.setIndex = function(rownum) {
+            this.rownum = (!isNaN(rownum)) ? rownum : this.rownum;
 
+            if(!this.parent) {
+                this.index = "" + this.rownum;
+            } else {
+                this.index = this.parent.index + "." + this.rownum;
+            }
+
+            if(this.parent && typeof(this.index) == "string") {
+                this.depth = this.index.split(".").length - 1;
+            }
+
+            if(!this.isLeaf()) {
+                setIndexChild(this);
+            }
+        }
+
+        this.reload = function(columns) {
             if(this.element != null) {
-                var newElem = getElement(),
+                var newElem = getElement(this),
                     clsValue = $(this.element).attr("class");
 
                 $(newElem).addClass(clsValue).insertAfter(this.element);
@@ -120,18 +93,18 @@ jui.define("grid.row", [ "jquery" ], function($) {
 
                 this.element = newElem;
             } else {
-                this.element = getElement();
+                this.element = getElement(this);
             }
 
-            if(columns != null) { // �÷� ������ ���� ���, ����� ����
+            if(columns != null) {
                 this.hideCells(columns);
             }
 
-            setElementCells();
+            setElementCells(this);
         }
 
         this.destroy = function() {
-            if(this.parent != null) { // �θ� ���� ���, ������� ����
+            if(this.parent != null) {
                 this.parent.removeChild(this.index);
             } else {
                 removeChildAll(this);
@@ -192,7 +165,7 @@ jui.define("grid.row", [ "jquery" ], function($) {
             preRows.push(row);
 
             this.children = preRows.concat(this.children);
-            reloadChildAll();
+            reloadChildAll(this.children);
         }
 
         this.removeChild = function(index) {
@@ -205,7 +178,7 @@ jui.define("grid.row", [ "jquery" ], function($) {
                 }
             }
 
-            reloadChildAll();
+            reloadChildAll(this.children);
         }
 
         this.lastChild = function() {
@@ -225,12 +198,12 @@ jui.define("grid.row", [ "jquery" ], function($) {
         }
 
         this.showCell = function(index) {
-            cellkeys[index] = false;
+            this.hidden[index] = false;
             $(this.list[index]).show();
         }
 
         this.hideCell = function(index) {
-            cellkeys[index] = true;
+            this.hidden[index] = true;
             $(this.list[index]).hide();
         }
 
@@ -242,6 +215,57 @@ jui.define("grid.row", [ "jquery" ], function($) {
             }
         }
     }
+
+    /**
+     * @class grid.row
+     *
+     * Grid's Row Class
+     *
+     * @alias Table Row
+     * @requires jquery
+     */
+    var Row = function() {
+        /** @property {Array} data Data of a specifiedrow. */
+        this.data = null;
+
+        /** @property {Integer} [rownum=null] The unique number of a child row under the specified parent row if a parent row exists. */
+        this.rownum = null;
+
+        /** @property {String/Integer} [index=null] Index of a specified row. In the case of a tree structure, a depth is given. */
+        this.index = null;
+
+        /** @property {HTMLElement} [element=null] TR element of a specified row. */
+        this.element = null;
+
+        /** @property {Array} list List of TD elements of a specified row. */
+        this.list = [];
+
+        /** @property {Object} list List of hidden TD element. */
+        this.hidden = {};
+
+        /** @property {uix.table.row} parent Variable that refers to the parent row. */
+        this.parent = null;
+
+        /** @property {Array} children List of child rows. */
+        this.children = [];
+
+        /** @property {Integer} [depth=0] The depth of the current row in the case of a tree structure. */
+        this.depth = 0;
+
+        /** @property {"open"/"fold"} [type="fold"] State value that indicates whether a child row is shown or hidden. */
+        this.type = "fold";
+
+        /** @property {Function} [type="null"] State value that indicates whether a child row is shown or hidden. */
+        this.tpl = null;
+
+        this.init = function(data, tplFunc, pRow) {
+            this.data = data;
+            this.tpl = tplFunc;
+            this.parent = pRow;
+        }
+    }
+
+    Row.prototype = new Base;
 
     return Row;
 });

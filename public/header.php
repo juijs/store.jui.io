@@ -7,6 +7,8 @@
     <title>JENNIFER UI: Store</title>
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+	<?php echo $meta ?>
 	<?php if ($type_text[$page_id]) { ?>
 	<link href="/bower_components/codemirror/lib/codemirror.css" rel="stylesheet" />
 	<script type="text/javascript" src="/bower_components/codemirror/lib/codemirror.js"></script>
@@ -29,38 +31,30 @@
 	<link href="/bower_components/codemirror/theme/twilight.css" rel="stylesheet" />
 	<?php } ?>
 
-    <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+
 	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 	<script type="text/javascript" src="/js/main.js"></script>
 	
-	<?php if ($page_id != 'generate.ui') { ?>
-	<link href="/jui-all/jui/dist/ui.min.css" rel="stylesheet" />
-	<link href="/jui-all/jui-grid/dist/grid.min.css" rel="stylesheet" />
-	<link href="/jui-all/jui/dist/ui-jennifer.min.css" rel="stylesheet" />
-	<link href="/jui-all/jui-grid/dist/grid-jennifer.min.css" rel="stylesheet" />
-	<?php } ?>
+	
 	<link href="/css/main.css" rel="stylesheet" />
 
 	<?php if ($type_text[$page_id]) { ?>
 	<link href="/css/edit.css" rel="stylesheet" />
 	<?php } ?>
-	<script type="text/javascript" src="/jui-all/jui-core/dist/core.min.js"></script>
-	<script type="text/javascript" src="/jui-all/jui/dist/ui.min.js"></script>
-	<script type="text/javascript" src="/jui-all/jui-grid/dist/grid.min.js"></script>
-	<script type="text/javascript" src="/jui-all/jui-chart/dist/chart.js"></script>
-<?php if ($page_id != 'generate' && $page_id != 'generate.ui' && $page_id != 'view'  && $page_id != 'list' && $page_id != 'mylist'  ) { ?>
+
+	<?php if ($page_id != 'generate' && $page_id != 'generate.ui' && $page_id != 'view'  && $page_id != 'list' && $page_id != 'mylist'  ) { ?>
 	<script src="/bower_components/tinyColorPicker/colors.js"></script>
 	<script src="/bower_components/tinyColorPicker/jqColorPicker.js"></script>
 	<link href="/bower_components/ionrangeslider/css/ion.rangeSlider.css" rel="stylesheet" />
 	<link href="/bower_components/ionrangeslider/css/ion.rangeSlider.skinNice.css" rel="stylesheet" />
 	<script src="/bower_components/ionrangeslider/js/ion.rangeSlider.js"></script>
 	<script src="/bower_components/html.sortable/dist/html.sortable.js"></script>
-<?php } else if ($page_id == 'list' || $page_id == 'mylist') { ?>
+	<?php } else if ($page_id == 'list' || $page_id == 'mylist') { ?>
 	<script src="/bower_components/masonry/dist/masonry.pkgd.js"></script>
-<?php } ?>
-	<?php echo $meta ?>
+	<?php } ?>
+
 </head>
-<body class="jui">
+<body class="jui <?php echo $body_class ?>">
 <?php if ($page_id != 'generate' && $page_id != 'generate.ui') { ?>
 <?php include_once "nav.php" ?>
 <?php } ?>

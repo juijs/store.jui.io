@@ -5,7 +5,7 @@ if ($_SESSION['login']) {
 	<span class='login-menu-big'>
 
 		<?php if ($_SESSION['avatar']) { ?><img src='<?php echo $_SESSION['avatar'] ?>' width="30" height="30" align="absmiddle" /><?php } ?>
-		<?php echo $_SESSION['username'] ?> 
+		<a href="/mylist.php"><?php echo $_SESSION['username'] ?></a>
 		<span class="separator">|</span>
 		<a href="/logout.php">Logout</a>		
 	</span>

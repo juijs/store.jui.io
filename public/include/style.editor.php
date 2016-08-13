@@ -1,11 +1,19 @@
-<div class="editor-panel editor-panel-pull  editor-panel-border  view-component" style="background:#ffffff">
+<div class="editor-panel editor-panel-full  editor-panel-border  view-component" style="background:#ffffff">
 
 	<div class="editor-tool" style="font-size:13px;">
-		<a class='h2' style="display:inline-block"  data-view="component"><?php echo $type_text['style'] ?>
-
-		</a>
+		<a class='h2' style="display:inline-block"  data-view="component"><?php echo $type_text['style'] ?></a>
+		<select id="key-list" class='input' onchange="location.href='#' + this.value;"></select>
 		<span class="editor-navbar">
-		
+			<?php if ($isMy) { ?>
+			<div class="group" id="js_html_convert">
+				<a class="btn"><i class="icon-upload"></i> Upload File</a> 
+				<input type="file" accept=".less" id="component_load" />
+			</div>
+			<a class="btn" onclick="select_theme(this)">Select Theme</a>
+			<select id="sample_list" class="input">
+				<option value="">Select Sample</option>
+			</select>
+			<?php } ?>		
 		</span>
 	</div>
 	<div id="tab_contents_2" class="tab-contents editor-codemirror" style="background:#ffffff">
@@ -22,23 +30,6 @@
 			</form>
 	</div>
 	<div id="tab_contents_1" class="tab-contents editor-codemirror" style='overflow-y:auto'>
-	<!--
-		<table class="table simple headline" id="table_style" style='display:none'>
-		<colgroup>
-			<col width="40%" />
-			<col width="60%" />
-		</colgroup>
-		<thead>
-			<tr>
-				<th width="40%">key</th>
-				<th width="60%">value</th>
-			</tr>
-		</thead>
-		<tbody>
-
-		</tbody>
-		</table>
-		-->
 		<div class='property'>
 		
 		</div>

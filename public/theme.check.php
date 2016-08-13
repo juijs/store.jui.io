@@ -1,10 +1,12 @@
 <?php $page_id = "generate"; ?>
 <?php 
 
-include_once "header.php" 
+include_once "include/generate.meta.php";
+$meta = implode(PHP_EOL, $metaList);
+include_once "header.php";
 
 ?>
-<script>define.amd = true;</script>
+<script>if (define) { define.amd = true; }</script>
 
 <script type="text/javascript">
 <?php echo $_POST['component_code'] ?>

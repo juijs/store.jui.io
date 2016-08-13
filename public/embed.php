@@ -125,10 +125,12 @@ html, body {
     <div class='nav <?php echo $only ? "result-only" : "" ?>'>
         <span style="float:left">
             <a class="large nav-btn active" data-target="embedResult" onclick="select(this)">Result</a>
+			<?php if ($row['type'] != 'page') {  ?>
 			<a class="large nav-btn" data-target="component" onclick="select(this)"><?php echo $first ?></a>
+			<?php } ?>
 			<?php if ($row['type']) {  ?>
 			<a class="large nav-btn" data-target="sample" onclick="select(this)">JavaScript</a>
-				<?php if ($row['type'] == 'component') { ?>
+				<?php if ($row['type'] == 'component' || $row['type'] == 'page') { ?>
 					<a class="large nav-btn" data-target="css" onclick="select(this)">CSS</a>
 				<?php } ?>
 			<a class="large nav-btn" data-target="html" onclick="select(this)">HTML</a>
@@ -161,7 +163,7 @@ html, body {
 						<?php include __DIR__."/sample/ui/{$sample_type}.html" ?>
 					</div>
 			<?php
-			} else if ($type == 'component' || $type == 'map') {
+			} else if (in_array($type, array('component', 'map', 'page'))) {
 						
 				echo $row['html_code'];
 			}
@@ -229,7 +231,7 @@ $(function() {
       readOnly : true
 	});
 
-<?php if ($row['type'] == 'component') { ?>
+<?php if ($row['type'] == 'component' || $row['type'] == 'page') { ?>
 	var cssCode = window.cssCode = CodeMirror.fromTextArea($("#css_code")[0], {
 	  mode:  "css",
 	  lineNumbers : true,
@@ -244,7 +246,7 @@ $(function() {
 				componentCode.setValue(data.component_code || "");
 				sampleCode.setValue(data.sample_code || "");
 				htmlCode.setValue(data.html_code || "");
-				<?php if ($row['type'] == 'component') { ?>
+				<?php if ($row['type'] == 'component' || $row['type'] == 'page') { ?>
 				cssCode.setValue(data.css_code || "");
 
 				var arr = data.preprocessor.split(",");

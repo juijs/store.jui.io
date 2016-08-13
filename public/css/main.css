@@ -9,6 +9,7 @@ body {
 	outline: 0;
 }
 
+
 input,textarea {
 	font-family: 'noto sans', sans-serif !important;
 }
@@ -18,7 +19,7 @@ header{
 	line-height: 63px;
 	border-width: 0;
 	border-bottom: 1px solid #2b3340;
-	z-index: 10000;
+	z-index: 100;
 	background-color: #2b3340;
 	background-image: none;
 }
@@ -27,7 +28,7 @@ header a {
 }
 
 footer {
-    position: fixed;
+    position: relative;
 	bottom:0px;
 	left:0px;
 	right:0px;
@@ -117,11 +118,12 @@ footer .link [class*=icon-] {
 .nav-wrap{
 	background-color: #2b3340;
 	height: 63px;
-	position: fixed;
+	position: absolute;
 	top: 0;
 	width: 100%;
 	color: #ffffff;
 }
+
 .content-btn{
 	top: 0;
 	border-width: 0 0 1px;
@@ -195,7 +197,7 @@ footer .link [class*=icon-] {
     box-sizing: border-box;
     text-align:center;
 	position:relative;
-	max-width:1200px;
+	max-width:1024px;
 	display:flex !important;
 	flex-wrap:wrap;
 }
@@ -250,6 +252,13 @@ footer .link [class*=icon-] {
 	background-color: rgba(255,255,255,0.5);
 	border-color: #cacaca;
 }
+
+.view-mode {
+	padding:10px;	
+	box-shadow: 0 5px 10px 0 rgba(0,0,0,0.22);
+	border: 1px solid #ddd;
+}
+
 /*item summary*/
 .summary-box {
 	box-shadow: 0 5px 10px 0 rgba(0,0,0,0.22);
@@ -262,23 +271,98 @@ footer .link [class*=icon-] {
     position: relative;
 }
 
+.summary-box.box-list {
+	width: 100%;
+
+}
+
+.summary-box.box-list .imagesfield{
+	display:none !important;
+}
+
+.summary-box.box-list .name {
+	display:none !important;
+}
+
+.summary-box.box-list .title a {
+	color:black;
+}
+
 @media only screen and (max-width: 320px) {
   .summary-box {
-    width:100%;
-	margin:10 auto;
+    width:90%;
+	margin:0 auto;
+	margin-bottom:30px;
+  }
+
+  .summary-box.box-list {
+	width:90%;
+  }
+
+  .view-mode { 
+    padding-left:20px;
+	padding-right:20px;
+	border:0px !important;
+	box-shadow:none;
+  }
+
+
+  .view-mode > div:first-child {
+		padding-top:0px !important;
+  }
+
+  .btn-simple {
+	padding:2px;
   }
 }
 @media only screen and (min-width: 321px) and (max-width: 480px) {
    .summary-box {
-    width:50%;
-	margin:10 auto;
+    width:90%;
+	margin:0 auto;
+	margin-bottom:30px;
   }
+
+  .summary-box.box-list {
+	width:90%;
+  }
+
+
+  .view-mode { 
+    padding-left:20px;
+	padding-right:20px;
+	border:0px !important;
+	box-shadow:none;
+  }
+
+  .view-mode > div:first-child {
+		padding-top:0px !important;
+  }
+
+
+  .btn-simple {
+	padding:2px;
+  }
+
 }
 
 @media only screen and (min-width: 481px) and (max-width: 768px) {
    .summary-box {
-    width:45%;
-	margin:10 auto;
+    width:80%;
+	margin:0 auto;
+	margin-bottom:30px;
+  }
+
+
+  .view-mode { 
+    padding-left:20px;
+	padding-right:20px;
+	border:0px !important;
+	box-shadow:none;
+  }
+
+
+  .view-mode > div:first-child {
+		padding-top:0px !important;
   }
 }
 
@@ -321,25 +405,33 @@ footer .link [class*=icon-] {
 	height: 164px;
 	width: 100%;
 	position:relative;
+	overflow:hidden;
 }
 
 .summary-normal .imagesfield iframe.iframe-wrap{
-    width: 300%;
-	height: 300%;
+    width: 100%;
+	height: 100%;
 	border: 0;
 	position: absolute;
 	top: 0;
 	left: 0;
 	background: white;
-	-webkit-transform: translate3d(0, 0, 0) scale(0.333333);
-	-ms-transform: translate3d(0, 0, 0) scale(0.333333);
-	transform: translate3d(0, 0, 0) scale(0.333333);
+	-webkit-transform: translate3d(0, 0, 0) scale(1);
+	-ms-transform: translate3d(0, 0, 0) scale(1);
+	transform: translate3d(0, 0, 0) scale(1);
 	-webkit-transform-origin: top left;
 	-ms-transform-origin: top left;
 	transform-origin: top left;
 	-webkit-transition: opacity 0.4s ease;
 	transition: opacity 0.4s ease;
 }
+
+.summary-normal .imagesfield.default-image {
+	background-image: url(/images/chart-sample.jpg);
+	background-repeat:no-repeat;
+	background-position: 50% 50%;
+}
+
 .large .summary-normal .imagesfield {
 	width:100%;
 	max-width:100%;
@@ -375,15 +467,20 @@ footer .link [class*=icon-] {
 	}
 
 	 .large .summary-normal .imagesfield #result {
-		height:300px;
+		height:400px;
+	}
+
+	.summary-normal .imagesfield {
+		height:240px;
 	}
 
 	.mini-view {
 		display:none;
 	}
 
+
 }
-@media only screen and (max-width : 650px) and (min-width : 481px) {
+@media only screen and (max-width : 700px) and (min-width : 481px) {
 
 
 	.nav-loadchart {
@@ -391,10 +488,14 @@ footer .link [class*=icon-] {
 	}
 
 	 .large .summary-normal .imagesfield #result {
-		height:350px;
+		height:400px;
+	}
+
+	.summary-normal .imagesfield {
+		height:400px;
 	}
 }
-@media only screen and (max-width : 1050px) and (min-width : 651px) {
+@media only screen and (max-width : 1050px) and (min-width : 701px) {
 	 .large .summary-normal .imagesfield #result {
 		height:400px;
 	}
@@ -418,7 +519,6 @@ footer .link [class*=icon-] {
 
 
 .summary-normal .imagesfield img{
-	height: 100%;
 	width: 100%;
 	max-width: 100%;
 }
@@ -449,6 +549,17 @@ footer .link [class*=icon-] {
 	overflow:auto;
 }
 
+.view-mode .summary-info {
+	height:auto;
+}
+
+.view-mode .content {
+	max-height:none !important;
+	height:auto !important;
+	overflow:auto !important;
+	padding:10px 0px;
+}
+
 .summary-normal:hover .imagesfield > img {
 	opacity: 0.9;
 }
@@ -469,8 +580,16 @@ footer .link [class*=icon-] {
 	float:right;
 }
 
+.box-list .simbol {
+	float:none;
+}
+
 .simbol-component {
 	background: #4D97E7;
+}
+
+.simbol-page {
+	background: #00FF00;
 }
 
 .simbol-style {
@@ -512,6 +631,22 @@ a[data-view] {
 	top:0px;
 	bottom:0px;
 }	
+
+.box-delete-btn {
+	position:absolute;
+	display:inline-block;
+	right:0px;
+	bottom:0px;
+	padding:2px 10px;
+	 color: #fff;
+    border: 1px solid #9663f4;
+    background-color: #9c75ec;
+    background-image: -moz-linear-gradient(top,#9c75ec 0,#885ed5 100%);
+    background-image: linear-gradient(top,#9c75ec 0,#885ed5 100%);
+    background-image: -webkit-linear-gradient(top,#9c75ec 0,#885ed5 100%);
+    background-image: -o-linear-gradient(top,#9c75ec 0,#885ed5 100%);
+    background-image: -ms-linear-gradient(top,#9c75ec 0,#885ed5 100%);
+}
 
 .btn-purple {
 
@@ -676,3 +811,13 @@ a[data-view] {
 .jui-style.dark .col {
     color: #666 !important;
 } 
+
+
+.back-white {
+	background-color:white;
+}
+
+.border-none {
+	border:0px;
+	box-shadow:none;
+}

@@ -1,8 +1,8 @@
 <?php $page_id = 'style'; 
 
-?>
-
-<?php include_once "header.php";
+include_once "include/generate.meta.php";
+$meta = implode(PHP_EOL, $metaList);
+include_once "header.php";
 
 // connect
 $m = new MongoClient();
@@ -32,37 +32,23 @@ body { overflow: hidden; }
 	<div class="editor-content has-toolbar">
 		<div class="editor-toolbar">
 			<div style='float:left;padding:10px;'>
-			<?php if ($isMy) { ?>
-			<div class="group" id="js_html_convert">
-				<a class="btn"><i class="icon-upload"></i> Upload File</a> 
-				<a class="btn" onclick="select_theme(this)">Select Theme</a>
-			</div>
-			<input type="file" accept=".less" id="component_load" />
-
-			Element : 
-			<select id="key-list" class='input' onchange="location.href='#' + this.value;"></select>
-
-			Sample : 
-			<select id="sample_list" class="input">
-				<option value="">Select Sample</option>
-			</select>
-			<?php } ?>
-
+				<a class="btn" id="library"><i class='icon-gear'></i> Setting</a>
 			</div>
 			<div style="float:right;padding:10px;padding-top:15px;">
+
+				<!--<a class='btn' onclick="coderun()">Run <i class="icon-play"></i></a>-->
+
 				<?php if ($_GET['id']) { ?>
-				<a class='btn' href="/view.php?id=<?php echo $_GET['id'] ?>">View</a>
+				<a class='btn' href="/view.php?id=<?php echo $_GET['id'] ?>"><i class="icon-report2"></i> View</a>
 				<?php } ?>			
 
-				<a class='btn' onclick="coderun()">Run <i class="icon-play"></i></a>
-
 				<?php if ($isMy) { ?>
-				<div class='group'>
-					<a class="btn" onclick="savecode()">Save</a>
+
+					<a class="btn" onclick="savecode()"><i class="icon-edit"></i> Save</a>
 					<?php if ($_GET['id']) { ?>
-					<a class="btn" onclick="deletecode()">Delete</a>
+					<a class="btn" onclick="deletecode()"><i class="icon-trashcan"></i> Delete</a>
 					<?php } ?>
-				</div>
+
 				<?php } else { ?>
 
 				<?php } ?>
@@ -71,13 +57,13 @@ body { overflow: hidden; }
 
 		</div>
 
-		<div class="editor-area editor-layout-style">
+		<div class="editor-area editor-layout-style view-only">
 			<div class="editor-left">
 				 <?php include_once "include/style.editor.php" ?>
 
 			</div>
 			<div class="editor-right">
- 				 <?php include_once "include/style.information.php" ?>
+ 				 <?php//include_once "include/style.information.php" ?>
                
 				  <?php include_once "include/style.result.php" ?>
 			</div>

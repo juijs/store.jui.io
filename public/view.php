@@ -29,10 +29,14 @@ if ($_GET['id'] && ($row['login_type'] != $_SESSION['login_type'] || $row['useri
     $isMy = false;
 }
 
-//var_dump($row);
 
 if (($row['access'] == 'private') && !$isMy) {
 	header("HTTP/1.0 404 Not Found");
+	exit;
+}
+
+if ($row == null) {
+	echo "<script>alert('This page is not exists.'); location.href = '/'; </script>";
 	exit;
 }
 
@@ -46,6 +50,13 @@ $description = str_replace("\r\n", "\\r\\n", $row['description']);
 $username = $row['username'];
 
 if (!$row['type']) $row['type'] = 'component';
+
+
+include_once "include/generate.meta.php";
+
+$metaList[] = 	'<script type="text/javascript" src="//store.jui.io/js/iframe-resizer/js/iframeResizer.min.js"></script>';
+
+$meta = implode(PHP_EOL, $metaList);
 
 $meta =<<<EOD
 	<!-- Facebook -->
@@ -67,9 +78,12 @@ $meta =<<<EOD
 	<meta itemprop="name" content="{$title}">
 	<meta itemprop="description" content="{$description}">
 	<meta itemprop="image" content="http://store.jui.io/thumbnail.php?id={$id}">
+
+	{$meta}
 EOD;
 
 $page_id = 'view';
+$body_class = 'back-white';
 include_once "header.php";
 
 
@@ -79,12 +93,11 @@ $first = strtoupper(substr($row['type'], 0, 1));
 
 if (!$first) $first = "C";
 $color = $type_colors[$first];
-
 ?>
-<div style="margin-top:28px"></div>
-<div id="content-container" style="padding:10px;">
+<div style="margin-top:100px"></div>
+<div id="content-container" class="view-mode">
 
-	<div style="width:100%;max-width:950px;;margin:0 auto;padding-top:50px;">
+	<div style="width:100%;max-width:900px;;margin:0 auto;padding-top:50px;">
 
 		<?php
 		$id = (string)$row['_id'];
@@ -96,7 +109,7 @@ $color = $type_colors[$first];
 		$first = $type_text[$type];
 
 		?>
-		<div class="summary-box large"><div class="summary-normal">
+		<div class="summary-box large border-none"><div class="summary-normal">
 				<div class="name">
 					<span><img src="<?php echo $row['avatar'] ?>" width="30" height="30" class='avatar' align='absmiddle'/>&nbsp;<?php echo $row['username'] ?></span>
 
@@ -125,7 +138,7 @@ $color = $type_colors[$first];
 							$embed_url = $static_file;
 						}
 					?>
-					<iframe src="<?php echo $embed_url ?>" style="border:0px" width="100%" height="400px" frameborder="0" border="0" id="result"></iframe>
+					<iframe id="embed-frame" src="<?php echo $embed_url ?>" style="border:0px" width="100%"></iframe>
 					</div>
 				<div class="summary-info">
 					<div class="title"><span class="simbol simbol-<?php echo $type ?>"><?php echo $first ?></span> <?php echo $row['title'] ? $row['title'] : '&nbsp;' ?></div>
@@ -157,7 +170,8 @@ $color = $type_colors[$first];
 			</div>
 
 		</div>
-        <p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<?php if (!$detect->isMobile()) { ?>
 		<div id="disqus_thread"></div>
 		<script type="text/javascript">
 			/* * * CONFIGURATION VARIABLES * * */
@@ -171,15 +185,22 @@ $color = $type_colors[$first];
 			})();
 		</script>
 		<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
+		<div style="margin-top:50px"></div>
+		<?php } ?>
 	</div>
-
 </div>
+	<div style="margin-top:50px"></div>
 <script>
+
+$(function () {
+	$("#embed-frame").iFrameResize({ 
+		log: true
+	});
+})
+
 function setContentHeight (height) {
-	$("#result").height(height+20);
+	$("#embed-frame").height((height));
 }
 </script>
 </body>
 </html>
-

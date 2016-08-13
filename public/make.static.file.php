@@ -38,7 +38,11 @@ EOD;
 
 $meta = implode(PHP_EOL, $metaList);
 
-include "header.static.php";
+if (file_exists(PLUGIN."/page/header.static.php")) {
+	include PLUGIN."/page/header.static.php";
+} else {
+	include ABSPATH."/header.static.php";
+}
 
 
 include "include/preprocessor.php";
@@ -54,7 +58,6 @@ $color = $type_colors[$first];
 <style type="text/css">
 html, body {
 	background:white;
-	height:100%;
 }
 
 .CodeMirror {
@@ -89,31 +92,26 @@ html, body {
 
 }
 </style>
-<div id="content-container">
-	<div class='nav-container result-only' >
-        <div id='embedResult' class='nav-content active' style="overflow:hidden" >
-			<?php
-			$type = $data['type'];
-			$sample_type = $data['sample_type'];
+<div id='embedResult' class='active' >
+	<?php
+	$type = $data['type'];
+	$sample_type = $data['sample_type'];
 
-			if ($type == 'style') {
+	if ($type == 'style') {
 
-				if (!$sample_type) {
-					$sample_type = 'buttons';
-				}
-				?>
-					<div style="padding:10px">
-						<?php include __DIR__."/sample/ui/{$sample_type}.html" ?>
-					</div>
-			<?php
-			} else if ($type == 'component' || $type == 'map') {
-						
-				echo $data['html_code'];
-			}
-			?>		
-		
-		</div>
-	</div>
+		if (!$sample_type) {
+			$sample_type = 'buttons';
+		}
+		?>
+			<div style="padding:10px">
+				<?php include __DIR__."/sample/ui/{$sample_type}.html" ?>
+			</div>
+	<?php
+	} else if (in_array($type, array('component', 'page', 'map'))) {
+				
+		echo $data['html_code'];
+	}
+	?>		
 
 </div>
 
@@ -142,17 +140,21 @@ $sample_code = str_replace("@path", "'".$map_link."'", $data['sample_code']) ;
 </script>
 <script type="text/javascript">
 
-jui.ready(function() { 
+if (jui)
+{
+	jui.ready(function() { 
 
-	// 테마 설정 
-	var theme = '<?php echo $data['name'] ?>';
-	if ('<?php echo $data['type'] ?>' == 'theme') {
-		var obj = $("#embedResult")[0].jui;
-		if (obj) {
-			obj.setTheme(theme);
+		// 테마 설정 
+		var theme = '<?php echo $data['name'] ?>';
+		if ('<?php echo $data['type'] ?>' == 'theme') {
+			var obj = $("#embedResult")[0].jui;
+			if (obj) {
+				obj.setTheme(theme);
+			}
 		}
-	}
-});
+	});
+}
+
 
 </script>
 
@@ -160,12 +162,12 @@ jui.ready(function() {
 <script type="text/javascript">
 $(function() {
 
-	setTimeout(function() {
+	setInterval(function() {
 		if (parent && parent.setContentHeight)
 		{
-			parent.setContentHeight($("#embedResult")[0].scrollHeight);
+			parent.setContentHeight($("body")[0].scrollHeight);
 		}
-	}, 100);
+	}, 1000);
 });
 </script>
 </body>
