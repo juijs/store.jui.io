@@ -38,6 +38,13 @@ $username = $row['username'];
 
 if (!$row['type']) $row['type'] = 'component';
 
+
+if ($row['type'] == 'pr') {
+	include_once PLUGIN."/{$row['type']}/embed.php";
+	exit;
+}
+
+
 $metaList = array();
 $arr = explode(",", $row['resources']);
 foreach($arr as $val) {

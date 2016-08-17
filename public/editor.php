@@ -71,7 +71,7 @@ body { overflow: hidden; }
 		</div>
 		<?php } ?>
 
-		<div class="editor-area view-only">
+		<div class="editor-area view-only ?>">
 			<div class="editor-left">
 
 				<?php include_once PLUGIN."/$type/editor.php" ?>
@@ -91,6 +91,6 @@ body { overflow: hidden; }
 		</div>
 	<?php } ?>
 </div>
-<?php include_once PLUGIN."/$type/script.php" ?>
+<?php @include_once PLUGIN."/$type/script.php" ?>
 <?php include_once "include/script.php" ?>
 <?php include_once "footer.php" ?>

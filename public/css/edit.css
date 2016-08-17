@@ -78,6 +78,14 @@ html,body {
 	overflow:hidden;
 }
 
+.editor-list {
+	position:absolute;
+	top:0px;
+	left:0px;
+	bottom:0px;
+	overflow:hidden;
+}
+
 .editor-area.view-only  .editor-left {
 	width:700px;
 }

@@ -21,6 +21,8 @@ $currentUri->setQuery('');
 require_once ROOT."/init.php";
 
 $type_text = array(
+	//'static' => 'Static',
+	'pr' => 'Presentation',
 	'page' => 'Page',
 	'component' => 'Module',
 	'theme' => 'Chart',

@@ -5,6 +5,9 @@
 		<?php  if ($page_id == 'mylist') { ?>
 		<span class="nav-loadchart" style="text-align:center;">
 			<div class='group'>
+				<a href="editor.php?type=pr" class='btn create-button'>
+					<div class='button-image'><i class='icon-check'></i> <?php echo $type_text['pr'] ?></div> 
+				</a>
 				<a href="editor.php?type=page" class='btn create-button'>
 					<div class='button-image'><i class='icon-check'></i> <?php echo $type_text['page'] ?></div> 
 				</a>

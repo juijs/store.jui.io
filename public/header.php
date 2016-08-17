@@ -8,6 +8,12 @@
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
     <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+
+	<?php if ($type_text[$page_id]) { ?>
+	<link href="/css/edit.css" rel="stylesheet" />
+	<?php } ?>
+
+
 	<?php echo $meta ?>
 	<?php if ($type_text[$page_id]) { ?>
 	<link href="/bower_components/codemirror/lib/codemirror.css" rel="stylesheet" />
@@ -37,11 +43,6 @@
 	
 	
 	<link href="/css/main.css" rel="stylesheet" />
-
-	<?php if ($type_text[$page_id]) { ?>
-	<link href="/css/edit.css" rel="stylesheet" />
-	<?php } ?>
-
 	<?php if ($page_id != 'generate' && $page_id != 'generate.ui' && $page_id != 'view'  && $page_id != 'list' && $page_id != 'mylist'  ) { ?>
 	<script src="/bower_components/tinyColorPicker/colors.js"></script>
 	<script src="/bower_components/tinyColorPicker/jqColorPicker.js"></script>
