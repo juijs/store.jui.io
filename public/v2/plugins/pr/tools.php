@@ -1,0 +1,2 @@
+<a class="button button-regular broadcast-btn feature-button"><i class='icon-was'></i> Broadcast</a>
+<a class="button button-regular fullscreen-btn feature-button"><i class='icon-was'></i> Full Screen</a>

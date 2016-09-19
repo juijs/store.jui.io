@@ -174,6 +174,7 @@ $color = $type_colors[$first];
 					<span style="float: right; padding: 10px 0px;">
 						<?php if ($row['type']  == 'pr') { ?>
 
+					    <a class="btn broadcast-btn"><i class='icon-was'></i> Broadcast</a>
 					    <a class="btn fullscreen-btn"><i class='icon-was'></i> Full Screen</a>
 					    <a href="/editor.php?id=<?php echo $id ?>" class="btn focus"><?php if ($isMy) { ?>Edit<?php } else { ?>Source<?php } ?></a>
 						<?php } else { ?>
@@ -217,6 +218,10 @@ $color = $type_colors[$first];
 $(function () {
 	$("#embed-frame").iFrameResize({ 
 		log: true
+	});
+
+	$(".broadcast-btn").on("click", function () {
+		window.open("/broadcast.php?id=<?php echo $_GET['id'] ?>", "board_cast_<?php echo $_GET['id'] ?>");
 	});
 
 	$(".fullscreen-btn").on('click', function () {

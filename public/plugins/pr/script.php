@@ -101,7 +101,13 @@ jui.defineUI("ui.property", ['jquery', 'util.base'], function ($, _) {
 					'padding-right' : 20
 				});;
 				var $input = $("<td class='property-render'  />");
-				$input.append($("<div class='item' />").html(this.render($dom, item)));
+				$input.append(
+					$("<div class='item' />").css({
+						'position' : 'relative'
+					}).html(
+						this.render($dom, item)
+					)
+				);
 
 
 				if (item.description)
@@ -285,6 +291,82 @@ jui.defineUI("ui.property", ['jquery', 'util.base'], function ($, _) {
 
 			return $input; 
 		}
+
+		renderer.color = function ($dom, item) {
+			var $input = $("<a />").css({
+				display: 'inline-block'	
+			});;
+
+			var $colorPanel = $("<span />").css({
+				display: 'inline-block',
+				width: 20,
+				height: 20,
+				'border-radius' : '50%',
+				border: '1px solid #ececec',
+				'background-color': 'white',
+				'margin-right' : '5px',
+				'vertical-align' : 'middle' 
+			}).html('&nbsp;');
+
+			var $colorCode = $("<span />").css({
+				display: 'inline-block',
+				width: '80px',
+				height: '20px',
+				'font-size' : '13px',
+				'line-height' : '26px',
+				'vertial-align' : 'middle'
+			}).html(item.value || '');
+
+			$input.append($colorPanel);
+			$input.append($colorCode);
+
+			$input.on('click', function() {
+				var offset = $(this).offset();
+
+				var $colorPicker = $(this).next('.colorpicker');
+
+				if (!$colorPicker.length) {
+					$colorPicker = $('<div class="colorpicker" />');
+
+					$input.after($colorPicker);
+
+					var colorpicker = jui.create('ui.colorpicker', $colorPicker, {
+						color: "#DCDCDC",
+						event: {
+							 change: debounce(function(color) {
+								 $colorPanel.css('background-color', color);
+								 $colorCode.html(color);
+								
+								self.refreshValue($input.closest('.property-item'), color);
+
+							}, 100, colorpicker)
+						}
+					});
+
+
+					$('body').on('click', function (e) {
+						var $c = $(e.target).closest('.colorpicker');
+						var $c2 = $(e.target).closest($input);
+						if (!$c.length && !$c2.length) {
+							$colorPicker.hide();
+						}
+					});
+
+					
+				}
+
+				$colorPicker.css({
+						position: 'absolute',
+						'z-index' : 100000,
+						top: 40,
+						left: 0
+				});
+				$colorPicker.show();
+	
+			});
+
+			return $input;
+		}
 	}
 
 	PropertyView.setup = function () {
@@ -422,7 +504,7 @@ $(function() {
 			{ title : 'Slide ID', key : 'slide-id'  },
 			{ title : 'Character Set', key : 'charset'  },
 			{ type : 'group' , title : 'Background' },
-			{ title : 'Background Color', key : 'background-color' },
+			{ type : 'color', title : 'Background Color', key : 'background-color' },
 			{ title : 'Background Image', key : 'background-image' },
 			{ title : 'Background Size', key : 'background-size' },
 			{ title : 'Background Position', key : 'background-position' },

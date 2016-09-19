@@ -7,10 +7,18 @@ session_start();
 
 define("STORE", "STORE");
 define("ROOT", __DIR__);
+define("REPOSITORY", ROOT."/repository");
+define("RESOURCES", ROOT."/resources");
+
 define("ABSPATH", ROOT."/public");
 define("INC", ABSPATH."/include");
 define("PLUGIN", ABSPATH."/plugins");
 define("PLUGIN_URL", "/plugins");
+
+define("V2", ROOT."/public/v2");
+define("V2_INC", ROOT."/public/v2/include");
+define("V2_PLUGIN", ROOT."/public/v2/plugins");
+define("V2_PLUGIN_URL", "/v2/plugins");
 
 require_once ROOT."/vendor/autoload.php";
 
@@ -28,7 +36,8 @@ $type_text = array(
 	'theme' => 'Chart',
 	'style' => 'UI',
 	'map' => 'Map',
-	'data' => 'Data'
+	'data' => 'Data',
+	'code' => 'Code'
 );
 
 function HtmlPreprocessor($content, $type) {

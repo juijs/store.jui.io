@@ -39,8 +39,10 @@ $username = $row['username'];
 if (!$row['type']) $row['type'] = 'component';
 
 
-if ($row['type'] == 'pr') {
-	include_once PLUGIN."/{$row['type']}/embed.php";
+$embed_path = V2_PLUGIN."/{$row['type']}/embed.php";
+
+if (file_exists($embed_path)) {
+	include_once $embed_path;
 	exit;
 }
 

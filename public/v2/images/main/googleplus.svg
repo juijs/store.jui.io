@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="14px" viewBox="0 0 24 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
+    <title>googleplus</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="share" transform="translate(-629.000000, -348.000000)" fill="#FFFFFF">
+            <g id="Group-7" transform="translate(455.000000, 327.000000)">
+                <g id="Group-4" transform="translate(157.000000, 0.000000)">
+                    <path d="M24,27 L41,29 L38,29 L38,32 L36,32 L36,29 L33,29 L33,27 L36,27 L36,24 L38,24 L38,27 L41,27 L41,29 L24,27 Z M24,27 L24,29.4 L27.97,29.4 C27.81,30.429 26.77,32.42 24,32.42 C21.61,32.42 19.66,30.441 19.66,28 C19.66,25.56 21.61,23.58 24,23.58 C25.36,23.58 26.27,24.16 26.79,24.66 L28.69,22.83 C27.47,21.69 25.89,21 24,21 C20.13,21 17,24.13 17,28 C17,31.87 20.13,35 24,35 C28.04,35 30.721,32.16 30.721,28.16 C30.721,27.7 30.67,27.35 30.61,27 L24,27 Z" id="googleplus"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

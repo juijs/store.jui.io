@@ -34,7 +34,8 @@ $sort = array();
 $sort[$sort_type] = -1; 
 
 $rows = $components->find(array(
-    'access' => 'public'            
+	'access' => 'public',
+	'type' => array('$ne' => 'code')	
 ));
 
 $total = $rows->count();

@@ -1,0 +1,24 @@
+.editor-container {
+	top:0px;
+}
+
+.editor-toolbar {
+	padding:5px;
+}
+
+.editor-toolbar .buttons {
+	float:left;
+}
+
+.editor-toolbar a.logo {
+	text-decoration:none;
+	color:rgba(0, 0, 0, 0.9);
+	font-size:13px;
+	font-weight:200;
+	letter-spacing:1px;
+}
+
+
+.editor-toolbar a.logo img {
+	vertical-align:middle;
+}

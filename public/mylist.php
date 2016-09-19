@@ -29,7 +29,8 @@ $sort[$sort_type] = -1;
 
 $rows = $components->find(array(
 	'login_type' => $_SESSION['login_type'],
-	'userid' => $_SESSION['userid']
+	'userid' => $_SESSION['userid'],
+	'type' => array('$ne' => 'code')	
 ));
 
 $total = $rows->count();

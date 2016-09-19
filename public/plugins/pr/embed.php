@@ -121,6 +121,5 @@ function toggleFullScreen() {
 
 location.href="#/<?php echo $_GET['selected_num']  ?>";
 </script>
-
 </body>
 </html>

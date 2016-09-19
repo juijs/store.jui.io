@@ -110,10 +110,18 @@ if ($_POST['id']) {
 
 if ($result['ok']) {
 	$id = $_POST['id'] ? $_POST['id'] : (string)$document['_id'];
+	
+	$v2_path = "";
+	if (file_exists(V2_PLUGIN."/$type/make.static.file.php")) {
+		$v2_path = "v2/";
+	}
+
+	$thumbnail_url = "http://{$_SERVER['HTTP_HOST']}/{$v2_path}embed.php?id={$id}&only=true";
+	$thumbnail_path = "{$root}/thumbnail/{$id}.png";
 
 	// auto created sample image 
 	$root = getcwd();
-	shell_exec(escapeshellcmd("webshot --window-size=800/600 http://{$_SERVER['HTTP_HOST']}/embed.php?id={$id}&only=true {$root}/thumbnail/{$id}.png"));
+	shell_exec(escapeshellcmd("webshot --window-size=800/600 {$thumbnail_url} {$thumbnail_path}"));
 
 	echo json_encode(array('id' => $id, 'result' => true));
 	// create static file 
@@ -121,6 +129,8 @@ if ($result['ok']) {
 
 	if (file_exists(PLUGIN."/$type/make.static.file.php")) {
 		include_once PLUGIN."/$type/make.static.file.php";
+	} else if (file_exists(V2_PLUGIN."/$type/make.static.file.php")) {
+		include_once V2_PLUGIN."/$type/make.static.file.php";
 	} else {
 		include_once "make.static.file.php";
 	}

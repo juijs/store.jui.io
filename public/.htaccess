@@ -12,5 +12,8 @@ mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
 <IfModule mod_rewrite.c>
 RewriteEngine On
 
+ErrorDocument 404 /404.php
+
 RewriteRule ^file/(.*)$ file.php?name=$1
+RewriteRule ^v2/code/(.*)$ /v2/plugins/code/fileRead.php?preprocessor=true&file=$1 [QSA,L]
 </IfModule>
