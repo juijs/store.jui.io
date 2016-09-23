@@ -18,7 +18,7 @@ $dir = REPOSITORY.'/'.$id. '/';
 $repo = new GitRepository($dir);
 
 // create a new file in repo
-$filename = $repo->getRepositoryPath() . $_POST['filename'];
+$filename = $dir .$_POST['filename'];
 
 if (file_exists($filename)) {
 	echo json_encode(array('result' => false, 'message' => 'already file is exists'));

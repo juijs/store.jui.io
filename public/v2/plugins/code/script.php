@@ -5,10 +5,10 @@
 <script type="text/javascript">
 $(function() {
 
+
 	var ExternalItemTemplate = window.ExternalItemTemplate = '<span title="drag me for ordering" class="handle" draggable="true"><i class="icon-dashboardlist"></i></span><input type="text" placeholder="//myhost.com/my.js" class="input" /><a class="btn small"><i class="icon-exit"></i></a>';
 
 	var baseCode = window.baseCode = CodeMirror.fromTextArea($("#base_code")[0], {
-	  mode:  "markdown",
 	  lineNumbers : true
 	});
 
@@ -16,9 +16,50 @@ $(function() {
 		auto_save();
 	});
    
-	$(".add-btn").on('click', function () {
-		newFileWin.show();
+	$(".add-file-btn").on('click', function () {
+		filetree.action_new_file();
 	});
+
+	$(".add-directory-btn").on('click', function () {
+		filetree.action_new_folder();
+	});
+
+	$(".file-name").on("click", function () {
+		if (baseCode.file) {
+			window.open('/v2/code' + baseCode.file, 'file-' + baseCode.file);
+		}
+	});
+
+	// code editor mode settings 
+	CodeMirror.modeURL = "/bower_components/codemirror/mode/%N/%N.js";
+	window.change_edit_mode = function () {
+		var val = baseCode.file, m, mode, spec;
+
+		if (val.indexOf('.color') > -1) {
+			val = val.replace('.color', '.css');
+		}
+
+		if (m = /.+\.([^.]+)$/.exec(val)) {
+			var info = CodeMirror.findModeByExtension(m[1]);
+			if (info) {
+		        mode = info.mode;
+		      spec = info.mime;
+		    }
+	    } else if (/\//.test(val)) {
+		    var info = CodeMirror.findModeByMIME(val);
+		    if (info) {
+			    mode = info.mode;
+		        spec = val;
+	        }
+		} else {
+		    mode = spec = val;
+		}
+
+		if (mode) {
+		    baseCode.setOption("mode", spec);
+	        CodeMirror.autoLoadMode(baseCode, mode);
+		}
+	}
 
 	var auto_save_timer = null;
 	window.auto_save = function auto_save() {
@@ -39,8 +80,15 @@ $(function() {
 		});	
 	}
 
+	window.preview_timer = null;
 	window.preview_code = function preview_code() {
-		$("iframe[name=chart_frame]").attr('src', '/v2/code' + baseCode.file);
+		if (preview_timer) {
+			clearTimeout(preview_timer);
+		}
+
+		preview_timer = setTimeout(function() {
+			$("iframe[name=chart_frame]").attr('src', '/v2/code' + baseCode.file);
+		}, 1000);
 	}
 
 	$(".preview-btn").on("click", function (e) {
@@ -50,6 +98,10 @@ $(function() {
 	window.is_image = function (file) {
 		var ext = file.split('.').pop();
 		return (ext == 'png' || ext == 'jpg' || ext == 'gif' || ext == 'bmp') ;
+	}
+
+	window.update_file_name = function (name) {
+		$(".code-toolbar .file-name").html(name);
 	}
 
 	window.show_editor = function (file, relativePath) {
@@ -62,8 +114,9 @@ $(function() {
 			imageeditor.setImage('/v2/code' + file);
 			imageeditor.render();
 
-			$(".code-toolbar .file-name").html(relativePath);
+			update_file_name(relativePath);
 			
+			load_type_tools();
 			preview_code();			
 
 		} else {			// text editor 일 경우 
@@ -77,27 +130,62 @@ $(function() {
 				baseCode.refresh();
 				baseCode.focus();
 
-				$(".code-toolbar .file-name").html(relativePath);
+				load_type_tools();
+				update_file_name(relativePath);
 
-				var ext = file.split(".").pop();
-				var mode = ext; 
-
-				if (mode == 'html') {
-					mode = 'htmlmixed'
-				} else if (mode == 'css' || mode == 'less' || mode == 'scss' || mode == 'styl') {
-					mode = 'css';
-				} else if (mode == 'json' || mode == 'js' || mode == 'dart' || mode == 'ts' ) { 
-					mode = 'javascript';
-				} else if (mode == 'markdown' || mode == 'md' ) {
-					mode = 'markdown';
-				} else {
-					mode = 'text';
-				}	
-
-				baseCode.setOption('mode', mode);
+				change_edit_mode();
 				preview_code();
 			});
 		}
+
+	}
+
+	window.load_type_tools = function () {
+		var $tools = $(".file-type-tools");
+
+		$tools.html(generate_tool_buttons(get_type_tools()));
+	}
+
+	window.generate_tool_buttons = function (arr) {
+		var temp = [];
+
+		for(var i = 0, len = arr.length; i < len; i++) {
+			var item = arr[i];
+
+			if (item == 'sample') {
+				temp.push($("<a class='sample-download'><i class='icon-download download-sample'></i> Sample Code</a>")[0]);
+			}
+		}
+
+		return temp;
+	}
+
+	window.get_type_tools = function () {
+		if (!baseCode.file) return [];
+
+		var ext = baseCode.file.split(".").pop();
+
+		switch(ext) {
+		//	case 'ts': return ['sample'];  
+		}
+
+		return []
+	}
+
+	$(".file-type-tools").on("click", "a", function () {
+		var $it = $(this);
+
+		if ($it.hasClass('sample-download')) {
+			sample_download();
+		}
+	});
+
+	window.sample_download = function () {
+		var ext = baseCode.file.split('.').pop();
+
+		$.get('<?php echo V2_PLUGIN_URL?>/code/sample_list.php', { ext : ext }, function (list) {
+			console.log(list);
+		});
 	}
 
 	/*

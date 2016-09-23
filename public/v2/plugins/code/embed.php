@@ -6,6 +6,7 @@ $default_view_list = array(
 	'index.html',
 	'index.htm',
 	'index.jade',
+	'index.color',
 	'index.md',
 	'README.md'
 );

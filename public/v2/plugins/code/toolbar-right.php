@@ -4,7 +4,7 @@
 </div>
 <?php } else { ?>
 <?php if ($isMy) { ?>
-<a class="button button-link" id="commit-btn">Commit</a>
+<a class="button button-link" id="commit-btn"><i class='icon-edit' ></i> Commit</a>
 <?php } ?>
 
 <?php } ?>

@@ -4,7 +4,11 @@
 			<div class="file-toolbar">
 				<h1>FILES</h1>
 				<?php if ($isMy && !$is_viewer) { ?>
-				<a class="add-btn" title="add file or directory"  ><?php echo get_svg_image('plus') ?></a>
+				<div class="buttons">
+					<a class="add-directory-btn" title="add folder"  ><i class="icon-add-dir"></i> Folder</a>
+					&nbsp;&nbsp;&nbsp;
+					<a class="add-file-btn" title="add file"  ><i class='icon-report2'></i> File</a>
+				</div>
 				<?php } ?>
 			</div>
 			<div class="file-content">
@@ -13,7 +17,7 @@
 		</div>
 		<div class="code-container">
 			<div class="code-toolbar">
-				<h1><span  class="splitter-toggle" data-splitter="fileSplitter" title="Toggle Files" ><?php echo get_svg_image('left') ?></span>  EDITOR <span class="file-name" style="font-size:12px;color:#a9a9a9;"></span></h1>
+				<h1><span  class="splitter-toggle" data-splitter="fileSplitter" title="Toggle Files" ><?php echo get_svg_image('left') ?></span> <i class="icon-report2"></i> <a class="file-name" title="Please click if you see a file on new window">EDITOR</a><span class="file-type-tools"></span></h1>
 				<?php if ($isMy && !$is_viewer) { ?> 
 				<a class="show-history revision toolbar-button" title="Show file history"><?php echo get_svg_image('commit') ?></a>
 				<?php } ?>

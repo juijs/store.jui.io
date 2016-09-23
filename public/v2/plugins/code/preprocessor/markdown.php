@@ -4,11 +4,16 @@
  * $file : file full path 
  * $dir :  root directory 
  * $id : repository id 
+ * $cache_file : cache file path 
  * $url_root : url based root path 
  * $relative_path : relative path of file 
  * 
  */
 
 header('Content-Type: text/html');
-echo HtmlPreprocessor(file_get_contents($file), 'markdown');
 
+if (!hasCache($file)) {
+	generateCache($file, HtmlPreprocessor(file_get_contents($file), 'markdown'));
+}
+
+outputCache($file);

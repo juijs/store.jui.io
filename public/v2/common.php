@@ -21,37 +21,37 @@ function get_good_rate ($good_count, $r = 75) {
 			$good_type = 1; 
 			$good_max = 10;
 
-			$good_rate = ($good_count) / 100;
+			$good_rate = ($good_count/$good_max);
 
 		} else if ($good_count <= 20) {
 			$good_type = 2; 
 			$good_max = 20;
 
-			$good_rate = ($good_max - $good_count) / 100;
+			$good_rate = ($good_count - 10) / ($good_max - 10);
 
 		} else if ($good_count <= 30) {
 			$good_type = 3; 
 			$good_max = 30;
 
-			$good_rate = ($good_max - $good_count) / 100;
+			$good_rate = ($good_count - 20) / ($good_max - 20);
 
 		} else if ($good_count <= 50) { 	
 			$good_type = 4; 
 			$good_max = 50;
 
-			$good_rate = ($good_max - $good_count) / 100;
+			$good_rate = ($good_count - 30) / ($good_max - 30);
 
 		} else if ($good_count <= 100) {
 			$good_type = 5; 
 			$good_max = 100;
 
-			$good_rate = ($good_max - $good_count) / 100;
+			$good_rate = ($good_count - 50) / ($good_max - 50);
 
 		} else {
 			$good_type = 6; 
 			$good_max = 200;
 
-			$good_rate = ($good_max - $good_count) / 100;
+			$good_rate = ($good_count - 100) / ($good_max - 100);
 		}
 
 		$maxLength = $r * M_PI  * 2;

@@ -13,10 +13,14 @@ $support_file_type = array(
 	'coffee', 
 	'dart', 
 	'ts',
+	'js',
 	'json',
+
+	// special extention 
 	'isbn',
 	'qrcode',
-	'barcode'
+	'barcode',
+	'color',
 );
 
 function get_ext($filename) {
@@ -34,6 +38,45 @@ function is_support_type($filename) {
 	$is_support  = in_array($ext, $support_file_type);
 
 	return $is_support; 
+}
+
+function getCache($file) {
+	return str_replace(REPOSITORY, CACHE, $file);
+}
+
+function outputCache($file) {
+	readfile(getCache($file));
+}
+
+function hasCache($file) {
+	$cache_file = getCache($file);
+
+	// 캐쉬 파일이 없으면 
+	if (!file_exists($cache_file)) return false; 
+
+	// 캐쉬 파일이 있는데 수정시간이 다르면  
+	if (filemtime($file) != filemtime($cache_file)) {
+		return false; 
+	}
+
+	return true; 
+}
+
+function touchCache($file) {
+	$cache_file = getCache($file);
+
+	chmod($cache_file, 0666);
+	touch($cache_file, filemtime($file));
+}
+
+function generateCache($file, $content) {
+	$cache_file = getCache($file);
+
+	$dir = dirname($cache_file);
+	mkdir($dir, 0777, true);
+
+	file_put_contents($cache_file, $content);
+	touchCache($file);
 }
 
 function code_preprocessor($id, $file, $url_root) {

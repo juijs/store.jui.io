@@ -85,6 +85,8 @@ if ($result['ok']) {
 			// clone repository 
 			$repo = GitRepository::cloneRepository($document['name'], $dir);
 
+			$repo->setConfig($_SESSION['username']);
+
 			// update code project name 
 			$real_code_name = GitRepository::extractRepositoryNameFromUrl($document['name'] );
 
@@ -96,6 +98,8 @@ if ($result['ok']) {
 		} else {
 
 			$repo = GitRepository::init($dir);
+
+			$repo->setConfig($_SESSION['username']);
 
 			// create a new file in repo
 			$filename = $repo->getRepositoryPath() . '/README.md';

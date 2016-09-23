@@ -1,10 +1,18 @@
+html {
+	background-color:white;
+}
+
 .nav-wrap {
     max-width: none;
+	padding-left:20px;
+	padding-right:20px;
 
 }
 
 header {
 	border-bottom:1px solid #ececec;
+	margin:0 auto;
+	max-width:none;
 }
 
 footer {
@@ -15,9 +23,10 @@ footer {
 .editor-container {
 	position:fixed;
 	left:0px;
-    top:70px;
+    top:60px !important;
 	right:0px;
 	bottom:0px;
+	padding-top:10px;
 }
 
 .editor-content {

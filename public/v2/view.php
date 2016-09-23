@@ -168,16 +168,16 @@ if ($data) {
 				</div>
 				<div class="divider"></div>
 				<div class="frame">
-					<iframe id="embed-frame" src="<?php echo $embed_url ?>" width="100%" height="500px" allowfullscreen></iframe>
+					<iframe id="embed-frame" src="<?php echo $embed_url ?>" width="100%" height="800px" allowfullscreen></iframe>
 					<div class="resizer" title="Please drag for content resizing "><i class="icon-grip1"></i></div>
 				</div>
 			</div>
 			<div class="right">
 				<div class="button-group">
 
-					<a href="/v2/editor.php?id=<?php echo $id ?>" class="button button-regular active"><?php if ($isMy) { ?>Edit<?php } else { ?>Source<?php } ?></a>
+					<a href="/v2/editor.php?id=<?php echo $id ?>" class="button button-regular active"><?php if ($isMy) { ?><i class="icon-edit"></i> Edit<?php } else { ?><i class="icon-search"></i> Source<?php } ?></a>
 					<?php if ($isMy) { ?>
-					<a href="#" onclick="deletecode('<?php echo $id ?>')" class="button button-regular  danger  active" style="margin-top:10px;">Delete</a>
+					<a href="#" onclick="deletecode('<?php echo $id ?>')" class="button button-regular  danger  active" style="margin-top:10px;"><i class="icon-trashcan"></i> Delete</a>
 					<?php } ?>
 					<div class="title">TOOLS</div>
 			

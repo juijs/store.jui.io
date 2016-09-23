@@ -30,6 +30,19 @@ footer {
 	background-color: rgba(123, 173, 122, 0.08);
 }
 
+.file-name {
+	cursor:pointer;
+	margin-right:5px;
+}
+
+.file-type-tools a {
+	font-size:12px;
+	color:#48cfad;
+	margin-left:2px;
+	margin-right:2px;
+	cursor:pointer;
+}
+
 .show-file-btn {
 	display:none;
 	height:100%;
@@ -163,15 +176,18 @@ footer {
 	display:inline-block;
 }
 
-.file-toolbar .add-btn {
+.file-toolbar .buttons
+{
 	cursor:pointer;
 	vertical-align:middle;
 	box-sizing:border-box;
 	display:inline-block;
 	position:absolute;
-	right:30px;
+	right:10px;
 	bottom:5px;
-	top:10px;
+	top:12px;
+	color:#48cfad;
+	font-size:13px;
 }
 
 .file-toolbar .hide-file-btn {

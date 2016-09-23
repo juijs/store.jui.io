@@ -8,6 +8,7 @@ session_start();
 define("STORE", "STORE");
 define("ROOT", __DIR__);
 define("REPOSITORY", ROOT."/repository");
+define("CACHE", ROOT."/cache");
 define("RESOURCES", ROOT."/resources");
 
 define("ABSPATH", ROOT."/public");

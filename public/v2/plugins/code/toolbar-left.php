@@ -2,6 +2,6 @@
 <span><?php echo $type_list[$type]['name'] ?></span>
 <?php } else {  ?>
 	<?php if ($isMy) { ?>
-		<a class="button button-link" id="template">+ Template</a>
+		<a class="button button-link" id="template"><i class="icon-template"></i> Template</a>
 	<?php } ?>
 <?php } ?>

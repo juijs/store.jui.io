@@ -75,13 +75,13 @@ body { overflow: hidden; }
 			<div style="float:right;padding:10px;" class="editor-right-toolbar">
 					<?php include_once V2_PLUGIN."/$type/toolbar-right.php"; ?>
 					<?php if ($_GET['id']) { ?>
-						<a class='button' href="/v2/view.php?id=<?php echo $_GET['id'] ?>">VIEW</a>
+						<a class='button' href="/v2/view.php?id=<?php echo $_GET['id'] ?>"><i class="icon-search"></i> VIEW</a>
 					<?php } ?>			
 
 				<?php if ($isMy) { ?>
-					<a class="button active" onclick="savecode()">SAVE</a>
+				<a class="button active" onclick="savecode()"><i class="icon-clip"></i> SAVE</a>
 						<?php if ($_GET['id']) { ?>
-						<a class="button danger  active" onclick="deletecode()">DELETE</a>
+						<a class="button danger  active" onclick="deletecode()"><i class="icon-trashcan"></i> DELETE</a>
 						<?php } ?>
 				<?php } ?>
 

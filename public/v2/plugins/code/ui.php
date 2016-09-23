@@ -13,7 +13,7 @@
 
 <div id="new-folder-win" class='window' style='display:none'>
     <div class="head">
-        <div class="left"><i class='icon-doc'></i> Make a directory</div>
+        <div class="left"><i class='icon-doc'></i> Make a folder</div>
         <div class="right">
             <a href="#" class="close"><i class="icon-exit"></i></a>
         </div>
@@ -96,6 +96,27 @@
 
 .file-tree li a {
 	display:block;
+}
+
+.is-dragover:before {
+	content: "Drop to me";
+	position:absolute;
+	left:30px;
+	top:50%;
+	-webkit-tansform:translateY(-50%);
+	tansform:translateY(-50%);
+	display:inline-block;
+	vertical-align:middle;
+	text-align:center;
+	font-size:15px;
+	font-weight:bold;
+	text-transform:uppercase;
+	color:#48cfad;
+}
+
+.is-dragover .jqueryFileTree {
+	-webkit-filter:blur(1px);
+	filter:blur(1px);
 }
 
 
@@ -1016,8 +1037,6 @@ jui.defineUI("ui.historyview", ["jquery"], function ($) {
 			var group = '';
 			var group_list = [];
 			var group_obj = {};
-
-			console.log(logs);
 
 			for(var i = 0, len = logs.length; i < len; i++) {
 				var log = logs[i];
