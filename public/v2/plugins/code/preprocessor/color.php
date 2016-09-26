@@ -2,7 +2,7 @@
 
 header('Content-Type: text/html');
 
-if (!hasCache($file)) {
+if (!hasCache($file) || $is_new) {
 	$arr = file($file);
 
 	ob_start();

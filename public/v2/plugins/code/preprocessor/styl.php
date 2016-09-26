@@ -4,7 +4,7 @@
 //
 header('Content-Type: text/css');
 
-if (!hasCache($file)) {
+if (!hasCache($file) || $is_new) {
 	$stylus = new \Stylus\Stylus();
 	$stylus->setReadDir($dir);
 	$stylus->setImportDir($dir);

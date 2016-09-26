@@ -31,6 +31,7 @@ $is_dir = (array_pop($arr) == '');
 
 if ($is_dir) {
 	mkdir($filename, 0777, true);
+	$repo->setConfigExt('core.quotepath false');
 	$repo->addFile($filename);
 	echo json_encode(array('result' => true, 'message' => 'directory is success'));
 	return; 
@@ -45,6 +46,8 @@ if ($is_dir) {
 	mkdir(dirname($filename), 0777, true);
 
 	file_put_contents($filename, "");
+
+	$repo->setConfigExt('core.quotepath false');
 	$repo->addFile($filename);
 
 	// 권한 넣기 

@@ -12,7 +12,7 @@
 
 header('Content-Type: text/html');
 
-if (!hasCache($file)) {
+if (!hasCache($file) || $is_new) {
 	generateCache($file, HtmlPreprocessor(file_get_contents($file), 'markdown'));
 }
 

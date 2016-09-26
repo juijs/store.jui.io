@@ -280,6 +280,11 @@
 	margin-right:10px;
 	vertical-align:middle;
 	cursor:pointer;
+	font-size:14px;
+	line-height:10px;
+}
+.add-btn svg {
+	vertial-align:middle;
 }
 .add-btn path {
 	stroke: #48cfad !important;
@@ -292,6 +297,15 @@
 	border-left:1px solid #e4e4e4;
 	vertical-align:middle;
 	cursor:pointer;
+	font-size:14px;
+}
+
+.delete-slide-btn svg {
+	vertical-align:middle;
+}
+
+.delete-slide-btn path {
+	fill: #48cfad !important;
 }
 
 .check-slide-secondary {
@@ -300,4 +314,23 @@
 	border-left:1px solid #e4e4e4;
 	vertical-align:middle;
 	cursor:pointer;
+	font-size:14px;
+}
+
+.check-slide-secondary  svg{
+	vertical-align:middle;
+}
+
+.check-slide-secondary path {
+	fill: #48cfad !important;
+}
+
+.pr-settings {
+	vertical-align:middle;
+	font-size:14px;
+	cursor:pointer;
+}
+
+.pr-settings svg {
+	vertical-align:middle;
 }

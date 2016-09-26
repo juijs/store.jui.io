@@ -1,15 +1,15 @@
 <?php 
 error_reporting(E_ALL);
 include_once '../../../../bootstrap.php';
-
+include_once "common.php";
 use Cz\Git\GitRepository;
 
+header('Content-Type: application/json');
 if (!$_SESSION['login']) {
 	echo json_encode(array("result"=> false, 'message' => 'Please login to create chart.'));
 	exit;
 }
 
-header('Content-Type: application/json');
 
 // user check 
 // id check 
@@ -44,6 +44,13 @@ if ($id && ($row['login_type'] != $_SESSION['login_type'] || $row['userid'] != $
 $real_path = realpath(REPOSITORY.$file);
 
 //var_dump($real_path, $_POST);
-file_put_contents($real_path, $_POST['content']);
+$content = $_POST['content'];
+
+if (is_image_type($real_path)) {
+	$content = explode(",", $content);
+	$type = array_shift($content);
+	$content = base64_decode($content[0]);
+}
+file_put_contents($real_path, $content);
 
 echo json_encode(array('result' => true));

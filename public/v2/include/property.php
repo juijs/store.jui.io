@@ -257,13 +257,19 @@
     vertical-align: middle;
 }
 
-.property-item .color-input > span:last-child {
+.property-item .color-input > span:nth-child(2) {
 	display: inline-block;
     height: 20px;
     font-size: 12px;
     line-height: 26px;
 	font-weight:300;
     text-transform: uppercase;
+}
+
+.property-item .color-input > span.none-color {
+	color:red;
+	margin-left:2px;
+	font-size:10px;
 }
 
 
@@ -1067,11 +1073,23 @@ jui.defineUI("ui.property", ['jquery', 'util.base'], function ($, _) {
 			}).html('&nbsp;');
 
 			var $colorCode = $("<span />").html(colorValue || '');
+			var $noneButton = $("<span class='none-color' title='Delete a color'/>").html("x");
 
 			$input.append($colorPanel);
 			$input.append($colorCode);
+			$input.append($noneButton);
 
-			$input.on('click', function() {
+			$input.on('click', function(e) {
+
+				if ($(e.target).hasClass('none-color')) {
+					e.preventDefault();
+
+					$colorPanel.css('background-color', '');
+					$colorCode.text('');
+					self.refreshValue($input.closest('.property-item'), '');
+
+					return; 
+				}
 				var offset = $(this).offset();
 
 				var $colorPicker = $container.next('.colorpicker');

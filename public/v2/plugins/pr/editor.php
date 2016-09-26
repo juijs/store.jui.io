@@ -3,9 +3,9 @@
 		<div class="editor-tool pr-title">
 
 			<?php if ($isMy && !$is_viewer) { ?>
-			<a class="add-btn"><?php echo get_svg_image('plus') ?></a>
-			<a class="delete-slide-btn"><?php echo get_svg_image('trashcan') ?></a>
-			<a class="check-slide-secondary"><?php echo get_svg_image('return') ?></a>
+			<a class="add-btn" title="Add a slide"><?php echo get_svg_image('plus') ?> Add Slide</a>
+			<a class="delete-slide-btn" title="Delete a slide"><?php echo get_svg_image('trashcan') ?> Remove Slide</a>
+			<a class="check-slide-secondary" title="Changing a child"><?php echo get_svg_image('return') ?> Subslide</a>
 			<?php } ?>
 			<a class="pr-settings" style="float:right;margin-right:20px;" title="Presentation Settings"><?php echo get_svg_image('gear') ?></a>
 			<span  class="splitter-toggle right" data-splitter="previewSplitter" data-splitter-toggle="1"  title="Toggle Preview" ><?php echo get_svg_image('right') ?></i></span>  

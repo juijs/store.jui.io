@@ -1,5 +1,6 @@
 composer.phar
 vendor/
+!vendor/czproject/*
 public/thumbnail/
 static/
 public/static

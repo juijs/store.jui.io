@@ -4,7 +4,7 @@
 
 header('Content-Type: text/css');
 
-if (!hasCache($file)) {
+if (!hasCache($file) || $is_new) {
 	$scss = new scssc();
 	$scss->setFormatter("scss_formatter");
 	$scss->setImportPaths($dir);

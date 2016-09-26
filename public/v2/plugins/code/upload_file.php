@@ -73,15 +73,15 @@ for($i = 0; $i < $total; $i++) {
 	
 	$filename = $root.'/'.$name;
 	$filename = file_numbering($filename);
-
 	$is_uploaded = false; 
 
 	if ($error == UPLOAD_ERR_OK) {
 		$is_uploaded = @move_uploaded_file($tmp_name, $filename);
 
 		if($is_uploaded) {
-			$name = basename($filename);
+			$name = end(explode('/', $filename));
 			// git add 
+			$repo->setConfigExt('core.quotepath false');
 			$repo->addFile($name);
 			// 권한 넣기 
 			chmod($name, 0666);

@@ -687,30 +687,59 @@ jui.defineUI("ui.filetree", [], function () {
 	left:0px;
 	right:0px;
 	height:40px;
-	padding:10px;
+	padding:12px 5px;
 	box-sizing:border-box;
-	border-bottom:0.5px solid #48cfad;
+	border-bottom:1px solid #ececec;
 }
 
+.image-editor .image-editor-menu .menu-title {
+	display:inline-block;
+	right:10px;
+	position:absolute;
+	top:50%;
+	-webkit-transform:translateY(-50%);
+	transform:translateY(-50%);
+
+}
+.image-editor .image-editor-menu .button {
+	letter-spacing:0px;
+	text-transform:none;
+	padding:5px 10px;
+}
+.image-editor .image-editor-menu .button:not(:last-child) {
+	border-right:0px;
+}
 .image-editor .image-editor-toolbar {
 	position:absolute;
 	top:40px;
 	left:0px;
-	right:0px;
-	height:40px;
+	bottom:0px;
+	width:150px;
 	padding:5px;
 	box-sizing:border-box;
-	border-bottom:0.5px solid #48cfad;
-	overflow:auto;
+	overflow-y:auto;
+	border-right:1px solid #48cfad;
+}
+
+
+.image-editor .image-editor-toolbar .button {
+	display:block;
+	letter-spacing:0px;
+	text-transform:none;
+	padding:5px 10px;
+}
+.image-editor .image-editor-toolbar .button:not(:last-child) {
+	border-bottom:0px;
 }
 
 .image-editor .image-editor-content {
 	position:absolute;
-	left:0px;
+	left:150px;
 	right:0px;
 	bottom:0px;
-	top:80px;
+	top:40px;
 	padding:20px 20px;
+	box-sizing:border-box;
 }
 
 .image-editor .image-editor-content canvas {
@@ -718,16 +747,47 @@ jui.defineUI("ui.filetree", [], function () {
 	height:auto;
     box-sizing: inherit;
 }
+
+.image-editor .image-editor-content .loading-message {
+	position:absolute;
+	left:0px;
+	top:0px;
+	right:0px;
+	bottom:0px;
+	background-color:rgba(0, 0, 0, 0.8);
+	display:none;
+	z-index:2;
+}
+
+.image-editor .image-editor-content .loading-message .message {
+	position:absolute;
+	left:0px;
+	top:50%;
+	right:0px;
+	display:inline-block;
+	-webkit-transform:translateY(-50%);
+	transform:translateY(-50%);
+	color:rgba(255, 255, 255, 0.8);
+	text-align:center;
+	font-size:20px;
+	
+}
+
+
+.image-editor .image-editor-content.loading .loading-message {
+	display:block;
+}
 </style>
 <!-- Script -->
 <script type="text/javascript">
 jui.defineUI("ui.imageeditor", [], function () {
 	// camanjs 를 이용한 bitmap image editor 
 	var ImageEditor = function () {
-			var $el, $container, $menu, $toolbar, $content, $canvas; 
+			var $el, $container, $menu, $toolbar, $content, $canvas, $loading_message; 
 			var _caman;
 			var self = this; 
 			var preset_filters = [
+				{ filter : 'original', title : 'original'}, 
 				{ filter : 'vintage', title : 'vintage'}, 
 				{ filter : 'lomo',title : 'lomo'},
 				{ filter : 'clarity',title : 'clarity'},
@@ -749,11 +809,12 @@ jui.defineUI("ui.imageeditor", [], function () {
 			];
 
 			var menuItems = [
-				{ 	title : 'FILTER', action : 'filter' },
-				{ 	title : 'ADJUST', action : 'adjust' },
-				{ 	title : 'CROP', action : 'crop' },
-				{ 	title : 'RESIZE', action : 'resize' },
-				{ 	title : 'ROTATE', action : 'rotate' }
+				{ 	title : 'Filter', action : 'filter' },
+				//{ 	title : 'ADJUST', action : 'adjust' },
+				//{ 	title : 'CROP', action : 'crop' },
+				//{ 	title : 'RESIZE', action : 'resize' },
+				//{ 	title : 'ROTATE', action : 'rotate' },
+				{	title : 'Image Save', action : 'save' } 
 			];
 
 			function action (actionName) {
@@ -761,6 +822,8 @@ jui.defineUI("ui.imageeditor", [], function () {
 				if (actionName == 'filter')
 				{
 					showFilter();
+				} else if (actionName == 'save') {
+					self.save();
 				}
 			}
 
@@ -769,7 +832,7 @@ jui.defineUI("ui.imageeditor", [], function () {
 				for(var i = 0, len = preset_filters.length; i < len; i++) {
 					var pf = preset_filters[i];
 
-					 var $a = $("<a class='button button-link' />").html(pf.title).attr('data-filter', pf.filter);
+					 var $a = $("<a class='button button-common' />").html(pf.title).attr('data-filter', pf.filter);
 
 					 $toolbar.append($a);
 				}
@@ -777,7 +840,7 @@ jui.defineUI("ui.imageeditor", [], function () {
 
 			function loadImage ( callback) {
 
-				self.recreateCanvas();
+				self.initContent();
 				_caman = Caman($canvas[0], self.options.src, callback || function () { this.render(); });
 			}
 
@@ -794,6 +857,9 @@ jui.defineUI("ui.imageeditor", [], function () {
 				$menu = $("<div class='image-editor-menu' />");
 				$toolbar = $("<div class='image-editor-toolbar' />");
 				$content = $("<div class='image-editor-content' />");
+				$loading_message = $("<div class='loading-message' />");
+
+				$loading_message.append("<div class='message'></div>");
 
 				this.initMenu();
 				this.initToolbar();
@@ -807,11 +873,18 @@ jui.defineUI("ui.imageeditor", [], function () {
 			}
 
 			this.initMenu = function () {
+
+				$menu.append($("<span class='menu-title'>Image Editor</span>"));
+
 				var len = menuItems.length; 
 
 				for(var i = 0; i < len; i++) {
 					var item = menuItems[i];
-					var $a = $("<a class='button button-link'  />").html(item.title).attr('data-action', item.action);
+					var $a = $("<a class='button button-common'  />").html(item.title).attr('data-action', item.action);
+
+					if (i == 0) {
+						$a.addClass('active');
+					}
 
 					$menu.append($a);
 				}
@@ -830,6 +903,7 @@ jui.defineUI("ui.imageeditor", [], function () {
 			this.initContent = function () {
 
 				this.recreateCanvas();
+				$content.append($loading_message);
 				//_caman = Caman($canvas[0]);
 			}
 
@@ -868,17 +942,43 @@ jui.defineUI("ui.imageeditor", [], function () {
 				contentType = contentType || "image/png";
 			}
 
+			this.save = function () {
+				var path = this.options.src;
+
+				var data = _caman.toBase64();
+
+				if (this.options.saveCallback) {
+					this.options.saveCallback(data, path);
+				}
+				
+			}
+
 			this.filter = function (filterName) {
 				if (_caman)
 				{
+					this.showLoading('Filtering....');
 					_caman.revert(false);
-					_caman[filterName].call(_caman);
+
+					if (_caman[filterName]) { 
+						_caman[filterName].call(_caman);
+					}
 					_caman.render(function() {
+						self.hideLoading();
 						self.emit('filter.done', [filterName]);
 					});
 				}
 
 			}
+
+			this.showLoading = function (message) {
+				$loading_message.find('.message').html(message || '');
+
+				$content.addClass('loading');
+			}
+
+			this.hideLoading = function () {
+				$content.removeClass('loading');
+			}		
 
 			this.render = function (callback) {
 				loadImage(callback);
@@ -887,7 +987,8 @@ jui.defineUI("ui.imageeditor", [], function () {
 
 	ImageEditor.setup = function () {
 		return {
-			src : ''  // image src 
+			src : '',  // image src 
+			saveCallback : function () {}
 		};
 	}
 

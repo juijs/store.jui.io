@@ -26,7 +26,7 @@ $support_file_type = array(
 function get_ext($filename) {
 	$file = basename($filename);
 	$arr = explode(".", $file);
-	$ext  = array_pop($arr);
+	$ext  = end($arr);
 
 	return strtolower($ext);
 }
@@ -38,6 +38,14 @@ function is_support_type($filename) {
 	$is_support  = in_array($ext, $support_file_type);
 
 	return $is_support; 
+}
+
+function is_image_type($filename) {
+	$ext = get_ext($filename);
+
+	$is_image = ($ext == 'gif' || $ext == 'jpg' || $ext == 'png' || $ext == 'bmp');
+
+	return $is_image;
 }
 
 function getCache($file) {
@@ -84,6 +92,7 @@ function code_preprocessor($id, $file, $url_root) {
 
 	$dir = REPOSITORY.DIRECTORY_SEPARATOR.$id.DIRECTORY_SEPARATOR;
 	$relative_path = str_replace($dir, "", $file);
+	$is_new = isset($_GET['t']);
 
 	include V2_PLUGIN."/code/preprocessor/$ext.php";
 }

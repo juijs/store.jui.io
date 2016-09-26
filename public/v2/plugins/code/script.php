@@ -72,11 +72,15 @@ $(function() {
 		}, 1000);
 	}
 
-	window.save_current_code = function save_current_code( ) {
+	window.save_current_code = function save_current_code( content, callback ) {
 		var file = baseCode.file;
 
-		$.post('<?php echo V2_PLUGIN_URL ?>/code/save_code.php', { file : file, content : baseCode.getValue() }, function (res) {
-			preview_code();
+		$.post('<?php echo V2_PLUGIN_URL ?>/code/save_code.php', { file : file, content : content || baseCode.getValue() }, function (res) {
+			if (callback) {
+				callback();	
+			} else {
+				preview_code();
+			}
 		});	
 	}
 
@@ -87,7 +91,7 @@ $(function() {
 		}
 
 		preview_timer = setTimeout(function() {
-			$("iframe[name=chart_frame]").attr('src', '/v2/code' + baseCode.file);
+			$("iframe[name=chart_frame]").attr('src', '/v2/code' + baseCode.file + '?t=' + (+new Date()));
 		}, 1000);
 	}
 
@@ -117,8 +121,9 @@ $(function() {
 			update_file_name(relativePath);
 			
 			load_type_tools();
-			preview_code();			
+			//preview_code();			
 
+			previewSplitter.setHide(1);
 		} else {			// text editor 일 경우 
 			$(".code-content .editor").hide();
 			$(".image-editor-menu").hide();
@@ -136,6 +141,7 @@ $(function() {
 				change_edit_mode();
 				preview_code();
 			});
+			previewSplitter.setShow(1);
 		}
 
 	}
@@ -200,6 +206,7 @@ $(function() {
 		}
 	}
 
+	/*
 	window.getCodeSettingsView = function getCodeSettingsView() {
 		//return JSON.stringify(codeSettings.getValue());
 		return "";
@@ -209,7 +216,8 @@ $(function() {
 		return JSON.stringify($(".code-items li").map(function() {
 			return $(this).data();
 		}).toArray());
-	}
+}
+	*/
 
 	window.check_change = function (callback) {
 		$.post("<?php echo V2_PLUGIN_URL ?>/code/check_change.php", { 
@@ -315,7 +323,13 @@ $(function() {
 			}
 	  });
 
-	  window.imageeditor = jui.create('ui.imageeditor', '.image-editor');
+	window.imageeditor = jui.create('ui.imageeditor', '.image-editor', {
+		saveCallback  : function (data, file) {
+			save_current_code(data, function () {
+				// 데이타 저장 이후 로직 
+			});
+		}
+	});
 
 
 	  window.fileSplitter = jui.create('ui.splitter', '.type-editor-container', {

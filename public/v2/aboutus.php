@@ -254,9 +254,9 @@ h1 sub
 		<div id="titles">
 			<div id="titlecontent">
 
-				<p >Today’s business environment is experiencing fast-paced changes every day, and companies are spending considerable and continuous efforts in order to anticipate and navigate through changes in order to stay competitive in the volatile market. Such changes are not only calling for quick and innovative adaptation in companies’
-business process but also renewed standard in governance, regulation and transparency required in times when globalization has become absolute necessity for many organizations regardless of its geographic reach. However, despite such lively movements in the market, from IT management point of view, many companies are still utilizing aging IT infrastructure rapidly approaching point of being obsolete for the information system, hindering companies from applying sufficient flexibility and scalability to their business. Recent trends indicate that companies are responding to aging IT infrastructure problem by either performing partial system.
-upgrades as seen necessary for the business requirement or by implementing new, ‘Next-Generation’ technology concepts over existing IT systems if upgrading alone is seen as inadequate </p>
+				<p >
+					Thanks.
+				</p>
 			
 
 			</div>

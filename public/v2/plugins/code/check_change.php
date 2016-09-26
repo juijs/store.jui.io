@@ -39,6 +39,8 @@ $repo = new GitRepository($dir);
 $root = $repo->getRepositoryPath();
 
 $isChanged = $repo->hasChanges();
+
+$repo->setConfigExt('core.quotepath false');
 $arr = $repo->changedFiles();
 
 $newFiles = array();

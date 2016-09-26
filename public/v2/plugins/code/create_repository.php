@@ -86,6 +86,8 @@ if ($result['ok']) {
 			$repo = GitRepository::cloneRepository($document['name'], $dir);
 
 			$repo->setConfig($_SESSION['username']);
+			$repo->setConfigExt('core.quotepath off');
+			$repo->setConfigExt('core.precomposeunicode true');
 
 			// update code project name 
 			$real_code_name = GitRepository::extractRepositoryNameFromUrl($document['name'] );
@@ -94,12 +96,16 @@ if ($result['ok']) {
 			//
 			
 			// TODO: add code readme.md 
+			//
+			//
 
 		} else {
 
 			$repo = GitRepository::init($dir);
 
 			$repo->setConfig($_SESSION['username']);
+			$repo->setConfigExt('core.quotepath off');
+			$repo->setConfigExt('core.precomposeunicode true');
 
 			// create a new file in repo
 			$filename = $repo->getRepositoryPath() . '/README.md';
