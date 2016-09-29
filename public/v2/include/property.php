@@ -113,11 +113,11 @@
 
 .property-item {
     position: relative;
-    height: 60px;
+    height: 66px;
 	box-sizing:border-box;
     border-top: 1px solid #ececec;
     border-bottom: 1px solid #ececec;
-	padding:10px 10px;
+	padding:5px 10px;
 	overflow:hidden;
 	margin-top:-1px;
 }
@@ -136,10 +136,6 @@
 .property-header {
 	height:100%;
 	padding:10px 30px;
-}
-
-.property-table .property-item:last-child {
-	border-bottom:0px;
 }
 
 .property-item:not(.property-header-item)  { 
@@ -165,7 +161,8 @@
 	top:0px;
 	right:0px;
 	height:100%;
-	padding:10px 10px 5px;
+	padding:2px 10px;
+	padding-top:5px;
 	box-sizing:border-box;
 	text-align:right;
 }
@@ -213,8 +210,24 @@
 	border-color:#48cfad;
 }
 
+.property-item select {
+   border:0px;
+   height:30px;
+   outline:none;
+   border-bottom: 1px solid #a4a4a4;
+   border-radius:0px;
+   font-size:13px;
+   box-sizing:border-box;
+}
+
+.property-item select:focus {
+   border-width:2px;
+   border-color:#48cfad;
+}
+
 .property-item input[type=text]{
     width: 100%;
+    max-width:400px;
     border: 0px;
 	height:30px;
 	outline:none;
@@ -239,6 +252,17 @@
 	text-align:right;
 }
 
+/* checkbox */
+.property-item input[type=checkbox] + i {
+	cursor:pointer;
+	font-size:20px;
+}
+.property-item input[type=checkbox] + .icon-checkbox {
+	color:#48cfad;
+}
+.property-item input[type=checkbox] + .icon-checkbox2 {
+	color:#b5b5b5;
+}
 /* color */
 .property-item .color-input {
 	cursor:pointer;
@@ -267,9 +291,19 @@
 }
 
 .property-item .color-input > span.none-color {
-	color:red;
+	color:rgba(150, 150, 150, 0.8);
 	margin-left:2px;
-	font-size:10px;
+	font-size:12px;
+	vertical-align:middle;
+}
+.property-item .color-input > span.none-color:hover {
+	color:rgba(96, 96, 96,1);
+}
+
+.property-item .color-input > span.none-color i {
+	transform-origin:50% 50%;
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
 }
 
 
@@ -384,6 +418,26 @@
 }
 .property-item input[type=range]:focus::-ms-fill-upper {
   background: #48cfad;
+}
+
+.property-item .description {
+  font-size: 12px;
+  color:#aaa;
+  font-weight:300;
+  max-width:500px;
+  display:block;
+  margin-top:2px;
+}
+
+.property-item small.description {
+  display:inline-block;
+  margin-left:10px;
+  color:#aaa;
+}
+
+.property-item .description a {
+  text-decoration:none;
+  color:#48cfad;
 }
 
 
@@ -725,6 +779,10 @@ jui.defineUI("ui.property", ['jquery', 'util.base'], function ($, _) {
 					'cursor': 'pointer'
 				});
 
+				if (item.description) {
+				    $name.append("<small class='description'>"+item.description+"</small>");
+				}
+
 				$name.append("<a class='expand-btn'><img src='/v2/images/main/plus.svg' /></a>");
 
 				$dom.on('click', function (e) {
@@ -883,7 +941,7 @@ jui.defineUI("ui.property", ['jquery', 'util.base'], function ($, _) {
 		}
 
 		renderer.select = function ($dom, item) {
-			var $input = $("<select class='input' />").css({
+			var $input = $("<select />").css({
 				width: '100%'	
 			});
 
@@ -1037,13 +1095,34 @@ jui.defineUI("ui.property", ['jquery', 'util.base'], function ($, _) {
 		}
 
 		renderer.checkbox = function ($dom, item) {
-			var $input = $("<input type='checkbox' />");
+			var $input = $("<input type='checkbox' /><i ></i>");
 
+			$($input[0]).hide();
 			$input[0].checked = (item.value == 'true' || item.value === true) ? true : false ;
+			
+			if ($input[0].checked)  {
+				$($input[1]).addClass('icon-checkbox');
+			} else {
+				$($input[1]).addClass('icon-checkbox2');
+			}
+
 
 			$input.on('click', debounce(function () {
-				self.refreshValue($(this).closest('.property-item'), $(this)[0].checked);
-			}, 250, $input));
+				var is_checked = $(this).hasClass('icon-checkbox');
+
+				if (is_checked) {
+					$(this).addClass('icon-checkbox2').removeClass('icon-checkbox');
+				} else {
+
+					$(this).addClass('icon-checkbox').removeClass('icon-checkbox2');
+
+				}
+
+				is_checked = !is_checked; 
+
+
+				self.refreshValue($(this).closest('.property-item'), is_checked);
+			}, 100, $input));
 
 			return $input; 
 		}
@@ -1073,7 +1152,7 @@ jui.defineUI("ui.property", ['jquery', 'util.base'], function ($, _) {
 			}).html('&nbsp;');
 
 			var $colorCode = $("<span />").html(colorValue || '');
-			var $noneButton = $("<span class='none-color' title='Delete a color'/>").html("x");
+			var $noneButton = $("<span class='none-color' title='Delete a color'/>").html("<i class='icon-more'></i>");
 
 			$input.append($colorPanel);
 			$input.append($colorCode);

@@ -45,42 +45,44 @@ $meta = implode(PHP_EOL, $metaList);
 	<title><?php echo $data['title'] ?></title>
 	<link rel="stylesheet" href="//store.jui.io/bower_components/reveal.js/css/reveal.css" />
 	<link rel="stylesheet" href="//store.jui.io/bower_components/reveal.js/css/theme/<?php echo $pr_obj->theme ?>.css" />
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow-night.min.css">
+	<script src="//store.jui.io/bower_components/reveal.js/lib/js/head.min.js" type="text/javascript"></script>
+
+	<script src="//store.jui.io/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
 	<script src="//store.jui.io/bower_components/reveal.js/js/reveal.js" type="text/javascript"></script>
+	<script src="//store.jui.io/bower_components/moment/min/moment.min.js" type="text/javascript"></script>
 	<script type="text/javascript" src="//store.jui.io:3000/socket.io/socket.io.js"></script>
+	<link rel="stylesheet" href="<?php echo V2_PLUGIN_URL ?>/pr/resource/broadcast.css" />
 	<?php echo $meta ?>	
-	<style type="text/css">
-	.broadcast {
-		position:absolute;
-		left:0px;
-		right:0px;
-		bottom:0px;
-		top:0px;
-	}
-
-	.broadcast .menu {
-		position: absolute;
-		left:0px;
-		top:0px;
-		width:500px;
-		bottom:0px;
-		background-color:rgba(0, 0, 0, .4);
-	}
-
-	.broadcast .content {
-		position: absolute;
-		left:500px;
-		top:0px;
-		right:0px;
-		bottom:0px;
-	}
-	</style>
 </head>
 <body>
 
 
 <div class="broadcast">
 
-	<div class="menu"></div>
+	<div class="menu">
+		<div class="next-presentation">
+			<iframe src="?upcomming=true&id=<?php echo $_GET['id'] ?>"></iframe>
+		</div>
+		<div class="clock">
+			<div class="past-time-title">TIME</div>
+			<div class="past-time"></div>
+			<div class="current-time-title">CLICK TO RESET</div>
+			<div class="current-time"></div>
+		</div>
+		<div class="menu-title">Note <span class='number'></span></div>
+		<div class="note-content"></div>
+	</div>
+
+	<div class="chat">
+		<div class="chat-message">
+			
+		</div>
+		<div class="chat-input">
+				<input type="text" placeholder="Type here" />
+		</div>
+	</div>
+
 	<div class="content">
 		<div class="reveal">
 			<div class="slides">
@@ -105,7 +107,6 @@ $meta = implode(PHP_EOL, $metaList);
 
 		?>
 			<section  <?php echo $attr_string ?>><?php echo HtmlPreprocessor($it->content, 'markdown');?>
-			
 				<?php if ($it->note) { ?> 
 				<aside class="notes"><?php echo HtmlPreprocessor($it->note, 'markdown');?></aside>
 				<?php } ?>
@@ -130,7 +131,51 @@ $meta = implode(PHP_EOL, $metaList);
 
 
 <script type="text/javascript">
-Reveal.initialize(<?php echo  $pr_settings ?>);
+
+  function view_note () {
+	var indices = Reveal.getIndices();
+
+	var arr = [indices.h];
+
+	if (indices.v > 0) {
+		arr.push(indices.v);
+	}
+	$(".menu .menu-title .number").html(arr.join('-'))
+	$(".menu .note-content").html(Reveal.getSlideNotes() || "");
+  }
+
+  function set_time_string() {
+	$(".past-time").html(get_time_watch());
+	$(".current-time").html(get_current_time());
+  }
+
+  function view_chat_message(data) {
+	var $item =  $("<div class='chat-item'></div>");
+
+	var $avatar = $("<div class='avatar' ></div>").html("<span class='username'>" + (data.username || "nobody") + "</span><span class='time'>" + moment(data.time).format("HH:mm A") + "</span>");
+	var $message = $("<div class='message' />").html(data.message);
+
+	$item.html([$avatar[0], $message[0]]);
+
+	$(".chat-message").append($item);
+	$item[0].scrollIntoView(true);
+  }
+  var init_settings = <?php echo $pr_settings ?>;
+  init_settings.help = false; 
+  init_settings.dependencies = [
+    // Syntax highlight for <code> elements
+	{ 
+		src: '//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js', async: true, callback: function() { 
+			hljs.initHighlightingOnLoad();
+		}
+	}
+
+ ];
+
+  Reveal.initialize(init_settings);
+
+  view_note();
+  view_chat_message({ message : 'Welcome to Real Presentation', username : 'System', time : +new Date() });
 
   var socket = io('//store.jui.io:3000/pr');
 
@@ -138,8 +183,17 @@ Reveal.initialize(<?php echo  $pr_settings ?>);
 		socket.emit('join room', '<?php echo $_GET['id'] ?>');
 
 		socket.on('message', function (data) {
+
+			if (data.type == 'chat')	{
+				view_chat_message(data);
+			} else {
 				Reveal.slide(data.indexh, data.indexv, data.indexf);
+				view_note();
+			}
+
+
 		});
+
   });
 
  var notifyServer = function(event){
@@ -152,6 +206,8 @@ Reveal.initialize(<?php echo  $pr_settings ?>);
 	}
 
 	socket.emit("message" , data);
+	$(".next-presentation iframe")[0].contentWindow.postMessage(JSON.stringify(data), "*");
+	view_note();
   }
 
   Reveal.addEventListener("slidechanged", notifyServer);
@@ -159,6 +215,62 @@ Reveal.initialize(<?php echo  $pr_settings ?>);
   Reveal.addEventListener("fragmentshown", notifyServer);
 
   Reveal.addEventListener("fragmenthidden", notifyServer);
+
+  var start_time = moment().startOf("second");
+  
+  function get_time_watch ( ) {
+	var now = moment().startOf('second');
+	var dist =  now.diff(start_time);
+
+	var seconds = dist / 1000;
+	var minutes = Math.floor(seconds / 60);
+        var seconds_value = seconds % 60; 
+	var minutes_value = minutes % 60;
+	var hours_value = Math.floor(minutes / 60);
+
+	var h_value = (hours_value < 10) ? '0' + hours_value : hours_value;
+	var m_value = (minutes_value < 10) ? '0' + minutes_value : minutes_value;
+	var s_value = (seconds_value < 10) ? '0' + seconds_value : seconds_value;
+
+	var h = "<span class='time-"+h_value+"'>"+h_value+"</span>";
+	var m = "<span class='time-"+m_value+"'>"+m_value+"</span>";
+	var s = "<span class='time-"+s_value+"'>"+s_value+"</span>";
+
+	return [h, m, s].join("<span>:</span>");
+  }
+
+  function get_current_time() {
+	return moment().format("HH:mm A");
+  }
+
+  set_time_string();
+  setInterval(function() {
+	set_time_string();
+  }, 1000);
+
+  $(".current-time").on('click', function () {
+	start_time = moment().startOf('second');
+	set_time_string();
+  });
+
+  $(".chat-input input").on('keyup', function (e) {
+		if (e.keyCode == 13)
+		{
+			var data = {
+			  type : 'chat', 
+			  all: true, 
+			  time : +new Date(),
+			  userid : '<?php echo $_SESSION['userid'] ?>',
+			  username : '<?php echo $_SESSION['username'] ?>',
+			   message : $(this).val()
+			}
+
+			$(this).val('').focus().select();
+
+			socket.emit("message" , data);
+			return;
+		}
+  });
 
 </script>
 </body>

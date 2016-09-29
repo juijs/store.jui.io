@@ -43,7 +43,7 @@ $type_text = array(
 
 function HtmlPreprocessor($content, $type) {
 	if ($type == 'markdown') {
-		$Parsedown = new Parsedown();
+		$Parsedown = new ParsedownExtra();
 		$content = $Parsedown->text($content);
 	} else if ($type == 'jade') {
 		$jade = new \Jade\Jade();

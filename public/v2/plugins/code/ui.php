@@ -159,7 +159,7 @@ jui.defineUI("ui.filetree", [], function () {
 					for(var i = 0, len = arr.length; i < len; i++) {
 						var it = $.trim(arr[i]);
 
-						if (it == '.' || it == '..')
+						if (it == '.' || it == '..' || it == '')
 						{
 							continue;
 						}
@@ -175,7 +175,7 @@ jui.defineUI("ui.filetree", [], function () {
 			function select_tree_node (filepath) {
 
 				var is_dir = filepath.lastIndexOf(DIRECTORY_SEPARATOR) == filepath.length-1;
-				var path = rootPath + filepath; 
+				var path = normalize_for_path(rootPath + DIRECTORY_SEPARATOR + filepath); 
 
 				// how to select tree node 
 				var nodes = path.split(DIRECTORY_SEPARATOR);
@@ -233,11 +233,9 @@ jui.defineUI("ui.filetree", [], function () {
 						{
 							var text = (is_file) ? 'file' : 'directory';
 							alert(text + ' is already!!');
-							$input.focus().select();
-							return;
-						}
-
-						if(prevPath  != fullpath) { 
+							//$input.focus().select();
+							//return;
+						} else if(prevPath  != fullpath) { 
 							var currentPath = arr.join(DIRECTORY_SEPARATOR);
 							$a.attr('rel', currentPath);
 							$a.html(currentFileName);
@@ -293,6 +291,7 @@ jui.defineUI("ui.filetree", [], function () {
 
 					return {
 						$a : $a, 
+						$li : $a.parent(),
 						file : $a.attr('rel'),
 						type :  type,
 						parent: name.join(DIRECTORY_SEPARATOR),
@@ -314,6 +313,18 @@ jui.defineUI("ui.filetree", [], function () {
 					self.emit("rename.file", [ currentPath, currentFileName ]);
 				});
 			}
+
+			function delete_file (currentPath, $li) {
+				$.post(self.options.action.deleteFile, { id : rootId, filename : currentPath }, function (res) {
+					if (res.result) {
+						// 파일 삭제 
+						console.log($li);
+						$li.remove();
+						self.emit("delete.file", [ currentPath ]);
+					}
+				});
+			}
+
 
 			function select_node (data) {
 				$el.find(".selected").removeClass('selected');
@@ -375,7 +386,7 @@ jui.defineUI("ui.filetree", [], function () {
 			}
 
 			function traverse () {
-				if (selected_tree_nodes && selected_tree_nodes.length) { 
+				if (selected_tree_nodes && selected_tree_nodes.length > 0) { 
 					var path = selected_tree_nodes[0];
 
 					var $a = $el.find("a[rel='"+path+"/']");
@@ -388,7 +399,7 @@ jui.defineUI("ui.filetree", [], function () {
 						loadTree();
 					}
 				} else if (selected_tree_file) {
-					
+
 					var $a = $el.find("a[rel='"+selected_tree_file+"']");
 
 					if ($a.length) {
@@ -396,6 +407,7 @@ jui.defineUI("ui.filetree", [], function () {
 						selected_tree_file = null; 
 					} else {
 						loadTree();
+						selected_tree_file = null;
 					}
 				}
 			}
@@ -492,7 +504,11 @@ jui.defineUI("ui.filetree", [], function () {
 
 			this.action_delete_file = function () {
 				hide_menu();
-				delete_file();
+				
+				if (confirm('Delete a file?')) {
+					var item = get_selected_node();
+					delete_file(item.file, item.$li);
+				}
 			}
 
 			this.initWindow = function () {
@@ -659,6 +675,7 @@ jui.defineUI("ui.filetree", [], function () {
 			script : '', 
 			action : {
 				addFile : '',
+				deleteFile : '',
 				renameFile : '',
 				uploadFile : ''
 			}
@@ -684,7 +701,7 @@ jui.defineUI("ui.filetree", [], function () {
 	position:absolute;
 	display:none;
 	top:0px;
-	left:0px;
+	left:6px;
 	right:0px;
 	height:40px;
 	padding:12px 5px;
@@ -712,13 +729,13 @@ jui.defineUI("ui.filetree", [], function () {
 .image-editor .image-editor-toolbar {
 	position:absolute;
 	top:40px;
-	left:0px;
+	left:6px;
 	bottom:0px;
 	width:150px;
 	padding:5px;
 	box-sizing:border-box;
 	overflow-y:auto;
-	border-right:1px solid #48cfad;
+	border-right:1px solid #ececec;
 }
 
 
@@ -1000,7 +1017,7 @@ jui.defineUI("ui.imageeditor", [], function () {
 <style type="text/css">
 .commit-list {
 	box-sizing:border-box;
-	padding-left: 30px;
+	padding-left: 40px;
 	padding-bottom:20px;
 	margin-bottom:15px;
 }
@@ -1009,9 +1026,9 @@ jui.defineUI("ui.imageeditor", [], function () {
 	position: absolute;
     top: 0;
     bottom: 0;
-    left: 14px;
+    left: 24px;
     z-index: -1;
-    display: none;
+    //display: none;
     width: 2px;
     content: "";
     background-color: #f7f7f7;
@@ -1399,7 +1416,12 @@ $(function () {
 	});
 
 	$(".commit-modal .commit-btn").on("click", function () {
-		commit_code($(".commit-message textarea").val());
+		var message = $(".commit-message textarea").val();
+
+		if ($.trim(message) == '') {
+			message = 'Update code';
+		}
+		commit_code(message);
 	});
 
 	$(".commit-files").on("click", ".file", function () {

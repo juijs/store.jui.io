@@ -1,0 +1,265 @@
+	.broadcast {
+		position:fixed;
+		left:0px;
+		right:0px;
+		bottom:0px;
+		top:0px;
+	}
+
+	.broadcast .menu {
+		position: fixed;
+		right:0px;
+		top:0px;
+		width:400px;
+		bottom:0px;
+		padding:20px;
+		box-sizing:border-box;
+		background-color:rgba(0, 0, 0, .5);
+		background-image: url(/v2/images/main/tumblr_n5yye2rxBi1s5ibd1o1_500.png);
+		background-repeat:no-repeat;
+		background-size:cover;
+		background-blend-mode: multiply;
+		color:white;
+	}
+
+	.broadcast .menu .menu-title {
+		position:absolute;
+		top:350px;
+		left:0px;
+		right:0px;
+		height:50px;
+		padding:20px;
+		font-size:14px;
+		box-sizing:border-box;
+		text-transform:uppercase;
+		border-bottom:1px solid rgba(255, 255, 255, 0.1);		
+	}
+	.broadcast .menu .menu-title .number {
+		float:right;
+	}
+
+	.broadcast .menu .note-content {
+		position:absolute;
+		left:0px;
+		right:0px;
+		top:400px;
+		bottom:0px;
+		padding:20px;
+		padding-top:10px;
+		overflow:auto;
+		font-size:14px;
+		line-height:20px;
+	}
+
+	.broadcast .menu .next-presentation {
+		position:absolute;
+		top:0px;
+		left:0px;
+		right:0px;
+		height:250px;
+		box-sizing:border-box;
+		border-bottom:1px solid rgba(255, 255, 255, 0.5);		
+	}
+
+	.next-presentation iframe {
+		width:100%;
+		height:100%;
+		border:0px;
+		box-sizing:border-box;
+		padding:10px;
+	}
+
+	.broadcast .menu .clock {
+		position:absolute;
+		top:250px;
+		left:0px;
+		right:0px;
+		height:100px;
+		box-sizing:border-box;
+		border-bottom:1px solid rgba(255, 255, 255, 0.5);		
+	}
+
+	.broadcast .menu .clock span.time-00 {
+		color:rgba(255, 255 ,255, 0.5);
+	}
+	.broadcast .menu .clock span.time-00 + span {
+		color:rgba(255, 255 ,255, 0.5);
+	}
+
+	
+
+	.past-time  {
+		position:absolute;
+		width:50%;
+		left:0px;
+		bottom:0px;
+		top:0px;
+		padding:30px 10px;
+		font-size:40px;
+		text-align:left;
+	}	
+
+	.past-time-title {
+		position:absolute;
+		display:inline-block;
+		left:0px;
+		top:5px;
+		padding:5px 10px;
+		font-size:12px;
+		text-align:left;
+		color:rgba(255, 255, 255, 0.9);
+
+	}
+
+	.current-time-title {
+		position:absolute;
+		display:inline-block;
+		right:0px;
+		top:5px;
+		padding:5px 10px;
+		font-size:12px;
+		color:rgba(255, 255, 255, 0.9);
+
+	}
+
+	.current-time  {
+		position:absolute;
+		width:50%;
+		right:0px;
+		bottom:0px;
+		top:0px;
+		padding:30px 10px;
+		font-size:40px;
+		text-align:right;
+		cursor:pointer;
+	}	
+	
+	.current-time:hover {
+		color:#48cfad;
+	}
+
+	.broadcast .content {
+		position:fixed;
+		left:0px;
+		top:0px;
+		right:400px;
+		bottom:0px;
+	}
+
+	.broadcast .content .reveal .controls {
+		position:absolute;
+		right:40px;
+	}
+
+	.broadcast.client .menu { 
+		display:none;
+	}
+
+	.broadcast.client .content {
+		/*right:0px;*/
+	}
+	.broadcast.client.upcomming .content {
+		right:0px;
+	}
+	.broadcast.client.upcomming .chat {
+		display:none;
+	}
+	
+	.chat {
+		position:fixed;
+		z-index:10;
+		left:0px;
+		bottom:10px;
+		width:300px;
+		height:200px;
+		font-size:12px;
+		background-color:rgba(0, 0, 0, .1);
+		background-image: url(/v2/images/main/tumblr_n5yye2rxBi1s5ibd1o1_500.png);
+		background-repeat:no-repeat;
+		background-blend-mode: multiply;
+		opacity:0.8;
+	}
+
+	.client .chat {
+		position: fixed;
+		right:0px;
+		top:0px;
+		bottom:0px;
+		left:auto;
+		height:auto;
+		width:400px;
+		bottom:0px;
+		padding:20px;
+		box-sizing:border-box;
+		background-color:rgba(0, 0, 0, .5);
+		background-image: url(/v2/images/main/tumblr_n5yye2rxBi1s5ibd1o1_500.png);
+		background-repeat:no-repeat;
+		background-size:cover;
+		background-blend-mode: multiply;
+		color:white;
+	}
+	.chat-message {
+		position:absolute;
+		top:0px;
+		left:0px;
+		bottom:30px;
+		right:0px;
+		overflow:auto;
+		color:white;
+		line-height:20px;
+		background-color:rgba(0, 0, 0, 0.5);
+		
+	}
+
+	.chat-message .chat-item {
+		padding:5px 10px;
+		position:relative;
+	}
+
+	.chat-message .chat-item.my-message {
+		text-align:right;
+	}
+
+	.chat-message .chat-item .avatar {
+	   
+		display:block;
+	}
+    .chat-message .chat-item .avatar .username {
+		font-weight:bold;
+		color:rgba(255, 255, 255, 0.9);
+    }
+	.chat-message .chat-item .avatar .time {
+		font-size:11px;
+		color:rgba(255, 255, 255, 0.5);
+		margin-left:10px;
+		letter-spacing:1px;
+	}
+
+	.chat-message .chat-item .message {
+		display:block;
+		max-width:250px;
+		font-weight:100;
+	}
+
+	.chat-message .chat-item.my-message .message {
+		text-align:right;
+	}
+
+	.chat-input {
+		position:absolute;
+		left:0px;
+		bottom:0px;
+		right:0px;
+		height:30px;
+	}
+
+	.chat-input input[type=text] {
+		width:100%;
+		height:100%;
+		border:0px;
+		padding:3px;
+		box-sizing:border-box;
+		background-color:transparent;
+		color:white;
+		outline:none;
+	}

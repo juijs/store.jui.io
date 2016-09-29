@@ -11,7 +11,6 @@ nsp.on('connection', function (socket) {
 	socket.on('join room', function (id) {
 		room_id = id; 
 		socket.join(room_id);
-
 		console.log('join room list', io.sockets.adapter.rooms);
 	});
 
@@ -25,7 +24,11 @@ nsp.on('connection', function (socket) {
 	});
 
 	socket.on("message", function(data){
- 	    socket.broadcast.to(room_id).emit('message', data);
+		if (data.all)	{
+	 	    nsp.in(room_id).emit('message', data);
+		} else {
+	 	    socket.broadcast.to(room_id).emit('message', data);
+		}
 	 });
 });	
 

@@ -29,6 +29,7 @@ $arr = array_map('trim', explode("/", $filename));
 
 $is_dir = (array_pop($arr) == '');
 
+setlocale(LC_CTYPE, "ko_KR.UTF-8");
 if ($is_dir) {
 	mkdir($filename, 0777, true);
 	$repo->setConfigExt('core.quotepath false');

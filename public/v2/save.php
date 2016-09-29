@@ -117,7 +117,7 @@ if ($result['ok']) {
 
 	// auto created sample image 
 	$root = getcwd();
-	shell_exec(escapeshellcmd("webshot --window-size=800/600 {$thumbnail_url} {$thumbnail_path}"));
+	shell_exec(escapeshellcmd("webshot --window-size=800/600 --render-delay=500 {$thumbnail_url} {$thumbnail_path}"));
 
 	echo json_encode(array('id' => $id, 'result' => true));
 	// create static file 

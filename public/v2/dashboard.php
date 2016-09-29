@@ -6,8 +6,7 @@ if (!$_SESSION['login']) {
 	exit;
 }
 
-
-
+$page_id = 'dashboard';
 ?>
 <!DOCTYPE html>
 <html>

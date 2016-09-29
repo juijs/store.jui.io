@@ -45,67 +45,142 @@ $meta = implode(PHP_EOL, $metaList);
 	<title><?php echo $data['title'] ?></title>
 	<link rel="stylesheet" href="//store.jui.io/bower_components/reveal.js/css/reveal.css" />
 	<link rel="stylesheet" href="//store.jui.io/bower_components/reveal.js/css/theme/<?php echo $pr_obj->theme ?>.css" />
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow-night.min.css">
+	<script src="//store.jui.io/bower_components/reveal.js/lib/js/head.min.js" type="text/javascript"></script>
+
+
+	<script src="//store.jui.io/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
 	<script src="//store.jui.io/bower_components/reveal.js/js/reveal.js" type="text/javascript"></script>
+	<script src="//store.jui.io/bower_components/moment/min/moment.min.js" type="text/javascript"></script>
 	<script type="text/javascript" src="//store.jui.io:3000/socket.io/socket.io.js"></script>
+	<link rel="stylesheet" href="<?php echo V2_PLUGIN_URL ?>/pr/resource/broadcast.css" />
 	<?php echo $meta ?>	
 </head>
 <body>
 
 
-<div class="reveal">
-	<div class="slides">
-<?php $items = json_decode($data['slide_code']);
-
-foreach($items as $index => $it) {
-
-
-	$attrs = array();
-	foreach($it->settings as $key => $value) {
-		if ($value) $attrs[] = "data-{$key}='{$value}'";
-	}
-
-	$attr_string = implode(" ", $attrs);
-
-
-	if (!$it->secondary && $items[$index+1]->secondary) {
-?>
-		<section>
-<?php
-	}
-
-?>
-	<section  <?php echo $attr_string ?>><?php echo HtmlPreprocessor($it->content, 'markdown');?>
-	
-		<?php if ($it->note) { ?> 
-		<aside class="notes"><?php echo HtmlPreprocessor($it->note, 'markdown');?></aside>
-		<?php } ?>
-	</section>
-
-<?php 
-	if ($it->secondary && (!$items[$index+1]  || !$items[$index+1]->secondary)) {
-?>
-	</section>
-<?php
-	}
-}
-
-?>
+<div class="broadcast client <?php echo ($_GET['upcomming']) ? "upcomming" : "" ?>">
+	<div class="chat">
+		<div class="chat-message">
+			
+		</div>
+		<div class="chat-input">
+			<input type="text" placeholder="Type here" />
+		</div>
 	</div>
+
+	<div class="content">
+		<div class="reveal">
+			<div class="slides">
+		<?php $items = json_decode($data['slide_code']);
+
+		foreach($items as $index => $it) {
+
+
+			$attrs = array();
+			foreach($it->settings as $key => $value) {
+				if ($value) $attrs[] = "data-{$key}='{$value}'";
+			}
+
+			$attr_string = implode(" ", $attrs);
+
+
+			if (!$it->secondary && $items[$index+1]->secondary) {
+		?>
+				<section>
+		<?php
+			}
+
+		?>
+			<section  <?php echo $attr_string ?>><?php echo HtmlPreprocessor($it->content, 'markdown');?>
+			
+				<?php if ($it->note) { ?> 
+				<aside class="notes"><?php echo HtmlPreprocessor($it->note, 'markdown');?></aside>
+				<?php } ?>
+			</section>
+
+		<?php 
+			if ($it->secondary && (!$items[$index+1]  || !$items[$index+1]->secondary)) {
+		?>
+			</section>
+		<?php
+			}
+		}
+
+		?>
+			</div>
+		</div>
+	</div>
+
 </div>
 
 <script type="text/javascript">
-Reveal.initialize(<?php echo  $pr_settings ?>);
+ var init_settings = <?php echo $pr_settings ?>;
+  init_settings.dependencies = [
+    // Syntax highlight for <code> elements
+	{ 
+		src: '//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js', async: true, callback: function() { 
+			hljs.initHighlightingOnLoad();
+		}
+	}
+
+ ];
+
+  Reveal.initialize(init_settings);
+
+
+<?php if ($_GET['upcomming']) { ?>
+
+Reveal.configure({
+	controls : false,
+	progress : false,
+	overview: false,
+	keyboard: false,
+	touch:false,
+	previewLinks: true,
+	transition: 'none',
+	backgroundTransition: 'none',
+	embedded : true,
+	help: false 
+});
+Reveal.slide(1, 0, 0);
+window.addEventListener( 'message', function( event ) {
+    var data = JSON.parse( event.data );
+    Reveal.slide(data.indexh+1, 0, 0);
+} );
+
+<?php } else { ?>
+Reveal.configure({
+	help: false 
+});
+
 
   var socket = io('//store.jui.io:3000/pr');
 
   socket.on('connect', function (s) {
-		socket.emit('join room', '<?php echo $_GET['id'] ?>');
+	socket.emit('join room', '<?php echo $_GET['id'] ?>');
 
-		socket.on('message', function (data) {
+	socket.on('message', function (data) {
+			if (data.type == 'chat')	{
+				view_chat_message(data);
+			} else {
 				Reveal.slide(data.indexh, data.indexv, data.indexf);
-		});
+			}
+	});
   });
 
+  function view_chat_message(data) {
+	var $item =  $("<div class='chat-item'></div>");
+
+	var $avatar = $("<div class='avatar' ></div>").html("<span class='username'>" + (data.username || "nobody") + "</span><span class='time'>" + moment(data.time).format("HH:mm A") + "</span>");
+	var $message = $("<div class='message' />").html(data.message);
+
+	$item.html([$avatar[0], $message[0]]);
+
+	$(".chat-message").append($item);
+	$item[0].scrollIntoView(true);
+  }
+  view_chat_message({ message : 'Welcome to Real Presentation', username : 'System', time : +new Date() });
  var notifyServer = function(event){
 	var data = {
 	  userid : '<?php echo $_SESSION['userid'] ?>',
@@ -115,7 +190,7 @@ Reveal.initialize(<?php echo  $pr_settings ?>);
 	  indexf : Reveal.getIndices().f || 0
 	}
 
-	socket.emit("message" , data);
+	//socket.emit("message" , data);
   }
 
   Reveal.addEventListener("slidechanged", notifyServer);
@@ -124,6 +199,26 @@ Reveal.initialize(<?php echo  $pr_settings ?>);
 
   Reveal.addEventListener("fragmenthidden", notifyServer);
 
+  
+  $(".chat-input input").on('keyup', function (e) {
+		if (e.keyCode == 13)
+		{
+			var data = {
+			  type : 'chat', 
+			  all: true, 
+			  time : +new Date(),
+			  userid : '<?php echo $_SESSION['userid'] ?>',
+			  username : '<?php echo $_SESSION['username'] ?>',
+			   message : $(this).val()
+			}
+
+			$(this).val('').focus().select();
+
+			socket.emit("message" , data);
+			return;
+		}
+  });
+<?php } ?>
 </script>
 </body>
 </html>

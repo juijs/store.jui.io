@@ -28,6 +28,11 @@ $(function() {
 		{
 			window.isSelectedSlide = false; 
 		}
+
+		var $li = get_item();
+		
+		$li.html(get_first_line($li.data('content')));
+		
 	});
 
     slideNote.on('keyup', function () {
@@ -50,17 +55,27 @@ $(function() {
 	  })
 
     jui.create('ui.tab', '#tab_slide_settings', {
-		target: ".slider-content"
+		target: ".slider-content",
+		event : {
+			change : function (obj) {
+				if (obj.text == 'NOTE') {
+					slideNote.refresh();
+				} else {
+					slideCode.refresh();
+				}
+			}		
+		}
 	});
 
 	$(".pr-settings").on('click', function () {
+		$(this).toggleClass('active');
 		$("#pr-settings").toggle();
 		$("#pr-slide").toggle();
 	});
 
 	window.prSettings = jui.create("ui.property", '#pr-settings', {
 		items : [
-			{ type : 'group', title : 'Views'},
+			{ type : 'group', title : 'Views', description : 'Simple theme select info '},
 			{ type : 'select', title : 'Theme', key : 'theme' , value : 'white', items : ['white', 'black', 'league', 'beige', 'sky', 'night', 'serif', 'simple', 'solarized', 'mozila' ] },
 			{ type : 'group', title : 'Configure'},
 			{ type : 'checkbox', title : 'Controls', key : 'controls' , value : true, description : 'Display controls in the bottom right corner' },
@@ -107,18 +122,19 @@ $(function() {
 			{ title : 'Slide ID', key : 'slide-id'  },
 			{ title : 'Character Set', key : 'charset'  },
 			{ type : 'group' , title : 'Background' },
-			{ type : 'color', title : 'Background Color', key : 'background-color' },
-			{ title : 'Background Image', key : 'background-image' },
-			{ title : 'Background Size', key : 'background-size' },
-			{ title : 'Background Position', key : 'background-position' },
-			{ title : 'Background Repeat', key : 'background-repeat' },
-			{ title : 'Background Video', key : 'background-video' },
-			{ title : 'Background Video Loop', key : 'background-video-loop' },
-			{ title : 'Background Video Mutied', key : 'background-video-muted' },
-			{ title : 'Background Iframe', key : 'background-iframe' },
+			{ type : 'color', title : 'Background Color', key : 'background-color', value : '', description : 'All CSS color formats are supported, like rgba() or hsl().' },
+			{ title : 'Background Image', key : 'background-image', value : '', description : 'URL of the image to show. GIFs restart when the slide opens.' },
+			{ title : 'Background Size', key : 'background-size', value : 'cover', description : 'See <a href="https://developer.mozilla.org/docs/Web/CSS/background-size">background-size</a> on MDN.' },
+			{ title : 'Background Position', key : 'background-position', value : 'center', description : 'See <a href="https://developer.mozilla.org/docs/Web/CSS/background-position">background-position</a> on MDN.' },
+			{ title : 'Background Repeat', key : 'background-repeat', value : 'no-repeat', description : 'See <a href="https://developer.mozilla.org/docs/Web/CSS/background-repeat" target="_blank">background-repeat</a> on MDN.' },
+			{ title : 'Background Video', key : 'background-video', value : '', description : 'A single video source, or a comma separated list of video sources.' },
+			{ type: 'checkbox', title : 'Background Video Loop', key : 'background-video-loop', value : false,  description : 'Flags if the video should play repeatedly.' },
+			{ type: 'checkbox', title : 'Background Video Mutied', key : 'background-video-muted', value: false, description : 'Flags if the audio should be muted.' },
+			{ title : 'Background Iframe', key : 'background-iframe', value : '', description : 'Embeds a web page as a background. Note that since the iframe is in the background layer, behind your slides, it is not possible to interact with the embedded page.' },
+			{ type : 'select', title : 'Background Transition', key : 'background-transition' , value : 'default', description : 'Transition style for full page slide backgrounds',  items : ['default', 'none', 'fade', 'slide', 'convex', 'concave', 'zoom' ] },
 			{ type : 'group', title : 'Transition' }, 
-			{ title : 'Transition Type', key : 'transition', value : 'slide-in fade-out' },
-			{ title : 'Transition Speed', key : 'transition-speed', value: 'fast' }
+			{ title : 'Transition Type', key : 'transition', value : 'slide-in fade-out', description : 'The global presentation transition is set using the transition config value. You can override the global transition for a specific slide by using the data-transition attribute:' },
+			{ type : 'select', title : 'Transition Speed', key : 'transition-speed', value: 'fast', description : 'Choose from three transition speeds: default, fast or slow!', items : [ 'default', 'fast', 'slow' ] }
 		],
 		event : {
 			change : function (item, newValue, oldValue) {
@@ -218,6 +234,7 @@ $(function() {
 		//coderun();
 	});
 
+	window.$prev_li = null;
 	function active_item ($li) {
 
 		if (!$li) return; 
@@ -226,7 +243,10 @@ $(function() {
 		$li.addClass('selected');
 
 
-		refresh_content($li.data());
+		if ($prev_li != $li[0]) {
+			$prev_li = $li[0];
+			refresh_content($li.data());
+		}
 	}
 
 	function remove_item ($li) {
@@ -290,6 +310,8 @@ $(function() {
 
 			update_slide_number();
 
+			$("#chart_form").attr('action', '<?php echo V2_PLUGIN_URL ?>/pr/generate.php');
+			$("#chart_form").attr('target', 'chart_frame');
 			$("#chart_form [name=resources]").val(getResourceList());
 			//$("#chart_form [name=preprocessor]").val(getPreProcessorList());
 
@@ -300,6 +322,27 @@ $(function() {
 			$("#chart_form").submit();
 		}, 1000);	
 	}
+
+	window.export_to_pdf = function () {
+		$("#chart_form").attr('action', '<?php echo V2_PLUGIN_URL ?>/pr/generate.php?print-pdf');
+		$("#chart_form").attr('target', 'export_frame');
+		$("#chart_form [name=resources]").val(getResourceList());
+	//$("#chart_form [name=preprocessor]").val(getPreProcessorList());
+
+		$("#chart_form [name=pr_settings]").val(getPrSettingsView());
+		$("#chart_form [name=slide_code]").val(getSliderView());
+		$("#chart_form [name=selected_num]").val("");
+		$("#chart_form").submit();
+	
+	}
+
+	$(".export-btn").on("click", function () {
+		export_to_pdf();
+
+		setTimeout(function() {
+			$("iframe[name=export_frame]")[0].contentWindow.print();		
+		}, 500);
+	});
 
 	window.update_slide_number = function () {
 
@@ -330,7 +373,7 @@ $(function() {
 <?php if ($isMy && !$is_viewer) { ?>
 	window.savecode = function savecode() {
 
-		$(".blockUI").show();
+		show_loading("Saving...");
 
 		var data = {
 			type : '<?php echo $type ?>',
@@ -348,7 +391,7 @@ $(function() {
 		}
 
 		$.post("/v2/save.php", data, function(res) {
-			$(".blockUI").hide();
+			hide_loading();
 
 			if (res.result)
 			{

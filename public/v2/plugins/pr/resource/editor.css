@@ -6,6 +6,12 @@
 	width:150px;
 }
 
+.editor-tool .title {
+	font-size:13px;
+	letter-spacing:1px;
+	text-transform:uppercase;
+}
+
 .pr-title {
 	padding:10px;
 	padding-left:20px;
@@ -30,6 +36,36 @@
 	left:0px;
 	right:0px;
 	bottom:0px;
+}
+
+.pr-settings {
+	padding:5px 10px;
+	width:30px;
+}
+
+.pr-settings:hover svg path {
+
+	fill:white;
+}
+
+.pr-settings.active,
+.pr-settings:hover
+{
+	background-color:#48cfad;
+
+}
+
+.pr-settings svg {
+	width:14px;
+	height:14px;
+}
+.pr-settings svg path {
+	fill:#48cfad;
+}
+
+.pr-settings.active svg path {
+	fill:white;
+	
 }
 
 #pr-settings .input-group {
@@ -66,12 +102,13 @@
 	box-sizing:border-box;
 }
 
+/*
 #pr-settings .description{
 	padding-top:4px;
 	font-size:11px;
 	color:gray;
 }
-
+*/
 
 .slider-editor {
 	position:absolute;

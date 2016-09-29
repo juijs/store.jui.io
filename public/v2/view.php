@@ -199,6 +199,10 @@ if ($data) {
 						</div>
 					</div>
 
+					<div class="title qrcode">QR CODE (Direct View)</div>
+					<div class="qrcode">
+						<img src="/qrcode.php?id=<?php echo $id ?>" width="200px" height="200px" />
+					</div>
 					<a class="button button-regular button-common view-share-btn" title="Share a code"><?php echo get_svg_image('share') ?></a>
 				</div>
 			</div>

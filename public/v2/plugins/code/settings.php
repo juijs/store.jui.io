@@ -22,7 +22,7 @@ $(function() {
 
 <div id="file-list" class='window <?php echo $isMy ? 'my' : '' ?>' style='display:none'>
     <div class="head">
-        <div class="left" style="letter-spacing:1px ;"><i class="icon-gear"></i> SETTINGS</div>
+        <div class="left" style="letter-spacing:1px ;"><i class="icon-tool"></i> PROJECT INFO</div>
         <div class="right">
             <a href="#" class="close"><i class="icon-exit"></i></a>
         </div>

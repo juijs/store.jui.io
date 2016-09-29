@@ -26,7 +26,12 @@ $support_file_type = array(
 function get_ext($filename) {
 	$file = basename($filename);
 	$arr = explode(".", $file);
-	$ext  = end($arr);
+
+	if (sizeof($arr) > 1) {
+		$ext  = end($arr);
+	} else {
+		$ext = 'default'; // none extension , default
+	}
 
 	return strtolower($ext);
 }

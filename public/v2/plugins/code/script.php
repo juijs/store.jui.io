@@ -313,6 +313,7 @@ $(function() {
 			script : '<?php echo V2_PLUGIN_URL?>/code/fileTree.php', 
 			action : {
 				addFile : '<?php echo V2_PLUGIN_URL ?>/code/add_file.php',
+				deleteFile : '<?php echo V2_PLUGIN_URL ?>/code/delete_file.php',
 				renameFile : '<?php echo V2_PLUGIN_URL ?>/code/rename_file.php',
 				uploadFile : '<?php echo V2_PLUGIN_URL ?>/code/upload_file.php'
 			},

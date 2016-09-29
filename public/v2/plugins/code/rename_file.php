@@ -54,6 +54,7 @@ if (!file_exists($filename)) {
 $arr = array_map('trim', explode("/", $filename));
 $is_dir = (array_pop($arr) == '');
 
+setlocale(LC_CTYPE, "ko_KR.UTF-8");
 if ($is_dir) {
 	$arr = explode('/', $prev_file);
 

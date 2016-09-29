@@ -45,7 +45,13 @@ $meta = implode(PHP_EOL, $metaList);
 	<title><?php echo $data['title'] ?></title>
 	<link rel="stylesheet" href="//store.jui.io/bower_components/reveal.js/css/reveal.css" />
 	<link rel="stylesheet" href="//store.jui.io/bower_components/reveal.js/css/theme/<?php echo $pr_obj->theme ?>.css" />
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow-night.min.css">
+	<script src="//store.jui.io/bower_components/reveal.js/lib/js/head.min.js" type="text/javascript"></script>
 	<script src="//store.jui.io/bower_components/reveal.js/js/reveal.js" type="text/javascript"></script>
+
+	<?php if (isset($_GET['print-pdf'])) { ?>
+	<link rel="stylesheet" href="//store.jui.io/bower_components/reveal.js/css/print/pdf.css" />
+	<?php } ?>
 	<?php echo $meta ?>	
 </head>
 <body>
@@ -93,35 +99,19 @@ foreach($items as $index => $it) {
 </div>
 
 <script type="text/javascript">
-Reveal.initialize(<?php echo  $pr_settings ?>);
 
-/*
-function toggleFullScreen() {
-    if (!document.fullscreenElement && !document.msFullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement) {
-        if (document.body.requestFullscreen) {
-            document.body.requestFullscreen();
-        } else if (document.body.msRequestFullscreen) {
-            document.body.msRequestFullscreen();
-        }else if (document.body.mozRequestFullScreen) {
-            document.body.mozRequestFullScreen();
-        }else if (document.body.webkitRequestFullscreen) {
-            document.body.webkitRequestFullscreen();
-        }
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        }else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        }else if (document.webkitCancelFullScreen) {
-            document.webkitCancelFullScreen();
-        }
-    }
-}
-*/
+var init_settings = <?php echo $pr_settings ?>;
+init_settings.dependencies = [
+    // Syntax highlight for <code> elements
+	{ 
+		src: '//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js', async: true, callback: function() { 
+			hljs.initHighlightingOnLoad();
+		}
+	}
 
-location.href="#/<?php echo $_GET['selected_num']  ?>";
+];
+
+Reveal.initialize(init_settings);
 </script>
 </body>
 </html>

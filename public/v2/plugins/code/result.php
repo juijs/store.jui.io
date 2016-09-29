@@ -2,7 +2,7 @@
 	<div class="preview-toolbar">
 		<h1><span class="splitter-toggle" data-splitter="previewSplitter" title="Toggle Editor" ><?php echo get_svg_image('left') ?></i></span> PREVIEW</h1>
 		<div class="preview-buttons">
-		<a class="button button-link  fullscreen-btn feature-button" title="FullScreen Mode"><i class='icon-was'></i><?php if (!$is_viewer) {?> Full Screen<?php } ?></a>
+			<a class="button button-link  fullscreen-btn feature-button" title="FullScreen Mode"><i class='icon-was'></i><?php if (!$is_viewer) {?> Full Screen<?php } ?></a>
 		</div>
 	</div>
 	<div id="tab_contents_1" class="tab-contents editor-info">

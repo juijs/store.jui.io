@@ -63,6 +63,7 @@ function file_numbering($name) {
 	return $dirname.'/'.$name;
 }
 
+setlocale(LC_CTYPE, "ko_KR.UTF-8");
 $root = $repo->getRepositoryPath();
 $result = array();
 for($i = 0; $i < $total; $i++) {

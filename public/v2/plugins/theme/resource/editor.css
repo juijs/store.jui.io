@@ -3,6 +3,11 @@
 
 }
 
+.editor-tool .title {
+	font-size:13px;
+	letter-spacing:1px;
+	text-transform:uppercase;
+}
 
 #module_convert {
 	border-bottom:1px solid #e4e4e4;

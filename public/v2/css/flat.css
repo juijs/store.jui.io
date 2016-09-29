@@ -47,10 +47,11 @@ body.modal-open .t {
 	background-color:rgba(255, 255, 255, 0);
 	color: #48cfad;
 	border-radius:0px;
-	font-size:14px;
+	font-size:12px;
 	padding:5px 20px;
 	line-height:17px;
 	cursor:pointer;
+	letter-spacing:1px;
 	text-decoration:none;
 	transition: all 0.1s linear;
 	text-transform: uppercase;
@@ -162,6 +163,10 @@ body.modal-open .t {
 	fill: #48cfad;
 }
 
+.button-link.active svg path {
+	fill: #48cfad;
+}
+
 
 
 .button.on {
@@ -259,6 +264,8 @@ header .login {
 	height:10px;
 	vertical-align:middle;
 	border-right:2px solid #ececec;
+	margin-left: 4px;
+	margin-right:4px;
 }
 
 .login-menu-big a.logout {
@@ -323,7 +330,7 @@ header .login {
 
 .summary-box {
 	flex:1;
-	height:400px;
+	height:330px;
 	box-sizing:border-box;
 	margin:20px;
 	margin-top:0px;
@@ -333,10 +340,6 @@ header .login {
 	transition:all 0.3s linear;
 	overflow:hidden;
 	border-top:1px solid #48cfad;
-}
-
-.summary-box:hover { 
-
 }
 
 .good_btn {
@@ -366,7 +369,7 @@ header .login {
 	/* width:100%; */
 	width:100%;
 	left:0px;
-	height:270px;
+	height:200px;
 	bottom:40px;
 	position:absolute;
 	z-index:1;
@@ -381,7 +384,7 @@ header .login {
 	opacity:0;
 	width:100%;
 	left:0px;
-	height:270px;
+	height:200px;
 	bottom:40px;
 	position:absolute;
 	z-index:1;
@@ -427,7 +430,7 @@ header .login {
 }
 
 .summary-box:hover {
-	z-index:999999;
+	z-index:9;
 	-webkit-transform:rotateY(0deg);;
 	transform:rotateY(0deg);;
 }
@@ -1163,7 +1166,7 @@ footer .footer-link {
 }
 
 .sns-buttons {
-	margin-right:0px;
+	margin-right:10px;
 	height:100%;
 	display:inline-block;
 	box-sizing:border-box;
@@ -1172,7 +1175,7 @@ footer .footer-link {
 
 .sns-buttons > a {
 	height:100%;
-	padding:20px;
+	padding:20px 15px;
 	display:inline-block;
 	box-sizing:border-box;
 	color:white;
@@ -1180,7 +1183,7 @@ footer .footer-link {
 	vertical-align:middle;
 	font-size:14px;
 	cursor:pointer;
-	width:60px;
+	width:50px;
 	text-align:center;
 }
 
@@ -1365,6 +1368,7 @@ footer .footer-link {
 	color:rgba(0, 0, 0, 0.7);
 	font-size:14px;
 	line-height:24px;
+	word-break: break-all;
 }
 
 .view-mode .right .text .score-chart {

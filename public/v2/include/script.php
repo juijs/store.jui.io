@@ -227,7 +227,8 @@ jui.defineUI('ui.splitter', [], function () {
 			hideClass: 'hide',
 			barSize : 4,
 			barStyle : {
-				'background-color': 'rgba(255, 255, 255, 0.1)',
+				'background-color': '#f6f6f6',
+				'border-right': '1px solid #e4e4e4'
 			},	
 			direction : 'vertical',
 			initSize : '50%', 

@@ -69,7 +69,7 @@ body { overflow: hidden; }
 
 		<div class="editor-toolbar">
 			<div style='float:left;padding:10px;' class="editor-left-toolbar">
-					<a class="button button-link" id="library" title="<?php echo $type_list[$type]['name'] ?>"><i class="icon-gear"></i> SETTINGS</a>
+					<a class="button button-link" id="library" title="<?php echo $type_list[$type]['name'] ?>"><i class="icon-tool"></i> PROJECT INFO</a>
 					<?php include_once V2_PLUGIN."/$type/toolbar-left.php"; ?>
 			</div>
 			<div style="float:right;padding:10px;" class="editor-right-toolbar">

@@ -11,6 +11,7 @@
         "jimmiw/php-time-ago": "^0.4.11",
         "czproject/git-php": "^3.6",
         "picqer/php-barcode-generator": "^0.2.0",
-        "endroid/qrcode": "^1.7"
+        "endroid/qrcode": "^1.7",
+        "erusev/parsedown-extra": "^0.7.1"
     }
 }
