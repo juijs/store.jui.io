@@ -8,7 +8,6 @@ public/static
 public/mongo
 mongo/
 node_modules/
-public/bower_components/
 repository/
 cache/
 ~

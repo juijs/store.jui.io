@@ -39,8 +39,9 @@ $repo = new GitRepository($dir);
 
 setlocale(LC_CTYPE, "ko_KR.UTF-8");
 
+$repo->setConfig($_SESSION['username']);
 $commit_message = $_POST['commit_message'];
-$ret = $repo->commit($commit_message);
+$ret = $repo->commit($commit_message, "-a");
 
 die(json_encode(array('result'=> $ret ? true : false )));
 ?>

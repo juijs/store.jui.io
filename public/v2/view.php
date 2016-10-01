@@ -63,22 +63,22 @@ $meta =<<<EOD
 	<!-- Facebook -->
 	<meta property="og:title" content="{$title}"/>
 	<meta property="og:type" content="article"/>
-	<meta property="og:url" content="http://store.jui.io/view.php?id={$id}"/>
+	<meta property="og:url" content="{$url_root}/view.php?id={$id}"/>
 	<meta property="og:description" content="{$description}"/>
-	<meta property="og:image" content="http://store.jui.io/thumbnail.php?id={$id}"/>
+	<meta property="og:image" content="{$url_root}/thumbnail.php?id={$id}"/>
 
 	<!-- Twitter -->
 	<meta name="twitter:card"           content="summary_large_image">
 	<meta name="twitter:title"          content="{$title}">
 	<meta name="twitter:site"           content="@easylogic">
 	<meta name="twitter:creator"        content="@{$username}">
-	<meta name="twitter:image"          content="http://store.jui.io/thumbnail.php?id={$id}">
+	<meta name="twitter:image"          content="{$url_root}/thumbnail.php?id={$id}">
 	<meta name="twitter:description"    content="{$description}">
 	 
 	<!-- Google -->
 	<meta itemprop="name" content="{$title}">
 	<meta itemprop="description" content="{$description}">
-	<meta itemprop="image" content="http://store.jui.io/thumbnail.php?id={$id}">
+	<meta itemprop="image" content="{$url_root}/thumbnail.php?id={$id}">
 
 	{$meta}
 EOD;

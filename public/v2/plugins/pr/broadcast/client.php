@@ -143,11 +143,6 @@ Reveal.configure({
 	embedded : true,
 	help: false 
 });
-Reveal.slide(1, 0, 0);
-window.addEventListener( 'message', function( event ) {
-    var data = JSON.parse( event.data );
-    Reveal.slide(data.indexh+1, 0, 0);
-} );
 
 <?php } else { ?>
 Reveal.configure({
@@ -161,11 +156,11 @@ Reveal.configure({
 	socket.emit('join room', '<?php echo $_GET['id'] ?>');
 
 	socket.on('message', function (data) {
-			if (data.type == 'chat')	{
-				view_chat_message(data);
-			} else {
-				Reveal.slide(data.indexh, data.indexv, data.indexf);
-			}
+		if (data.type == 'chat')	{
+			view_chat_message(data);
+		} else {
+			Reveal.slide(data.indexh, data.indexv, data.indexf);
+		}
 	});
   });
 
@@ -181,24 +176,6 @@ Reveal.configure({
 	$item[0].scrollIntoView(true);
   }
   view_chat_message({ message : 'Welcome to Real Presentation', username : 'System', time : +new Date() });
- var notifyServer = function(event){
-	var data = {
-	  userid : '<?php echo $_SESSION['userid'] ?>',
-	  username : '<?php echo $_SESSION['username'] ?>',
-	  indexv : Reveal.getIndices().v,
-	  indexh : Reveal.getIndices().h,
-	  indexf : Reveal.getIndices().f || 0
-	}
-
-	//socket.emit("message" , data);
-  }
-
-  Reveal.addEventListener("slidechanged", notifyServer);
-
-  Reveal.addEventListener("fragmentshown", notifyServer);
-
-  Reveal.addEventListener("fragmenthidden", notifyServer);
-
   
   $(".chat-input input").on('keyup', function (e) {
 		if (e.keyCode == 13)

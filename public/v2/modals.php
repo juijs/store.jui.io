@@ -55,9 +55,9 @@
 
 <?php
 		$share_text = urlencode($description)." #store #jui #js" ;
-		$share_url = urlencode("http://".$_SERVER['HTTP_HOST']."/v2/view.php?id=".$id);
-		$embed_url = "http://".$_SERVER['HTTP_HOST']."/v2/viewer.php?id=".$id;
-		$thumbnail_url = "http://".$_SERVER['HTTP_HOST']."/v2/thumbnail.php?id=".$id;
+		$share_url = urlencode($url_root."/v2/view.php?id=".$id);
+		$embed_url = $url_root."/v2/viewer.php?id=".$id;
+		$thumbnail_url = $url_root."/v2/thumbnail.php?id=".$id;
 ?>
 
 <div class="share-modal">

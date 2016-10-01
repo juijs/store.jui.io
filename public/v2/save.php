@@ -112,7 +112,7 @@ if ($result['ok']) {
 	$id = $_POST['id'] ? $_POST['id'] : (string)$document['_id'];
 	
 
-	$thumbnail_url = "http://{$_SERVER['HTTP_HOST']}/v2/embed.php?id={$id}&only=true";
+	$thumbnail_url = $url_root."/v2/embed.php?id={$id}&only=true";
 	$thumbnail_path = ABSPATH."/thumbnail/{$id}.png";
 
 	// auto created sample image 

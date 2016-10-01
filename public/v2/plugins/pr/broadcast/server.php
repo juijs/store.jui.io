@@ -206,7 +206,10 @@ $meta = implode(PHP_EOL, $metaList);
 	}
 
 	socket.emit("message" , data);
-	$(".next-presentation iframe")[0].contentWindow.postMessage(JSON.stringify(data), "*");
+	var upcomming_frame = $(".next-presentation iframe")[0];
+
+	upcomming_frame.contentWindow.postMessage(JSON.stringify({ method : 'slide', args : [data.indexh, data.indexv, data.indexf] }), "*");
+	upcomming_frame.contentWindow.postMessage(JSON.stringify({ method : 'next' }), "*");
 	view_note();
   }
 
@@ -215,6 +218,7 @@ $meta = implode(PHP_EOL, $metaList);
   Reveal.addEventListener("fragmentshown", notifyServer);
 
   Reveal.addEventListener("fragmenthidden", notifyServer);
+
 
   var start_time = moment().startOf("second");
   
@@ -271,6 +275,11 @@ $meta = implode(PHP_EOL, $metaList);
 			return;
 		}
   });
+
+  // 최초 호출 
+  setTimeout(function() {
+	notifyServer();
+  }, 500);
 
 </script>
 </body>

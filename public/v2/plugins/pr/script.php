@@ -539,6 +539,22 @@ $(function() {
 		   items : [ '.editor-left', '.editor-right' ]
 	   });
 
+	   $(".slider-items").on('drop', function (e) {
+			e.preventDefault();
+			console.log(e);
+
+	   });
+
+      window.fileDrop = jui.create("ui.filedrop", ".slider-items", {
+            uploadParams : {
+                id : '<?php echo $id ?>'
+            },
+            event : {
+                success : function (data) {
+
+                }
+            }
+      });
 
 });
 </script>

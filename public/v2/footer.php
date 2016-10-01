@@ -1,3 +1,5 @@
+
+<?php if ($page_id != 'file') { ?>
 <footer>
 		<div class="copyright">
 			&copy; 2016 JUI. All Rights Reserved.
@@ -13,3 +15,4 @@
 			</div>
 		</div>
 </footer>
+<?php } ?>

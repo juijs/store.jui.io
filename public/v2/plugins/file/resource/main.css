@@ -1,0 +1,69 @@
+body {
+	overflow:auto !important;
+}
+
+footer {
+	position:relative;
+	left:auto;
+	right:auto;
+	bottom:auto;
+	top:auto;
+}
+
+.create-panel {
+	margin:0 auto;
+	width:800px;
+	position:relative;
+	padding-bottom:50px;
+}
+
+.form-group {
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
+.form-group label {
+	display:block;
+	font-size:14px;
+	font-weight:bold;
+	color:
+	margin-top:5px;
+	margin-bottom:10px;
+}
+
+.form-group label small {
+	color:#a4a4a4;
+}
+
+hr {
+	border:0px;
+	border-top: 1px solid #ececec;
+	margin-bottom:10px;
+	margin-top:10px;
+}
+
+.form-group label input[type=radio],
+.form-group label input[type=checkbox]
+{
+	margin-right:10px;
+}
+
+.form-group .help {
+	margin-left: 30px; 
+	color:#a4a4a4;
+	font-size:12px;
+}
+
+.form-group .head-help {
+	color:#a4a4a4;
+	font-size:16px;
+	font-weight:300;
+}
+
+.form-group .item {
+	margin-bottom:10px;
+}
+
+.form-group .item:last-child {
+	margin-bottom:0px;
+}

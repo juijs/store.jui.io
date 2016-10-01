@@ -27,11 +27,9 @@ function liked(id) {
 	});
 }
 
-
-Kakao.init('4310fdabd1669a4b1fbabab509d3acae');
-
 function shareToKakao(share_url, description, thumbnail_url) {
 
+    Kakao.init('4310fdabd1669a4b1fbabab509d3acae');
 	description = decodeURIComponent(description).replace(/\+/g, " ");
 	share_url = decodeURIComponent(share_url);
 

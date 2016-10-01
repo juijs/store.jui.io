@@ -14,8 +14,8 @@ $page_id = 'index';
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
     <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
 
-	<link href="//store.jui.io/jui-all/jui/dist/ui.min.css" rel="stylesheet" />
-	<link href="//store.jui.io/jui-all/jui/dist/ui-jennifer.min.css" rel="stylesheet" />
+	<link href="/jui-all/jui/dist/ui.min.css" rel="stylesheet" />
+	<link href="/jui-all/jui/dist/ui-jennifer.min.css" rel="stylesheet" />
 
 	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 	<script type="text/javascript" src="/v2/js/main.js"></script>

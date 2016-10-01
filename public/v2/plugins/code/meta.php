@@ -26,15 +26,15 @@ if (trim($data['resources']) != "") {
 	}
 } else {
 	// 리소스가 없을 때는 JUI 를 기본 
-	$metaList[] = 	'<link href="//store.jui.io/jui-all/jui/dist/ui.min.css" rel="stylesheet" />';
-	$metaList[] = 	'<link href="//store.jui.io/jui-all/jui-grid/dist/grid.min.css" rel="stylesheet" />';
-	$metaList[] = 	'<link href="//store.jui.io/jui-all/jui/dist/ui-jennifer.min.css" rel="stylesheet" />';
-	$metaList[] = 	'<link href="//store.jui.io/jui-all/jui-grid/dist/grid-jennifer.min.css" rel="stylesheet" />';
+	$metaList[] = 	'<link href="'.$url_root.'/jui-all/jui/dist/ui.min.css" rel="stylesheet" />';
+	$metaList[] = 	'<link href="'.$url_root.'/jui-all/jui-grid/dist/grid.min.css" rel="stylesheet" />';
+	$metaList[] = 	'<link href="'.$url_root.'/jui-all/jui/dist/ui-jennifer.min.css" rel="stylesheet" />';
+	$metaList[] = 	'<link href="'.$url_root.'/jui-all/jui-grid/dist/grid-jennifer.min.css" rel="stylesheet" />';
 
-	$metaList[] = 	'<script type="text/javascript" src="//store.jui.io/jui-all/jui-core/dist/core.js"></script>';
-	$metaList[] = 	'<script type="text/javascript" src="//store.jui.io/jui-all/jui/dist/ui.js"></script>';
-	$metaList[] = 	'<script type="text/javascript" src="//store.jui.io/jui-all/jui-grid/dist/grid.min.js"></script>';
-	$metaList[] = 	'<script type="text/javascript" src="//store.jui.io/jui-all/jui-chart/dist/chart.js"></script>';
+	$metaList[] = 	'<script type="text/javascript" src="'.$url_root.'/jui-all/jui-core/dist/core.js"></script>';
+	$metaList[] = 	'<script type="text/javascript" src="'.$url_root.'/jui-all/jui/dist/ui.js"></script>';
+	$metaList[] = 	'<script type="text/javascript" src="'.$url_root.'/jui-all/jui-grid/dist/grid.min.js"></script>';
+	$metaList[] = 	'<script type="text/javascript" src="'.$url_root.'/jui-all/jui-chart/dist/chart.js"></script>';
 }
 
 if ($page_id == 'create') {

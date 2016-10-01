@@ -18,7 +18,7 @@
 				</div>
 				<div id="pr-slide">
 
-						<div class="slider-items">
+						<div class="slider-items" droppable>
 							<ul ></ul>
 						</div>
 						<div class="slider-editor">
