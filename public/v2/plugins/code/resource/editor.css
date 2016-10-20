@@ -27,7 +27,7 @@ footer {
 	width:200px;
 	box-sizing:border-box;
 	border-right:1px solid #e4e4e4;
-	background-color: rgba(123, 173, 122, 0.08);
+	//background-color: rgba(123, 173, 122, 0.08);
 }
 
 .file-name {
@@ -212,4 +212,11 @@ footer {
 	top:40px;
 	bottom:0px;
 	background-color:white;
+}
+
+.branch-title {
+    display:inline-block;
+    vertical-align:middle;
+    font-size:13px;
+    color:#48cfad;
 }

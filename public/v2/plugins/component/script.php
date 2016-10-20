@@ -54,11 +54,16 @@ $(function() {
 			$container.find("li.active").removeClass("active");
 			$parent.addClass('active');
 
+			localStorage.setItem("module_convert", value);
+
 			for (var i = 0, len = editor_list.length; i < len ; i++ )
 			{
 				var editor = editor_list[i];
 				$("#tab_contents_" + editor).toggle(editor == value);
 				code_editor_list[i].refresh();
+
+
+
 			}
 
 			if ($('.editor-splitter').css('display') == 'none') {
@@ -71,6 +76,14 @@ $(function() {
 				}
 			}
 	});
+
+	window.show_current_tab = function () {
+		var prevTab = localStorage.getItem('module_convert');
+
+		$("#module_convert").find("a[value="+prevTab+"]").click();
+
+
+	}
 
 	window.code_name_list = {
 		// html 
@@ -149,7 +162,8 @@ $(function() {
 
 			if (res.result)
 			{
-				location.href = '?id=' + res.id; 	
+				//location.href = '?id=' + res.id; 	
+                coderun();
 			} else {
 				alert(res.message ? res.message : 'Failed to save');
 			}
@@ -189,6 +203,7 @@ $(function() {
 				setResourceList(data.resources);
 				setPreProcessorList(data.preprocessor);
 				coderun();
+				show_current_tab();
 			});
 		} else {
 			updatePreProcessorList();
@@ -206,7 +221,5 @@ $(function() {
 	   initSize: '50%',
 	   items : [ '.editor-left', '.editor-right' ]
    });
-
-
 });
 </script>

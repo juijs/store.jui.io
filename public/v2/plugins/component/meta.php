@@ -39,12 +39,8 @@ if (trim($data['resources']) != "") {
 
 if ($page_id == 'editor') {
 
-	$metaList[] = 	'<link href="'.V2_PLUGIN_URL.'/component/resource/editor.css" rel="stylesheet" />';
-
-
 	$metaList[] = 	'<link href="/bower_components/codemirror/lib/codemirror.css" rel="stylesheet" />';
 	$metaList[] = 	'<script type="text/javascript" src="/bower_components/codemirror/lib/codemirror.js"></script>';
-	$metaList[] = 	'<script src="/bower_components/codemirror/mode/coffeescript/coffeescript.js"></script>';
 	$metaList[] = 	'<script src="/bower_components/codemirror/mode/javascript/javascript.js"></script>';
 	$metaList[] = 	'<script src="/bower_components/codemirror/mode/htmlmixed/htmlmixed.js"></script>';
 	$metaList[] = 	'<script src="/bower_components/codemirror/mode/markdown/markdown.js"></script>';

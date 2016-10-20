@@ -85,7 +85,7 @@ for($i = 0; $i < $total; $i++) {
 			$repo->setConfigExt('core.quotepath false');
 			$repo->addFile($name);
 			// 권한 넣기 
-			chmod($name, 0666);
+			chmod($name, 0777);
 		} else {
 
 		}

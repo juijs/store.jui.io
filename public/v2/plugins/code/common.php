@@ -15,9 +15,11 @@ $support_file_type = array(
 	'ts',
 	'js',
 	'json',
+    'tex',
 
 	// special extention 
 	'isbn',
+    'ipynb',
 	'qrcode',
 	'barcode',
 	'color',

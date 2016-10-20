@@ -123,7 +123,7 @@ $(function() {
 			{ title : 'Character Set', key : 'charset'  },
 			{ type : 'group' , title : 'Background' },
 			{ type : 'color', title : 'Background Color', key : 'background-color', value : '', description : 'All CSS color formats are supported, like rgba() or hsl().' },
-			{ title : 'Background Image', key : 'background-image', value : '', description : 'URL of the image to show. GIFs restart when the slide opens.' },
+			{ title : 'Background Image', key : 'background-image', value : '', description : 'URL of the image to show. GIFs restart when the slide opens.', media : true  },
 			{ title : 'Background Size', key : 'background-size', value : 'cover', description : 'See <a href="https://developer.mozilla.org/docs/Web/CSS/background-size">background-size</a> on MDN.' },
 			{ title : 'Background Position', key : 'background-position', value : 'center', description : 'See <a href="https://developer.mozilla.org/docs/Web/CSS/background-position">background-position</a> on MDN.' },
 			{ title : 'Background Repeat', key : 'background-repeat', value : 'no-repeat', description : 'See <a href="https://developer.mozilla.org/docs/Web/CSS/background-repeat" target="_blank">background-repeat</a> on MDN.' },
@@ -138,7 +138,9 @@ $(function() {
 		],
 		event : {
 			change : function (item, newValue, oldValue) {
-				get_item().data('settings', this.getValue());
+				var $li = get_item();
+                $li.data('settings', this.getValue());
+                update_slide_view();
 				coderun();
 			}
 		}
@@ -163,11 +165,19 @@ $(function() {
 		}
 	}
 
+    function update_slide_view ($li) {
+		$li =  $li || get_item();
+        var settings = $li.data('settings');
+        $li.css('background-color', settings['background-color']) ;
+        $li.css('background-image', 'url(' + settings['background-image'] + ')') ;
+        $li.css('background-size', 'cover') ;
+    }
+
 	function new_slide_item(obj, isNoneActive) {
 		obj = obj || {};
 		$selected = get_item();
 
-		var content = obj.content || 'welcome';
+		var content = typeof obj.content == 'undefined' ? 'welcome' : obj.content;
 		var $li = $("<li ></li>").data({
 			name : obj.name || 'new slider',
 			content: content,
@@ -176,6 +186,8 @@ $(function() {
 			settings : obj.settings || sliderSettings.getDefaultValue()   // slider 기본 설정 추가 
 		}).html(get_first_line(content));
 
+        update_slide_view($li);
+    
 		if (obj.secondary)
 		{
 			$li.addClass('secondary icon-chevron-right');
@@ -276,7 +288,9 @@ $(function() {
 		slideCode.setValue($selected.data('content') + "");
 		slideNote.setValue($selected.data('note') + "");
 
-		sliderSettings.setValue($selected.data('settings'));
+        var settings = $selected.data('settings');
+		sliderSettings.initValue(settings);
+        
 	}
 
 	window.code_name_list = {

@@ -2,13 +2,15 @@
 
 		<div class="file-container">
 			<div class="file-toolbar">
-				<h1>FILES</h1>
 				<?php if ($isMy && !$is_viewer) { ?>
+		        <span class='branch-title'>Branch :</span><div class="branches select"></div>		
 				<div class="buttons">
 					<a class="add-directory-btn" title="add folder"  ><i class="icon-add-dir"></i> FOLDER</a>
 					&nbsp;&nbsp;&nbsp;
 					<a class="add-file-btn" title="add file"  ><i class='icon-report2'></i> FILE</a>
 				</div>
+                <?php } else { ?>
+                Files 
 				<?php } ?>
 			</div>
 			<div class="file-content">

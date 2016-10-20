@@ -150,7 +150,7 @@ Reveal.configure({
 });
 
 
-  var socket = io('//store.jui.io:3000/pr');
+  var socket = io('//store.jui.io:3000/pr', {secure: true });
 
   socket.on('connect', function (s) {
 	socket.emit('join room', '<?php echo $_GET['id'] ?>');

@@ -177,7 +177,7 @@ $meta = implode(PHP_EOL, $metaList);
   view_note();
   view_chat_message({ message : 'Welcome to Real Presentation', username : 'System', time : +new Date() });
 
-  var socket = io('//store.jui.io:3000/pr');
+  var socket = io('//store.jui.io:3000/pr', { secure: true });
 
   socket.on('connect', function (s) {
 		socket.emit('join room', '<?php echo $_GET['id'] ?>');

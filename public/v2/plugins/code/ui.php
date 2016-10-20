@@ -170,8 +170,30 @@ jui.defineUI("ui.filetree", [], function () {
 					return result.join(DIRECTORY_SEPARATOR).replace(/\/\//g, DIRECTORY_SEPARATOR);
 			}
 
-			
+		
+            function refresh_tree_node(filepath) {
+                var arr = filepath.split(DIRECTORY_SEPARATOR);
+                arr[arr.length-1] = '';
+                var dir = arr.join(DIRECTORY_SEPARATOR);
 
+                // 클릭 이벤트 발생 
+                var $a = $el.find("a[rel='"+dir+"']");
+                if ($a.length) {
+                    $el.data('fileTree').showTree($a.parent(), $a.attr('rel'));
+                } else {
+                    refresh_all();
+                }
+                
+            }
+
+            function refresh_all() {
+                var tree = $el.data('fileTree');
+               
+                $el.empty(); 
+                tree.showTree($el, escape(tree.options.root));
+            }	
+
+            // @Deprecated 
 			function select_tree_node (filepath) {
 
 				var is_dir = filepath.lastIndexOf(DIRECTORY_SEPARATOR) == filepath.length-1;
@@ -201,7 +223,7 @@ jui.defineUI("ui.filetree", [], function () {
 				$.post(action.addFile, { id : rootId, filename : relativePath }, function (res) {
 					if (res.result) {
 						callback && callback ();
-						select_tree_node(relativePath);	
+                        refresh_tree_node(fullPath);
 					} else {
 						alert(res.message);
 					}
@@ -263,6 +285,22 @@ jui.defineUI("ui.filetree", [], function () {
 					$a.hide();
 			}
 
+            // 현재 선택된 directory 를 알려준다. 
+            // file 이면 현재 디렉토리,  directory 면 자기 자신 
+            function get_selected_directory_path() {
+                var item = get_selected_node();
+
+                var directory_name = DIRECTORY_SEPARATOR + item.parent;
+
+                if (item.type == 'directory') {
+                    directory_name += DIRECTORY_SEPARATOR + item.filename; 
+                }
+                
+                directory_name = directory_name.replace('//', '/');
+
+                return directory_name; 
+            }
+
 			function get_selected_node () {
 					var $a  = $el.find(".selected a");
 
@@ -318,7 +356,6 @@ jui.defineUI("ui.filetree", [], function () {
 				$.post(self.options.action.deleteFile, { id : rootId, filename : currentPath }, function (res) {
 					if (res.result) {
 						// 파일 삭제 
-						console.log($li);
 						$li.remove();
 						self.emit("delete.file", [ currentPath ]);
 					}
@@ -334,7 +371,7 @@ jui.defineUI("ui.filetree", [], function () {
 			}
 
 			function loadTree() { 
-				$el.data('fileTree', null).empty().off('filetreeinitiated filetreeclicked filetreeexpanded filetreecollapsed');
+				$el.data('fileTree', null).empty().off('click filetreeinitiated filetreeclicked filetreeexpanded filetreecollapsed');
 				
 						 
 				$el.on('filetreeclicked', function(e, data) {
@@ -519,10 +556,8 @@ jui.defineUI("ui.filetree", [], function () {
 					modal : true,
 					event : {
 						show: function () {
-							var item = get_selected_node();
-
-							$(this.root).find(".parent-name").text(DIRECTORY_SEPARATOR + item.parent);
-							$(this.root).find("input[name='folder-name']").focus().select();
+							$(this.root).find(".parent-name").text(get_selected_directory_path());
+							$(this.root).find("input[name='folder-name']").val('').focus().select();
 						},
 						apply : function() {
 
@@ -539,10 +574,9 @@ jui.defineUI("ui.filetree", [], function () {
 					modal : true,
 					event : {
 						show: function () {
-							var item = get_selected_node();
-
-							$(this.root).find(".parent-name").text(DIRECTORY_SEPARATOR + item.parent);
-							$(this.root).find("input[name='file-name']").focus().select();
+							
+							$(this.root).find(".parent-name").text(get_selected_directory_path());
+							$(this.root).find("input[name='file-name']").val('').focus().select();
 						},
 						apply : function() {
 							var name = $(this.root).find("input[name='file-name']").val();
@@ -613,22 +647,26 @@ jui.defineUI("ui.filetree", [], function () {
 			}
 
 			function new_folder(name, win) {
-				var item = get_selected_node();
+                var path = rootPath + get_selected_directory_path() + DIRECTORY_SEPARATOR + name; 
+			
+                path += DIRECTORY_SEPARATOR;	
+                /*
+                var item = get_selected_node();
 
 				if (item.type == 'file') {
 					var path = rootPath + item.parent + DIRECTORY_SEPARATOR + name;
 				} else {
 					var path = item.file + name;
 				}
+                */
 
 
-
-				if (file_exists(path + DIRECTORY_SEPARATOR)) {
-					alert('directory is already exists' );
+				if (file_exists(path)) {
+					alert('Directory is already exists' );
 					return;
 				}
 
-				 add_file(path + DIRECTORY_SEPARATOR, function () {
+				 add_file(path, function () {
 					 win && win.hide();
 					 self.emit("success.add.file");
 				 });
@@ -637,13 +675,18 @@ jui.defineUI("ui.filetree", [], function () {
 
 			function new_file(name, win) {
 
+                var path = rootPath + get_selected_directory_path() + DIRECTORY_SEPARATOR + name; 
+
+                /*
 				var item = get_selected_node();
+
 
 				if (item.type == 'file') {
 					var path = rootPath + item.parent + DIRECTORY_SEPARATOR + name;
 				} else {
 					var path = item.file + name;
 				}
+                */
 
 				if (file_exists(path)) {
 					alert('File is already exists' );

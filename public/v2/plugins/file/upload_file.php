@@ -44,23 +44,21 @@ $repo = new GitRepository($dir.$filepath);
 
 
 
-$total = count($_FILES['files']['tmp_name']);
 
 function file_numbering($name) {
 	$actual_name = pathinfo($name, PATHINFO_FILENAME);
 	$dir_name = pathinfo($name, PATHINFO_DIRNAME);
-	$original_name = $actual_name;
 	$extension = pathinfo($name, PATHINFO_EXTENSION);
-
+	$name = $original_name = $actual_name;
 	$i = 1;
-	while(file_exists($dirname.'/'.$actual_name.".".$extension))
+	while(file_exists($dir_name.'/'.$actual_name.".".$extension))
 	{           
-		$actual_name = (string)$original_name.$i;
+		$actual_name = (string)$original_name.'('.$i.')';
 		$name = $actual_name.".".$extension;
 		$i++;
 	}
 
-	return $dirname.'/'.$name;
+	return $dir_name.'/'.$name.".".$extension;
 }
 
 setlocale(LC_CTYPE, "ko_KR.UTF-8");
@@ -69,43 +67,74 @@ $repo->setConfigExt('core.quotepath false');
 
 
 $root = $repo->getRepositoryPath();
+
 $result = array();
 $file_list = array();
-for($i = 0; $i < $total; $i++) {
-	$name = $_FILES['files']['name'][$i];
-	$tmp_name = $_FILES['files']['tmp_name'][$i];
-	$error = $_FILES['files']['error'][$i];
 
-	
-	$filename = $root.'/'.$name;
-	$filename = file_numbering($filename);
-	$is_uploaded = false; 
+if ($_POST['url']) { // upload lin
 
-	if ($error == UPLOAD_ERR_OK) {
-		$is_uploaded = @move_uploaded_file($tmp_name, $filename);
+    $url = $_POST['url'];
+    $name = basename($url);       // link 의 마지막은 파일 이름이여야 함. 
+    $filename = $root.'/'.$name;
+    $filename = file_numbering($filename);
+    $is_uploaded = false; 
 
-		if($is_uploaded) {
-			$name = end(explode('/', $filename));
-			// git add 
-			$repo->setConfigExt('core.quotepath false');
-			$repo->addFile($name);
-            $file_list[] = $name; 
-			// 권한 넣기 
-			chmod($name, 0666);
-		} else {
+    file_put_contents($filename, file_get_contents($url));
+    $name = end(explode('/', $filename));
+    // git add 
+    $repo->addFile($name);
+    $file_list[] = $name; 
+    // 권한 넣기 
+    chmod($name, 0666);
 
-		}
-	}
-	
-	$result[$i] = array(
-		'name' => $name,
-		'uploaded' => $is_uploaded,
-		'error' => $error
-	);
+    $error = '';
+    $is_uploaded = true;
+    $result[] = array(
+        'name' => $name,
+        'uploaded' => $is_uploaded,
+        'error' => $error
+    );
+    $commitPostfix = " - ".$url;
+
+
+} else { // upload files 
+
+    $total = count($_FILES['files']['tmp_name']);
+    for($i = 0; $i < $total; $i++) {
+        $name = $_FILES['files']['name'][$i];
+        $tmp_name = $_FILES['files']['tmp_name'][$i];
+        $error = $_FILES['files']['error'][$i];
+
+        
+        $filename = $root.'/'.$name;
+        $filename = file_numbering($filename);
+        $is_uploaded = false; 
+
+        if ($error == UPLOAD_ERR_OK) {
+            $is_uploaded = move_uploaded_file($tmp_name, $filename);
+            if($is_uploaded) {
+                $name = end(explode('/', $filename));
+                // git add 
+                $repo->addFile($name);
+                $file_list[] = $name; 
+                // 권한 넣기 
+                chmod($name, 0666);
+            } else {
+                var_dump(error_get_last());
+            }
+        }
+        
+        $result[$i] = array(
+            'name' => $name,
+            'uploaded' => $is_uploaded,
+            'error' => $error
+        );
+
+    }
 
 }
 
-$repo->commit("upload ".implode(",", $file_list), "-a");
+$repo->commit("upload ".implode(",", $file_list)." ".$commitPostfix, "-a");
 
  die(json_encode(array('result'=> $result)));
 ?>

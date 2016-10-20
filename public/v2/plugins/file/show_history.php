@@ -51,7 +51,6 @@ if ($_POST['isFile'] == 'true') {
 }
 
 $arr = $repo->logs($search_file);
-
 $temp = array();
 foreach($arr as $text) {
 	$info = explode("||", $text);

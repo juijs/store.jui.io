@@ -1,5 +1,14 @@
+var fs = require('fs');
+
+var  key = fs.readFileSync('./ssl/privkey.pem');
+var cert = fs.readFileSync('./ssl/cert.pem');
+
+
 var app = require('express')();
-var http = require('http').Server(app);
+var http = require('https').Server({
+    key : key,
+    cert : cert
+}, app);
 var io = require('socket.io')(http);
 
 // presentation 

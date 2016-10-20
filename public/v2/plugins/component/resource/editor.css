@@ -37,3 +37,32 @@
 #tab_contents_1 {
 	overflow:hidden;
 }
+
+.preview-frame .iframe-layer {
+    position:absolute;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    top:0px;
+    display:block;
+}
+
+.preview-frame .log-view {
+    display:none;
+}
+
+.preview-frame.has-log .iframe-layer {
+    bottom:200px;
+}
+
+.preview-frame.has-log .log-view {
+    position:absolute;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    height:200px;
+    overflow:auto;
+    box-sizing:border-box;
+    border-top:1px solid #ececec;
+    display:block;
+}

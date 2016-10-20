@@ -18,10 +18,78 @@ footer {
     bottom: 0px;
 }
 
+.editor-content.has-select .editor-area{
+    bottom: 70px;;
+}
+
+.editor-media-tab {
+    position:absolute;
+    top:0px;
+    left:0px;
+    height:60px;
+    right:0px;
+    box-sizing:border-box;
+    border-bottom:1px solid #ececec;
+
+    display:none;
+}
+
+.editor-media-tab > a.tab {
+    display:inline-block;
+    height:100%;
+    width:70px;
+    margin:0px;
+    box-sizing:border-box;
+    border-right:1px solid #ececec;
+    padding:10px;
+    font-size:8px;
+    text-align:center;
+    text-decoration:none;
+    color:black;
+    cursor:pointer;
+}
+
+.editor-media-tab > a.tab i {
+    font-size:20px;
+    display:block;
+    text-align:center;
+    margin-bottom:5px;
+}
+
 .editor-left {
     width:auto;
     right:0px;
+    
 }
+
+.editor-container.my .editor-left {
+    top:60px;
+}
+
+.editor-container.my .editor-media-tab {
+    display:block;
+}
+
+
+.file-select {
+    display:none;
+}
+
+.editor-content.has-select .file-select {
+    position:absolute;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    height:70px;
+    border-top:0.5px solid #ececec;
+    box-sizing:border-box;
+    display:block;
+}
+
+.editor-content.has-select .editor-media-tab {
+}
+
+
 
 /* editor */ 
 
@@ -245,4 +313,66 @@ footer {
 
 .code-toolbar h1 {
     padding-left:4px;
+}
+
+.file-select .select-button-area {
+    position:absolute;
+    right:0px;
+    bottom:0px;
+    width:100px;
+    top:0px;
+    padding:10px;
+    box-sizing:border-box;
+}
+
+.file-select .select-button-area .select-send-btn {
+    position:absolute;
+    left:10px;
+    right:10px;
+    top:10px;
+    bottom:10px;
+    display:inline-block;
+    box-sizing:border-box;
+    padding:15px 15px;
+    text-align:center;
+    font-size:13px;
+}
+.file-select .file-list {
+    position:absolute;
+    right:100px;
+    left:0px;
+    top:0px;
+    bottom:0px;
+    overflow:auto;
+    box-sizing:border-box;
+    padding:10px;
+    font-size:12px;
+}
+
+.file-select .file-list a {
+    position:relative;
+    display:inline-block;
+    margin: 2px 5px;
+    border:1px solid #48cfad;
+    padding:5px 10px;
+    padding-right:24px;
+}
+
+
+.file-select .file-list a .delete-file {
+    position:absolute;
+    display:inline-block;
+    right:5px;
+    top:50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    color:white;
+    background-color:red;
+    border-radius:50%;
+    width:12px;
+    height:12px;
+    text-align:center;
+    vertical-align:middle;
+    cursor:pointer; 
+    
 }

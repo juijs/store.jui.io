@@ -1,7 +1,15 @@
 <?php 
 
+if ($_SERVER['HTTPS'] == 'on') {
+
 header("Location: /v2/");
+} else {
+header("Location: https://{$_SERVER['HTTP_HOST']}/v2/");
+
+
+}
 exit;
+
 $page_id = 'list';
 
 

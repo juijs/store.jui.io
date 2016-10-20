@@ -34,6 +34,7 @@ if ($is_dir) {
 	mkdir($filename, 0777, true);
 	$repo->setConfigExt('core.quotepath false');
 	$repo->addFile($filename);
+    
 	echo json_encode(array('result' => true, 'message' => 'directory is success'));
 	return; 
 } else {
@@ -52,7 +53,7 @@ if ($is_dir) {
 	$repo->addFile($filename);
 
 	// 권한 넣기 
-	chmod($filename, 0666);
+	chmod($filename, 0777);
 	echo json_encode(array('result' => true, 'message' => 'file is success'));
 	return; 
 

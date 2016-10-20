@@ -3,6 +3,7 @@
 <?php @include_once V2_PLUGIN."/code/ui.php" ?>
 <?php @include_once V2_PLUGIN."/code/settings.php" ?>
 <?php 
+
 $id = $_GET['id'];
 $dir = REPOSITORY.'/'.$id. '/';
 
@@ -12,46 +13,7 @@ $repo = new GitRepository($dir);
 $branches = $repo->getBranches();
 $current_branch = $repo->getCurrentBranchName();
 
-$branch_list = array();
-foreach($branches as $branch) {
-
-    if (strpos($branch, 'HEAD') !== false) {
-        continue;
-    }
-
-    if (strpos($branch, 'remotes/') !== false) {
-        $arr = explode("/", $branch);
-
-        $branch_type = array_shift($arr);
-        $origin = array_shift($arr);
-        $branch_name = implode("/", $arr);
-
-        $branch_list[] = array(
-            'value' => $branch_name,
-            'text' => $branch_name,
-            'type' => 'remote',
-            'origin' => $origin,
-            'selected' => ($branch_name == $current_branch)
-        );
-
-    }
-}
-
-if (sizeof ($branch_list) == 0) {
-    $branches = $repo->getLocalBranches();
-    $branch_list = array();
-    foreach($branches as $branch) {
-
-        $branch_list[] = array(
-            'value' => $branch,
-            'text' => $branch,
-            'type' => 'local',
-            'selected' => ($branch == $current_branch)
-        );
-    }
-   
-}
-
+var_dump($branches, $current_branch);
 
 ?>
 <script type="text/javascript">
@@ -91,8 +53,6 @@ $(function() {
 			val = val.replace('.color', '.css');
 		} else if (val.indexOf('.tex') > -1) {
             val = val.replace('.tex', '.stex');
-        } else if (val.indexOf('.ipynb') > -1) {
-            val = val.replace('.ipynb', '.json');
         }
 
 		if (m = /.+\.([^.]+)$/.exec(val)) {
@@ -117,25 +77,23 @@ $(function() {
 		}
 	}
 
-    window.change_branch = function change_branch(branch_name) {
-        $.post('<?php echo V2_PLUGIN_URL ?>/code/change_branch.php', { id : '<?php echo $_GET['id'] ?>', branch_name : branch_name }, function (res) {
-            if (res.result) {
-                alert('Checkout ' + branch_name + ' branch');
-                location.reload();
-            } else {
-                alert(res.message);
-            }
-        });
-    }
-
     window.branches  = jui.create('ui.select', '.branches', {
-            items : <?php echo json_encode($branch_list) ?> ,
+            items : [
+                { value : '', text : 'THEME' } ,
+                { value : 'jennifer', text : 'Jennifer' } ,
+                { value : 'dark', text : 'Dark' } ,
+                { value : 'pastel', text : 'Pastel' } ,
+                { value : 'pattern', text : 'Pattern' },
+                { value : 'gradient', text : 'Gradient' } 
+            ] ,
             event : {
                 change : function (value) {
+
                     change_branch(value);
                 }
             }
     });
+    branches.setValue('');
 
 	var auto_save_timer = null;
 	window.auto_save = function auto_save() {
@@ -150,11 +108,6 @@ $(function() {
 
 	window.save_current_code = function save_current_code( content, callback ) {
 		var file = baseCode.file;
-
-        
-        if (file.indexOf('.ipynb') > -1) {
-            return;
-        }
 
 		$.post('<?php echo V2_PLUGIN_URL ?>/code/save_code.php', { file : file, content : content || baseCode.getValue() }, function (res) {
 			if (callback) {
@@ -172,15 +125,7 @@ $(function() {
 		}
 
 		preview_timer = setTimeout(function() {
-
-            if (baseCode.file.indexOf('.ipynb') > -1) {
-
-			    $("iframe[name=chart_frame]").attr('src', 'https://store.jui.io:8888/notebooks' + baseCode.file);
-            } else {
-
-			    $("iframe[name=chart_frame]").attr('src', '/v2/code' + baseCode.file + '?t=' + (+new Date()));
-            }
-
+			$("iframe[name=chart_frame]").attr('src', '/v2/code' + baseCode.file + '?t=' + (+new Date()));
 		}, 1000);
 	}
 
@@ -212,42 +157,25 @@ $(function() {
 			load_type_tools();
 			//preview_code();			
 
-            fileSplitter.setShow(1);
 			previewSplitter.setHide(1);
 		} else {			// text editor 일 경우 
 			$(".code-content .editor").hide();
 			$(".image-editor-menu").hide();
 			$(".code-content .text-editor").show();
 			$(".editor-area.view-only").removeClass('no-preview');
+			$.post('<?php echo V2_PLUGIN_URL ?>/code/fileRead.php', { file : file } , function (res) {
+				baseCode.file = file;
+				baseCode.setValue(res.replace(/http\:\/\//g, '//'));
+				baseCode.refresh();
+				baseCode.focus();
 
+				load_type_tools();
+				update_file_name(relativePath);
 
-            if (file.indexOf('.ipynb') > -1) {
-
-                baseCode.file = file;
-                load_type_tools();
-                update_file_name(relativePath);
-
-               //change_edit_mode();
-               preview_code();
-               fileSplitter.setHide(1);
-
-            } else {
-
-                $.post('<?php echo V2_PLUGIN_URL ?>/code/fileRead.php', { file : file } , function (res) {
-                    baseCode.file = file;
-                    baseCode.setValue(res.replace(/http\:\/\//g, '//'));
-                    baseCode.refresh();
-                    baseCode.focus();
-
-                    load_type_tools();
-                    update_file_name(relativePath);
-
-                    change_edit_mode();
-                    preview_code();
-                });
-                fileSplitter.setShow(1);
-                previewSplitter.setShow(1);
-            }
+				change_edit_mode();
+				preview_code();
+			});
+			previewSplitter.setShow(1);
 		}
 
 	}
@@ -393,12 +321,6 @@ $(function() {
 				$("#name").val(data.name);
 				$("#description").val(data.description);
 				$("#license").val(data.license || "None");
-
-                if (data.support_notebook) {
-                    fileSplitter.setHide(1);
-                    previewSplitter.setInitSize(250);
-                    // 기본 preview size 설정 
-                }
 			});
 		} else {
 		}
@@ -491,11 +413,6 @@ $(function() {
 				}
 			});
 	 });
-
-    $(".notebook-btn").on('click', function () {
-        previewSplitter.setHide(0);
-		$("iframe[name=chart_frame]").attr('src', 'https://store.jui.io:8888/notebooks/<?php echo $_GET['id'] ?>/');
-    });
 <?php } ?>
 
 });

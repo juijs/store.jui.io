@@ -34,6 +34,7 @@ $document = array(
 	'name' => $_POST['name'],
 	'description' => $_POST['description'],
 	'license' => $_POST['license'],
+    'support_notebook' => $_POST['support_notebook'],
 	'update_time' => time()
 );
 
@@ -77,6 +78,7 @@ if ($result['ok']) {
 	
 	$dir = REPOSITORY.'/'.$id. '/';
 	mkdir($dir, 0777, true);
+    chmod($dir, 0777);
 
 
 	if ($_POST['init']) {
@@ -110,6 +112,7 @@ if ($result['ok']) {
 			// create a new file in repo
 			$filename = $repo->getRepositoryPath() . '/README.md';
 			file_put_contents($filename, "# Init Project");
+            chmod($filename, 0777);
 
 			// commit
 			$repo->addFile($filename);

@@ -16,10 +16,22 @@ define("INC", ABSPATH."/include");
 define("PLUGIN", ABSPATH."/plugins");
 define("PLUGIN_URL", "/plugins");
 
+$_protocol = $_SERVER['SERVER_PROTOCOL'];
+$_domain     = $_SERVER['HTTP_HOST'];
+$_protocol = $_SERVER['HTTPS'] == 'on' ? 'https' : 'http';
+
+//var_dump($_SERVER);
+define("IS_HTTPS", $_protocol == 'https');
+
+$url_root =  "//".$_domain;
+define("URL_ROOT", $url_root);
+
 define("V2", ROOT."/public/v2");
 define("V2_INC", ROOT."/public/v2/include");
+
+define("V2_URL", URL_ROOT."/v2");
 define("V2_PLUGIN", ROOT."/public/v2/plugins");
-define("V2_PLUGIN_URL", "/v2/plugins");
+define("V2_PLUGIN_URL", V2_URL."/plugins");
 
 require_once ROOT."/vendor/autoload.php";
 
@@ -94,4 +106,18 @@ function CssPreprocessor($content, $type) {
 }
 
 $detect = new Mobile_Detect;
+
+require_once ROOT."/mime_types.php";
+function get_mime_type($file) {
+
+    global $mime_types;
+
+    $ext = end(explode('.', $file));
+
+    if(array_key_exists($ext, $mime_types)){ 
+            return $mime_types[$ext][0]; 
+    }else { 
+            return 'application/octet-stream'; 
+    }
+}
 ?>

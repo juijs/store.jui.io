@@ -19,8 +19,10 @@ if ($_GET['id'] && ($data['login_type'] != $_SESSION['login_type'] || $data['use
 
 $type = $_GET['type']; // plugin name
 
-if ($data['type']) { 
+if ($data['type'] && $data['type'] != 'remotes') { 
 	$type = $data['type'];
+} else {
+    //$type = 'code';
 }
 
 if (!$type) $type = 'page'; 
@@ -79,7 +81,7 @@ body { overflow: hidden; }
 					<?php } ?>			
 
 				<?php if ($isMy) { ?>
-				<a class="button active" onclick="savecode()" title="Save"><i class="icon-clip"></i> SAVE</a>
+				<a class="button active" onclick="savecode()" title="Save"><i class="icon-clip"></i> SAVE <?php echo ($type == 'code') ? 'Project Info' : '' ?></a>
 				<?php if ($_GET['id']) { ?>
 				<a class="button danger  active" onclick="deletecode()"><i class="icon-trashcan"></i> DELETE</a>
 				<?php } ?>

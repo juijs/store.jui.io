@@ -16,6 +16,14 @@ $(function() {
 		filetree.action_new_folder();
 	});
 
+	$(".add-camera-btn").on('click', function () {
+		filetree.action_camera();
+	});
+
+	$(".add-url-btn").on('click', function () {
+		filetree.action_upload_link();
+	});
+
 	$(".file-name").on("click", function () {
 		if (baseCode.file) {
 			window.open('/v2/file' + baseCode.file, 'file-' + baseCode.file);
@@ -226,10 +234,26 @@ $(function() {
 			},
 			event : {
 				'load.file' : function (file, relativePath) {
-						show_editor(file, relativePath);	
+						show_editor(file, relativePath);
+                        
+                        add_selected_file(file, relativePath);	
 				}
 			}
 	  });
+
+    window.add_selected_file = function (file, name) {
+        if (window.isFileSelect) {
+            var $a = $("<a >").html(name).attr('rel', file);
+            $a.append('<small class="delete-file">x</small>');
+            
+            
+            var $file_list  = $(".file-select .file-list");
+
+            if (!$file_list.find("[rel='"+file+"']").length) {
+                $file_list.append($a);
+            }
+        }       
+    }
 
 	window.imageeditor = jui.create('ui.imageeditor', '.image-editor', {
 		saveCallback  : function (data, file) {
@@ -305,6 +329,39 @@ $(function() {
         }
     });
 <?php } ?>
+    
+    // select mode 
+
+    if ('true' == '<?php echo $_GET['select'] ?>') {
+        window.isFileSelect = true; 
+        $(".editor-content").addClass('has-select');
+        $('.file-list').on('click', '.delete-file', function (e) {
+            var $a = $(this).closest('a[rel]');
+            $a.remove();
+        });
+        $(".select-send-btn").on("click" ,function () {
+            var file_list = $(".file-list").children().map(function() {
+                return '//store.jui.io/v2/file' + $(this).attr('rel');
+            }).toArray();
+
+            var win = window.containerWindow || window.opener|| window.parent || window.top;
+
+            if (win) {
+                win.postMessage(JSON.stringify({ method : 'store.file.select',  items : file_list }), "*");
+            } else {
+                console.log('window is not exists');
+            } 
+        });
+        
+        window.addEventListener('message', function (event) {
+            var data = JSON.parse(event.data);
+            if (data.method == 'store.file.ready') {
+                // 메세지 소스 윈도우를 미리 저장한다. 
+                window.containerWindow = event.source;
+            }
+        }, false);
+    }
+
 
 });
 </script>

@@ -40,6 +40,12 @@ A repository contains all the files for your project, including the revision his
 			</div>
 
 		</div>
+		<div class="form-group">
+			<div class="item">
+				<label ><input type="checkbox" name="support_notebook" value="notebook"/> Support NoteBook</label>
+			</div>
+
+		</div>
 
 		<hr />
 		<div class="form-group">

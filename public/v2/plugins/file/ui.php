@@ -112,6 +112,58 @@
 </div>
 
 
+<div id="camera-win" class='window' style='display:none'>
+    <div class="head">
+        <div class="left">Capture a camera</div>
+        <div class="right">
+            <a href="#" class="close"><i class="icon-exit"></i></a>
+        </div>
+    </div>
+	<div class="body" style="padding:10px;">
+		<div style="position:relative;width:100%;height:100%">
+				<div class="video-layer">
+					<video style="width:100%;height:300px"></video>
+				</div>
+                <div class="capture-type" style="text-align:center">
+                    <label><input type="radio" name="capture-type" value='image' /> image</label>
+                    <label><input type="radio" name="capture-type" value='video' /> video(record mp4)</label>
+                </div>
+                <div class="capture-buttons" style="text-align:center">
+                    <a class="button button-common capture-btn">Capture</a>
+                </div>
+                <div class="capture-list">
+
+                </div>
+		</div>
+	</div>
+	<div class="foot" style="text-align:right;padding:15px;box-sizing:border-box;">
+		<a href="#" class="button close">Close</a>
+		<a href="#" class="button active apply">Apply</a>
+	</div>
+</div>
+<div id="link-upload-win" class='window' style='display:none'>
+    <div class="head">
+        <div class="left">Upload url as file </div>
+        <div class="right">
+            <a href="#" class="close"><i class="icon-exit"></i></a>
+        </div>
+    </div>
+	<div class="body" style="padding:10px;">
+		<div style="position:relative;width:100%;height:100%">
+                <div class="upload-info">
+                    <label>URL </label>
+                    <input type="text" class="input upload-url" placeholder="Type here" />
+                </div>
+		</div>
+	</div>
+	<div class="foot" style="text-align:right;padding:15px;box-sizing:border-box;">
+		<a href="#" class="button close">Close</a>
+		<a href="#" class="button active apply">Apply</a>
+	</div>
+</div>
+
+
+
 <!-- Style -->
 <style type="text/css">
 
@@ -176,7 +228,7 @@ jui.defineUI("ui.filetree", [], function () {
 			var action;
 			var $el;
 			var $contextMenu;
-			var newFolderWin, newFileWin,newBlobWin, moveToWin;
+			var newFolderWin, newFileWin,newBlobWin, moveToWin,cameraWin, linkUploadWin;
 			var DIRECTORY_SEPARATOR = '/';
             var _blob;
 
@@ -362,7 +414,7 @@ jui.defineUI("ui.filetree", [], function () {
 			}
 
 			function loadTree(dontTraverse) { 
-				$el.data('fileTree', null).empty().off('filetreeinitiated filetreeclicked filetreeexpanded filetreecollapsed');
+				$el.data('fileTree', null).empty().off('click filetreeinitiated filetreeclicked filetreeexpanded filetreecollapsed');
 				
 						 
 				$el.on('filetreeclicked', function(e, data) {
@@ -435,7 +487,7 @@ jui.defineUI("ui.filetree", [], function () {
 						$a.click();
 						selected_tree_file = null; 
 					} else {
-						loadTree();
+						loadTree(true);
 						selected_tree_file = null;
 					}
 				} else {
@@ -460,6 +512,92 @@ jui.defineUI("ui.filetree", [], function () {
 				self.emit("load.file", [ file, file.replace(rootPath + '/', '') ]);
 			}
 
+            function dataURItoBlob(dataURI) {
+                // convert base64/URLEncoded data component to raw binary data held in a string
+                var byteString;
+                if (dataURI.split(',')[0].indexOf('base64') >= 0)
+                    byteString = atob(dataURI.split(',')[1]);
+                else
+                    byteString = unescape(dataURI.split(',')[1]);
+
+                // separate out the mime component
+                var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+                // write the bytes of the string to a typed array
+                var ia = new Uint8Array(byteString.length);
+                for (var i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+
+                return new Blob([ia], {type:mimeString});
+            }
+
+            function upload_captures( callback) {
+                var files = $(cameraWin.root).find(".capture-list img").map(function(i) {
+                    var name = 'capture-'+i+'-' + get_time_string() + '.png';
+
+                    var blob = dataURItoBlob($(this).attr('src'));
+                    blob.name = name ;
+
+                    return blob;
+                }).toArray();
+
+                console.log(files);
+
+                upload_files(files, callback);
+            }
+
+            function upload_link (url, callback) {
+
+                if (url.indexOf('http') == -1) {
+                    callback();
+                    return;
+                }
+
+
+
+				var item = get_selected_node();
+
+				var data = new FormData();
+				data.append("id", rootId);
+
+				if (item.type == 'file') {
+					var path = rootPath + item.parent + DIRECTORY_SEPARATOR;
+				} else {
+					var path = item.file + DIRECTORY_SEPARATOR;
+				}
+
+				data.append("filepath", path);
+
+                data.append('url', url);
+
+				 $.ajax({
+					url: action.uploadFile,
+					type: 'post',
+					data: data,
+					dataType: 'json',
+					cache: false,
+					contentType: false,
+					processData: false,
+					complete: function() {
+						console.log('complete');
+					},
+					success: function(data) {
+						
+                       callback && callback();
+						if (data.result) {
+							traverse();
+						} else {
+							alert(data.message);
+						}
+					},
+					error: function() {
+					  // Log the error, show an alert, whatever works for you
+                       callback && callback();
+					}
+				  });
+		    }
+
 			function upload_files (files, callback) {
 
 				var item = get_selected_node();
@@ -478,6 +616,7 @@ jui.defineUI("ui.filetree", [], function () {
 				for(var i = 0, len = files.length; i < len; i++) {
 					var file = files[i];
 					data.append("files[]", file, file.name);
+                    console.log(file.name);
 				}
 
 				 $.ajax({
@@ -506,6 +645,22 @@ jui.defineUI("ui.filetree", [], function () {
 					}
 				  });
 		  }
+
+            function get_usermedia (callback) {
+               navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+                var constraints = {video: true};
+
+                function successCallback(localMediaStream) {
+                   callback( { result : true, stream : localMediaStream });
+                }
+
+                function errorCallback(error){
+                    callback( { result : false, message : 'navigator.getUserMedia error ' + error.message } )
+                }
+
+                navigator.getUserMedia(constraints, successCallback, errorCallback); 
+            }
 
 
 
@@ -564,6 +719,24 @@ jui.defineUI("ui.filetree", [], function () {
 					delete_file(item.file, item.$li);
 				}
 			}
+
+            this.action_camera = function () {
+                hide_menu();
+
+                get_usermedia(function (ret) { 
+                    if (ret.result) {
+                        cameraWin.stream = ret.stream; 
+                        cameraWin.show();
+                    } else {
+                        alert(ret.message);
+                        cameraWin.hide();
+                    }
+                });
+            }
+            this.action_upload_link = function () {
+                hide_menu();
+                linkUploadWin.show();
+            }
 
 			this.initWindow = function () {
 
@@ -639,11 +812,53 @@ jui.defineUI("ui.filetree", [], function () {
 					}
 				});
 
-				$([newFolderWin.root, newFileWin.root, newBlobWin.root, moveToWin.root]).on('click', '.close', function () {
+                cameraWin = jui.create("ui.window", "#camera-win", {
+					width : 700,
+					height : 500,
+					modal : true,
+					event : {
+                        show: function () {
+
+                            $(this.root).find(".capture-list").empty();
+                            $(this.root).find("[name='capture-type']:first").attr('checked', true);
+                            // capture start
+                            var video = $(this.root).find('video')[0];
+                            video.src =window.URL.createObjectURL(this.stream);
+                            video.play();
+                             
+                        },
+						apply : function() {
+                            upload_captures(function () {
+							    cameraWin.hide();
+                            });
+						}
+					}
+				});
+
+                linkUploadWin = jui.create("ui.window", "#link-upload-win", {
+					width : 500,
+					height : 400,
+					modal : true,
+					event : {
+                        show: function () {
+                            $(this.root).find(".upload-url").val('');
+
+                        },
+						apply : function() {
+
+                            upload_link($(this.root).find('.upload-url').val(), function() {
+                                linkUploadWin.hide();
+                            });
+						}
+					}
+				});
+
+
+				$([newFolderWin.root, newFileWin.root, newBlobWin.root, moveToWin.root, cameraWin.root, linkUploadWin.root]).on('click', '.close', function () {
 					$(this).closest('.window')[0].jui.hide();
 				});
 
-				$([newFolderWin.root, newFileWin.root, newBlobWin.root, moveToWin.root]).on('click', '.apply', function () {
+				$([newFolderWin.root, newFileWin.root, newBlobWin.root, moveToWin.root, cameraWin.root, linkUploadWin.root]).on('click', '.apply', function () {
 					var win = $(this).closest('.window')[0].jui;
 					win.emit('apply');
 				});
@@ -660,6 +875,24 @@ jui.defineUI("ui.filetree", [], function () {
                     
                     var url = window.webkitURL || window.URL;
                     url.revokeObjectURL($(this).attr('src'));
+                });
+
+                $(cameraWin.root).find(".capture-btn").on('click', function () {
+                    var canvas = document.createElement('canvas');
+                    var context = canvas.getContext('2d');
+
+                    var video = $(cameraWin.root).find('video')[0];
+
+                    canvas.width = $(video).width();
+                    canvas.height = $(video).height();
+                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    context.scale(-1,1); //flip the image horizontally
+                    var img = $("<img />").attr('src', canvas.toDataURL()).css({
+                        width: 50,
+                        height: 50 
+                    });
+
+                    $(cameraWin.root).find('.capture-list').append(img);
                 });
 			}
 

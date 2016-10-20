@@ -227,7 +227,7 @@
 
 .property-item input[type=text]{
     width: 100%;
-    max-width:400px;
+    max-width:300px;
     border: 0px;
 	height:30px;
 	outline:none;
@@ -460,10 +460,14 @@ jui.defineUI("ui.select", ['jquery', 'util.base'], function ($, _) {
 				}
 
 				this.initSelect();
-				this.update(items);
-				this.setSelectedIndex(this.options.selectedIndex);
-
 				this.initEvent();
+
+				this.update(items);
+
+                if (this.options.selectedIndex > -1)  {
+				    this.setSelectedIndex(this.options.selectedIndex);
+                }
+
 			}
 
 			this.initEvent = function () {
@@ -596,12 +600,18 @@ jui.defineUI("ui.select", ['jquery', 'util.base'], function ($, _) {
 			this.update = function (data) {
 				items = _.clone(data);
 
+                var selectedIndex = 0;
+
 				for(var i = 0, len = items.length; i < len; i++) {
 					var it = items[i];
 
 					if (typeof it == 'string') {
 						items[i] = { text : it , value : it } 
 					}
+
+                    if (it.selected) {
+                        selectedIndex = i; 
+                    }
 				}
 
 				this.render();
@@ -612,7 +622,7 @@ jui.defineUI("ui.select", ['jquery', 'util.base'], function ($, _) {
 	SelectView.setup = function () {
 		return {
 			items : [],
-			selectedIndex : 0,
+			selectedIndex : -1,
 			align: 'left'
 		}
 	}
@@ -770,7 +780,7 @@ jui.defineUI("ui.property", ['jquery', 'util.base'], function ($, _) {
 			var $dom = $("<div class='property-item' />").attr('data-index', index);
 
 			if (item.type == 'group') {
-				$dom.addClass('property-header-item collapsed');
+				$dom.addClass('property-header-item expanded');
 				$dom.attr('id', 'property-header-item-' + index);
 				$dom.data('item', item);
 				var $name = $("<div class='property-header' />").html(item.title).css({
@@ -783,14 +793,14 @@ jui.defineUI("ui.property", ['jquery', 'util.base'], function ($, _) {
 				    $name.append("<small class='description'>"+item.description+"</small>");
 				}
 
-				$name.append("<a class='expand-btn'><img src='/v2/images/main/plus.svg' /></a>");
+				$name.append("<a class='expand-btn'><img src='/v2/images/main/minus.svg' /></a>");
 
 				$dom.on('click', function (e) {
 					if ($(this).hasClass('collapsed')) {
 						self.expanded($dom.attr('id'));
 					} else {
 						self.collapsed($dom.attr('id'));
-					}
+					$}
 				});
 
 				$dom.append($name);
@@ -802,14 +812,15 @@ jui.defineUI("ui.property", ['jquery', 'util.base'], function ($, _) {
 					$dom.addClass('multi');
 				}
 
-				$dom.attr('data-key', item.key).hide();	
+				$dom.attr('data-key', item.key);//.hide();	
 
 				var $name = $("<div class='property-title'  />").html(item.title);
 				var $input = $("<div class='property-render'  />");
-				$input.append(
-					$("<div class='item' />").html( this.render($dom, item) ) );
 
+                var $renderedInput =   this.render($dom, item) ;
+				$input.append( $("<div class='item' />").html($renderedInput) );
 
+                
 				if (item.description)
 				{
 					$input.append("<div class='description' >"+item.description+"</div>");
@@ -970,23 +981,35 @@ jui.defineUI("ui.property", ['jquery', 'util.base'], function ($, _) {
 		}		
 
 		renderer.text = function ($dom, item) {
-			var $input = $("<input type='text' />").css({
+			var $text = $("<input type='text' />").css({
 				width: '100%'	
 			}).attr({
 				placeholder : 'Type here'
 			});
-			$input.val(item.value);
+			$text.val(item.value);
 
-			
-
-			$input.on('input', debounce(function () {
+			$text.on('input', debounce(function () {
 				var value = $(this).val();
 				value = (_.typeCheck('array', item.value)) ? renderer.str2array(value) : value; 
 
-				self.refreshValue($(this).closest('.property-item'), value);
-			}, 250, $input));
+				self.refreshValue($dom, value);
+			}, 250, $text));
 
-			return $input; 
+            var $media = [];
+            if (item.media) {
+                $media = $("<a class='icon-plus add-media-btn' />").css({ cursor : 'pointer' });
+
+                $media.on('click', function () {
+                    media_open({
+                        multi : false                             
+                    }, function(file) { 
+                        var value = file.join(",");
+                        $text.val(value).trigger('input');
+                    }); 
+                });
+            }
+
+			return $([$text[0], $media[0]]); 
 		}
 
 		renderer.textarea = function ($dom, item) {
@@ -1160,7 +1183,8 @@ jui.defineUI("ui.property", ['jquery', 'util.base'], function ($, _) {
 
 			$input.on('click', function(e) {
 
-				if ($(e.target).hasClass('none-color')) {
+                    console.log(e);
+				if ($(e.target).closest('.none-color').length) {
 					e.preventDefault();
 
 					$colorPanel.css('background-color', '');

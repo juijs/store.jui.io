@@ -512,5 +512,31 @@ $(function() {
 		window[splitterName].toggle(index);
 	});
 
+    //
+    //  media_open(function (files) {
+    //    console.log(files);
+    //  });
+    //
+    //
+    window.media_open = function (property, callback) {
+        property = property || { multi : true };
+        var id = '<?php echo $_GET['id'] ?>';
+        var url = '<?php echo V2_URL ?>/media.php?id='+id+'&select=true&multi=' + property.multi;
+        var popup = window.open(url, 'store-media-' +id, 'width=500,height=500,resizable=no');
+
+        var store_selected_file_list = function (event) {
+            var data = JSON.parse(event.data);
+
+            if (data.method == 'store.file.select' && typeof callback == 'function') {
+                callback(data.items);
+            }
+        
+            popup.close();
+            window.removeEventListener('message', store_selected_file_list, false);
+        }
+        popup.postMessage(JSON.stringify({ method : 'store.file.ready'}), "*");
+        window.addEventListener('message', store_selected_file_list, false);
+    }
+
 });
 </script>

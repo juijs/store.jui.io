@@ -2,6 +2,8 @@
 
 include_once '../../bootstrap.php';
 include_once 'common.php';
+
+use Cz\Git\GitRepository;
 // connect
 $m = new MongoClient();
 
@@ -63,12 +65,26 @@ body { overflow: hidden; }
 </head>
 <body class="jui flat">
 <div class="<?php echo $type ?>-editor editor-container view-all <?php echo $isMy ? 'my' : '' ?>">
-<div class="editor-content">
+    <div class="editor-content">
 		<div class="editor-area view-only">
+            <div class="editor-media-tab">
+                <a class='tab add-directory-btn'><i class='icon-add-dir'></i> +Folder</a>
+                <a class='tab add-file-btn'><i class='icon-report'></i> +File</a>
+                <?php if (IS_HTTPS) { ?><a class='tab add-camera-btn'><i class='icon-screenshot'></i> Camera</a><?php } ?>
+                <a class='tab add-url-btn'><i class='icon-clip'></i> URL</a>
+                <!-- social media upload -->
+            </div>
 			<div class="editor-left">
 				<?php include_once V2_PLUGIN."/$type/editor.php" ?>
 			</div>
 		</div>
+        <div class='file-select'>
+            <div class='file-list'>
+            </div>
+            <div class='select-button-area'>
+                <a class='button select-send-btn'>Select</a>
+            </div>
+        </div>    
 	</div>
 </div>
 <?php @include_once V2_PLUGIN."/$type/script.php" ?>

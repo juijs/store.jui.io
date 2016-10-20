@@ -1,3 +1,5 @@
+php_value max_execution_time 6000
+
 <IfModule mod_gzip.c>
 mod_gzip_on Yes
 mod_gzip_dechunk Yes
@@ -14,6 +16,7 @@ RewriteEngine On
 
 ErrorDocument 404 /404.php
 
-RewriteRule ^file/(.*)$ file.php?name=$1
+RewriteRule ^v2/file/(.*)$ /v2/plugins/file/fileRead.php?file=$1 [QSA,L]
 RewriteRule ^v2/code/(.*)$ /v2/plugins/code/fileRead.php?preprocessor=true&file=$1 [QSA,L]
+#RewriteRule ^file/(.*)$ file.php?name=$1
 </IfModule>
