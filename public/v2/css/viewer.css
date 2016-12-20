@@ -1,5 +1,10 @@
+body {
+	
+}
+
 .editor-container {
-	top:0px;
+	top:0px !important;
+	padding-top:0px;
 }
 
 .editor-toolbar {

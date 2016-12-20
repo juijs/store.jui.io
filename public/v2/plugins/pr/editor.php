@@ -25,15 +25,35 @@
 							<div class="slider-title">
 								<ul id="tab_slide_settings" class="tab bottom">
 									<li class="active"><a href="#slider-description">CONTENT</a></li>
-									<li class="active"><a href="#slider-notes">NOTE</a></li>
+									<li><a href="#slider-styles">STYLE</a></li>
+									<li><a href="#slider-notes">NOTE</a></li>
 									<li><a href="#slider-settings">OPTIONS</a></li>
 								</ul>
 							</div>
 							
-							<div class="slider-content">
-								<div id="slider-description"><textarea id="slide_code"></textarea></div>
-								<div id="slider-notes"><textarea id="slide_note"></textarea></div>
-								<div id="slider-settings"></div>
+							<div class="slider-content full-layout">
+								<div id="slider-description" class="has-help">
+									<div class="help">Markdown 으로 Presentation 내용일 입력하실 수 있습니다. 컨텐츠가 변경되면 Preview 화면으로 바로 보실 수 있습니다.</div>
+									<div class='content'>
+										<textarea id="slide_code"></textarea>
+									</div>
+								</div>
+								<div id="slider-styles" class="has-help">
+									<div class="help">하나의 Slider 를 CSS 를 사용해서 다른 Slider 에 상관없이 마음껏 꾸밀 수 있습니다.</div>
+									<div class='content'>
+										<textarea id="slide_style"></textarea>
+									</div>
+								</div>
+								<div id="slider-notes" class="has-help">
+									<div class="help">발표하실 때 필요한 노트는 여기다 적어주세요. Markdown 형태로 하시면 됩니다.</div>
+									<div class='content'>
+										<textarea id="slide_note"></textarea>
+									</div>
+								</div>
+								<div id="slider-settings">
+								
+								</div>
+
 							</div>
 						</div>
 

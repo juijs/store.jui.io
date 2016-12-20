@@ -28,6 +28,19 @@ $page_id = 'dashboard';
 	
 	<link href="/v2/css/<?php echo $theme ?>.css" rel="stylesheet" />
 	<link href="/v2/css/<?php echo $theme?>-responsive.css" rel="stylesheet" />
+    <script type="text/javascript">
+    window.deletecode = function deletecode (id) {
+		if (confirm("Delete this component?\r\ngood count is also deleted.")) {
+			$.post("/delete.php", { id : id  }, function(res) {
+				if (res.result) {
+                    location.reload();
+				} else {
+					alert(res.message ? res.message : 'Failed to delete');
+				}
+			});
+		}
+	}
+    </script>
 
 </head>
 <body class="jui flat">

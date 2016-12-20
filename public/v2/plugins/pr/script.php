@@ -14,6 +14,15 @@ $(function() {
 		  "Ctrl-R":  function () {  coderun(); }
 	  }
 	});
+	var slideStyle = window.slideCode = CodeMirror.fromTextArea($("#slide_style")[0], {
+	  mode:  "css",
+	  lineNumbers : true,
+	  extraKeys: {
+		  "Ctrl-S":  function () {  savecode(); },
+		  "Ctrl-R":  function () {  coderun(); }
+	  }
+	});
+
 	var slideNote = window.slideNote = CodeMirror.fromTextArea($("#slide_note")[0], {
 	  mode:  "markdown",
 	  lineNumbers : true,
@@ -35,6 +44,12 @@ $(function() {
 		
 	});
 
+    slideStyle.on('keyup', function () {
+		if (window.isSelectedSlide)	{
+			window.isSelectedSlide = false; 
+		}
+	});
+
     slideNote.on('keyup', function () {
 		if (window.isSelectedSlide)
 		{
@@ -42,17 +57,37 @@ $(function() {
 		}
 	});
 
+	// change event settings 
 	slideCode.on('change', function () {
 		get_item().data('content', slideCode.getValue());
-		if (!window.isSelectedSlide) {
-			coderun();
-		}
+		if (!window.isSelectedSlide) { coderun(); }
 	  })
 
 	slideNote.on('change', function () {
 		get_item().data('note', slideNote.getValue());
 		if (!window.isSelectedSlide) coderun();
+	})
+
+	slideStyle.on('change', function () {
+		get_item().data('style', slideStyle.getValue());
+		if (!window.isSelectedSlide) coderun();
+	})
+
+	// paste event settings 
+	slideCode.on('paste', function () {
+		get_item().data('content', slideCode.getValue());
+		if (!window.isSelectedSlide) { coderun(); }
 	  })
+
+	slideNote.on('paste', function () {
+		get_item().data('note', slideNote.getValue());
+		if (!window.isSelectedSlide) coderun();
+	})
+
+	slideStyle.on('paste', function () {
+		get_item().data('style', slideStyle.getValue());
+		if (!window.isSelectedSlide) coderun();
+	})
 
     jui.create('ui.tab', '#tab_slide_settings', {
 		target: ".slider-content",
@@ -60,6 +95,8 @@ $(function() {
 			change : function (obj) {
 				if (obj.text == 'NOTE') {
 					slideNote.refresh();
+				} else if (obj.text == 'STYLE') {
+					slideStyle.refresh();
 				} else {
 					slideCode.refresh();
 				}
@@ -182,6 +219,7 @@ $(function() {
 			name : obj.name || 'new slider',
 			content: content,
 			note : obj.note || '', 
+			style: obj.style || '',
 			secondary : obj.secondary || false,
 			settings : obj.settings || sliderSettings.getDefaultValue()   // slider 기본 설정 추가 
 		}).html(get_first_line(content));
@@ -285,33 +323,14 @@ $(function() {
 
 	function refresh_content(data) {
 		var $selected = get_item();
-		slideCode.setValue($selected.data('content') + "");
-		slideNote.setValue($selected.data('note') + "");
+		slideCode.setValue($selected.data('content') || "");
+		slideNote.setValue($selected.data('note') || "");
+		slideStyle.setValue($selected.data('style') ||  "");
 
         var settings = $selected.data('settings');
 		sliderSettings.initValue(settings);
         
 	}
-
-	window.code_name_list = {
-		// html 
-		"markdown": "Markdown",
-		"html": "HTML",
-		"haml": "Haml",
-		"jade": "Jade",
-
-		// script 
-		"javascript": "Javascript",
-		"coffeescript": "Coffescript",
-		"typescript": "Typescript",
-
-		// css 
-		"css": "CSS",
-		"stylus": "stylus",
-		"less": "LESS",
-		"scss": "SCSS"
-
-	};
 
 	window.slide_coderun_timer = null;
 	window.coderun = function coderun () {

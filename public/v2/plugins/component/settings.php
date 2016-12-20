@@ -56,6 +56,8 @@ $(function() {
 		var javascript = arr[1];
 		var css = arr[2];
 
+		console.log(html);
+
 		$("#module_convert [value=js]").html(code_name_list[javascript]);
 		$("#module_convert [value=html]").html(code_name_list[html]);
 		$("#module_convert [value=css]").html(code_name_list[css]);

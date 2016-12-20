@@ -41,22 +41,8 @@ if ($page_id == 'editor') {
 
 	$metaList[] = 	'<link href="/bower_components/codemirror/lib/codemirror.css" rel="stylesheet" />';
 	$metaList[] = 	'<script type="text/javascript" src="/bower_components/codemirror/lib/codemirror.js"></script>';
-	$metaList[] = 	'<script src="/bower_components/codemirror/mode/coffeescript/coffeescript.js"></script>';
-	$metaList[] = 	'<script src="/bower_components/codemirror/mode/javascript/javascript.js"></script>';
-	$metaList[] = 	'<script src="/bower_components/codemirror/mode/htmlmixed/htmlmixed.js"></script>';
 	$metaList[] = 	'<script src="/bower_components/codemirror/mode/markdown/markdown.js"></script>';
-	$metaList[] = 	'<script src="/bower_components/codemirror/mode/jade/jade.js"></script>';
-	$metaList[] = 	'<script src="/bower_components/codemirror/mode/haml/haml.js"></script>';
-	$metaList[] = 	'<script src="/bower_components/codemirror/mode/xml/xml.js"></script>';
 	$metaList[] = 	'<script src="/bower_components/codemirror/mode/css/css.js"></script>';
-	$metaList[] = 	'<script src="/bower_components/codemirror/mode/sass/sass.js"></script>';
-	$metaList[] = 	'<script src="/bower_components/codemirror/mode/stylus/stylus.js"></script>';
-
-	$metaList[] = 	'<script src="/bower_components/codemirror/addon/dialog/dialog.js"></script>';
-	$metaList[] = 	'<script src="/bower_components/codemirror/addon/search/search.js"></script>';
-	$metaList[] = 	'<script src="/bower_components/codemirror/addon/search/searchcursor.js"></script>';
-
-	$metaList[] = 	'<link href="/bower_components/codemirror/addon/dialog/dialog.css" rel="stylesheet" />';
 	$metaList[] = 	'	<script src="/bower_components/html.sortable/dist/html.sortable.js"></script>';
 
 }

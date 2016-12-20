@@ -765,7 +765,7 @@ jui.defineUI("ui.property", ['jquery', 'util.base'], function ($, _) {
 			var $dom  = $root.find('#' + id);
 			$dom.removeClass('collapsed').addClass('expanded');
 
-			$dom.find('.expand-btn img').attr('src', '/v2/images/main/minus.svg');
+			$dom.find('.expand-btn img').attr('src', '/v2/images/main/plus.svg');
 
 			var $next = $dom.next();
 

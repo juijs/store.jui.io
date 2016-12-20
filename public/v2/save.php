@@ -76,6 +76,10 @@ if ($_POST['id']) {
 		'userid' => $_SESSION['userid']
 	), array('$set' => $document), array('upsert' => true) );
 
+    $result = array(
+        'ok' => !!$result
+    );
+
 	// rev 번호 얻어오기 
 	// rev 번호, component_id 추가 해서 현재 document 복사 
 	// 새로운 rev 번호 추가 
@@ -117,7 +121,7 @@ if ($result['ok']) {
 
 	// auto created sample image 
 	$root = getcwd();
-	shell_exec(escapeshellcmd("webshot --window-size=800/600 --render-delay=500 {$thumbnail_url} {$thumbnail_path}"));
+	shell_exec(escapeshellcmd("webshot --window-size=800/600 --render-delay=500 --timeout=3000 {$thumbnail_url} {$thumbnail_path}"));
 
 	echo json_encode(array('id' => $id, 'result' => true));
 	// create static file 

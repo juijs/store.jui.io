@@ -60,15 +60,15 @@ $meta = implode(PHP_EOL, $metaList);
 }
 .lint-error {font-family: arial; font-size: 70%; background: #ffa; color: #a00; padding: 2px 5px 3px; }
 .lint-error-icon {color: white; background-color: red; font-weight: bold; border-radius: 50%; padding: 0 3px; margin-right: 7px;}
-body { overflow: hidden; }
+body { overflow: hidden;  }
 </style>
 
 </head>
 <body class="jui flat">
 
 <div class="<?php echo $type ?>-editor editor-container view-all <?php echo $isMy ? 'my' : '' ?>">
-<div class="editor-content has-toolbar">
-		<div class="editor-toolbar">
+<div class="editor-content">
+		<div class="editor-toolbar" style="display:none">
 			<div style="float:left;padding:10px" class="editor-left-toolbar">
 				<?php include_once V2_PLUGIN."/$type/toolbar-left.php" ?>
 			</div>
@@ -102,6 +102,9 @@ $(function () {
 		}
 
 	});
+
+	// viewer 는 기본적으로 preview 를 먼저 보여준다. 
+	window.previewSplitter.toggle(0);
 
 });
 

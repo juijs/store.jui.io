@@ -57,9 +57,6 @@ if (sizeof ($branch_list) == 0) {
 <script type="text/javascript">
 $(function() {
 
-
-	var ExternalItemTemplate = window.ExternalItemTemplate = '<span title="drag me for ordering" class="handle" draggable="true"><i class="icon-dashboardlist"></i></span><input type="text" placeholder="//myhost.com/my.js" class="input" /><a class="btn small"><i class="icon-exit"></i></a>';
-
 	var baseCode = window.baseCode = CodeMirror.fromTextArea($("#base_code")[0], {
 	  lineNumbers : true
 	});

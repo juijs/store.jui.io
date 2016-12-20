@@ -2,7 +2,7 @@
 
 	<div class="editor-tool">
 		<ul class="tab top" id="module_convert" style="margin:0px;float:left;padding-left: 19px;">
-			<li class="active"><a href="#"  value="component"><i class="icon-home"></i> Module</a></li>
+			<li class="active"><a href="#"  value="component">Module</a></li>
 			<li><a href="#" value="html">HTML</a></li>
 			<li><a href="#" value="js">Javascript</a></li>
 			<li><a href="#" value="css">CSS</a></li>

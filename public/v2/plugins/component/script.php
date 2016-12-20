@@ -136,38 +136,49 @@ $(function() {
 	<?php include_once INC."/error.view.php" ?>
 
 <?php if ($isMy && !$is_viewer) {?>
+    window.saveTimer = null; 
 	window.savecode = function savecode() {
 
-		$(".blockUI").show();
 
-		var data = {
-			type : 'component',
-			id : '<?php echo $_GET['id'] ?>',
-            access : $("[name=access]:checked").val(),
-			title : $("#title").val(),
-			name : $.trim($("#name").val()),
-			description : $("#description").val(),
-			license : $("#license").val(),
-			component_code : componentCode.getValue(),
-			sample_code : sampleCode.getValue(),
-			html_code : htmlCode.getValue(),
-			css_code : cssCode.getValue(),
-			sample : $("#sample").val(),
-			resources : getResourceList(),
-			preprocessor : getPreProcessorList()
-		}
+        if (window.saveTimer) {
+            clearTimeout(window.saveTimer);
+        }
 
-		$.post("/v2/save.php", data, function(res) {
-			$(".blockUI").hide();
+        window.saveTimer = setTimeout(function ()  { 
 
-			if (res.result)
-			{
-				//location.href = '?id=' + res.id; 	
-                coderun();
-			} else {
-				alert(res.message ? res.message : 'Failed to save');
-			}
-		});
+            show_loading("Saving...");
+
+            var data = {
+                type : 'component',
+                id : '<?php echo $_GET['id'] ?>',
+                access : $("[name=access]:checked").val(),
+                title : $("#title").val(),
+                name : $.trim($("#name").val()),
+                description : $("#description").val(),
+                license : $("#license").val(),
+                component_code : componentCode.getValue(),
+                sample_code : sampleCode.getValue(),
+                html_code : htmlCode.getValue(),
+                css_code : cssCode.getValue(),
+                sample : $("#sample").val(),
+                resources : getResourceList(),
+                preprocessor : getPreProcessorList()
+            }
+
+            $.post("/v2/save.php", data, function(res) {
+                hide_loading();
+
+                if (res.result)
+                {
+                    //location.href = '?id=' + res.id; 	
+                    coderun();
+                } else {
+                    alert(res.message ? res.message : 'Failed to save');
+                }
+            });
+
+
+        }, 300);
 	}
 
 	window.deletecode = function deletecode () {

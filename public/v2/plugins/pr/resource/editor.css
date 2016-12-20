@@ -371,3 +371,64 @@
 .pr-settings svg {
 	vertical-align:middle;
 }
+
+.slider-content .has-help > .help {
+	position:absolute;
+	top:0px;
+	left:0px;
+	right:0px;
+	height:30px;
+	font-size:12px;
+	padding:5px 10px; 
+	box-sizing:border-box;
+	background-color:rgb(246, 246, 246);
+    border-bottom: 1px solid rgb(228, 228, 228);
+}
+
+.slider-content .has-help > .content {
+	position:absolute;
+	top:30px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+	box-sizing:border-box;
+}
+
+.full-layout .slider-title {
+	display:none;
+}
+
+.full-layout .slider-content {
+	bottom:0px;
+}
+
+
+.full-layout .slider-content > div {
+	position:absolute;
+	width:50%;
+	height:50%;
+	display:block !important;
+}
+
+.full-layout .slider-content > div#slider-description {
+	left:0px;
+	top:0px;
+}
+
+.full-layout .slider-content > div#slider-styles {
+	left:0px;
+	top:50%;
+}
+
+.full-layout .slider-content > div#slider-notes {
+	left:50%;
+	top:0px;
+}
+
+.full-layout .slider-content > div#slider-settings {
+	left:50%;
+	top:50%;
+	box-sizing:border-box;
+	border-left:1px solid #ececec;
+	border-top:1px solid #ececec;
+}

@@ -351,7 +351,8 @@ if ($data) {
 		$("body").removeClass('open-fullscreen');
 	}
 
-	window.deletecode = function deletecode (id) {
+	
+    window.deletecode = function deletecode (id) {
 		if (confirm("Delete this component?\r\ngood count is also deleted.")) {
 			$.post("/delete.php", { id : id  }, function(res) {
 				if (res.result) {
@@ -362,7 +363,6 @@ if ($data) {
 			});
 		}
 	}
-
 
 
 	</script>

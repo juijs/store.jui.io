@@ -63,6 +63,7 @@ $meta = implode(PHP_EOL, $metaList);
 
 foreach($items as $index => $it) {
 
+	$uniq_id = uniqid();
 
 	$attrs = array();
 	foreach($it->settings as $key => $value) {
@@ -79,11 +80,15 @@ foreach($items as $index => $it) {
 	}
 
 ?>
-	<section  <?php echo $attr_string ?>><?php echo HtmlPreprocessor($it->content, 'markdown');?>
+	<section  <?php echo $attr_string ?> section-index="<?php echo $uniq_id ?>"><?php echo HtmlPreprocessor($it->content, 'markdown');?>
 	
 		<?php if ($it->note) { ?> 
 		<aside class="notes"><?php echo HtmlPreprocessor($it->note, 'markdown');?></aside>
 		<?php } ?>
+		<?php if ($it->style) { ?> 
+		<style type="text/css"><?php echo CssPreprocessor("[section-index='$uniq_id'] { ".$it->style." }", 'less');?></style>
+		<?php } ?>
+
 	</section>
 
 <?php 

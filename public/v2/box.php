@@ -19,11 +19,6 @@ $share_text = urlencode($description)." #store #jui #js" ;
 $share_url = urlencode(V2_URL."/view.php?id=".$id);
 $embed_url = V2_URL."/embed.php?id=".$id;
 $thumbnail_url = V2_URL."/thumbnail.php?id=".$id;
-
-$clipPath[] = array(
-	'id' => $id, 
-	'text' => $data['title']
-);
 ?>
 <a class="summary-box " data-id="<?php echo $id ?>" href="/v2/view.php?id=<?php echo $id ?>" >
 	<div class="summary-image" style="background-image:url(<?php echo $thumbnail_url ?>)"> 	</div>
@@ -38,7 +33,6 @@ $clipPath[] = array(
 					<span class="view-link">				
 						<?php if ($data['access'] == 'public') { ?>
 						<span class="good_btn" href="javascript:void(good('<?php echo $id?>'))"><?php //echo get_svg_image('loveit') ?></span><span id="good_count_<?php echo $id?>" class="good-icon"><span class="good" ><?php echo get_svg_image('loveit-2') ?></span> <?php echo $data['good'] ? $data['good'] : 0 ?></span>
-						
 						<?php } ?>
 						
 					</span>
@@ -51,3 +45,4 @@ $clipPath[] = array(
 		<span class="user-link"><img src="<?php echo $avatar ?>" width="16" height="16" class='avatar' align='absmiddle'/>&nbsp;<?php echo $data['username'] ?></span>
 	</div>
 </a>
+<?php if ($isMy) { ?> <div class='delete-btn' onclick='deletecode("<?php echo $id ?>")' style='vertical-align:middle;cursor:pointer;'><i class='icon-exit'></i></div><?php } ?>

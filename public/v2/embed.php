@@ -38,3 +38,4 @@ if (!$row['type']) $row['type'] = 'component';
 include_once V2_PLUGIN."/{$row['type']}/embed.php";
 
 ?>
+<!-- store v2 -->
