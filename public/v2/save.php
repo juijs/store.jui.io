@@ -112,17 +112,25 @@ if ($_POST['id']) {
 	);
 }
 
+//use Screen\Capture;
+
 if ($result['ok']) {
 	$id = $_POST['id'] ? $_POST['id'] : (string)$document['_id'];
-	
 
-	$thumbnail_url = $url_root."/v2/embed.php?id={$id}&only=true";
+	$thumbnail_url = $url_root."/v2/embed.php?id={$id}";
 	$thumbnail_path = ABSPATH."/thumbnail/{$id}.png";
+
+/*
+    $screenCapture = new Capture($thumbnail_url);
+    $screenCapture->setWidth(800);
+    $screenCapture->setHeight(600);
+    $screenCapture->setImageType('png');
+    $screenCapture->save($thumbnail_path);	
+*/
 
 	// auto created sample image 
 	$root = getcwd();
-	shell_exec(escapeshellcmd("webshot --window-size=800/600 --render-delay=500 --timeout=3000 {$thumbnail_url} {$thumbnail_path}"));
-
+	shell_exec(escapeshellcmd("webshot --window-size=800/600 --render-delay=2000 --timeout=5000 --p:ignore-ssl-errors=true {$thumbnail_url} {$thumbnail_path}"));
 	echo json_encode(array('id' => $id, 'result' => true));
 	// create static file 
 	$data = $document;

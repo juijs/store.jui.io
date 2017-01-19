@@ -17,22 +17,22 @@ $metaList[] =<<<EOD
 	<!-- Facebook -->
 	<meta property="og:title" content="{$title}"/>
 	<meta property="og:type" content="article"/>
-	<meta property="og:url" content="//store.jui.io/view.php?id={$id}"/>
+	<meta property="og:url" content="https://store.jui.io/view.php?id={$id}"/>
 	<meta property="og:description" content="{$description}"/>
-	<meta property="og:image" content="//store.jui.io/thumbnail.php?id={$id}"/>
+	<meta property="og:image" content="https://store.jui.io/thumbnail.php?id={$id}"/>
 
 	<!-- Twitter -->
 	<meta name="twitter:card"           content="summary_large_image">
 	<meta name="twitter:title"          content="{$title}">
 	<meta name="twitter:site"           content="@easylogic">
 	<meta name="twitter:creator"        content="@{$username}">
-	<meta name="twitter:image"          content="//store.jui.io/thumbnail.php?id={$id}">
+	<meta name="twitter:image"          content="https://store.jui.io/thumbnail.php?id={$id}">
 	<meta name="twitter:description"    content="{$description}">
 	 
 	<!-- Google -->
 	<meta itemprop="name" content="{$title}">
 	<meta itemprop="description" content="{$description}">
-	<meta itemprop="image" content="//store.jui.io/thumbnail.php?id={$id}">
+	<meta itemprop="image" content="https://store.jui.io/thumbnail.php?id={$id}">
 EOD;
 
 $meta = implode(PHP_EOL, $metaList);
@@ -43,14 +43,14 @@ $meta = implode(PHP_EOL, $metaList);
 <head>
 	<meta charset="utf-8" />
 	<title><?php echo $data['title'] ?></title>
-	<link rel="stylesheet" href="//store.jui.io/bower_components/reveal.js/css/reveal.css" />
-	<link rel="stylesheet" href="//store.jui.io/bower_components/reveal.js/css/theme/<?php echo $pr_obj->theme ?>.css" />
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow-night.min.css">
-	<script src="//store.jui.io/bower_components/reveal.js/lib/js/head.min.js" type="text/javascript"></script>
-	<script src="//store.jui.io/bower_components/reveal.js/js/reveal.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="https://store.jui.io/bower_components/reveal.js/css/reveal.css" />
+	<link rel="stylesheet" href="https://store.jui.io/bower_components/reveal.js/css/theme/<?php echo $pr_obj->theme ?>.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow-night.min.css">
+	<script src="https://store.jui.io/bower_components/reveal.js/lib/js/head.min.js" type="text/javascript"></script>
+	<script src="https://store.jui.io/bower_components/reveal.js/js/reveal.js" type="text/javascript"></script>
 
 	<?php if (isset($_GET['print-pdf'])) { ?>
-	<link rel="stylesheet" href="//store.jui.io/bower_components/reveal.js/css/print/pdf.css" />
+	<link rel="stylesheet" href="https://store.jui.io/bower_components/reveal.js/css/print/pdf.css" />
 	<?php } ?>
 	<?php echo $meta ?>	
 </head>
@@ -109,7 +109,7 @@ var init_settings = <?php echo $pr_settings ?>;
 init_settings.dependencies = [
     // Syntax highlight for <code> elements
 	{ 
-		src: '//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js', async: true, callback: function() { 
+		src: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js', async: true, callback: function() { 
 			hljs.initHighlightingOnLoad();
 		}
 	}

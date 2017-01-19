@@ -19,7 +19,7 @@ $support_file_type = array(
 
 	// special extention 
 	'isbn',
-    'ipynb',
+    //'ipynb',
 	'qrcode',
 	'barcode',
 	'color',
@@ -51,6 +51,14 @@ function is_image_type($filename) {
 	$ext = get_ext($filename);
 
 	$is_image = ($ext == 'gif' || $ext == 'jpg' || $ext == 'png' || $ext == 'bmp');
+
+	return $is_image;
+}
+
+function is_preprocess_type($filename) {
+	$ext = get_ext($filename);
+
+	$is_image = ($ext == 'md' || $ext == 'markdown' || $ext == 'qrcode' || $ext == 'color');
 
 	return $is_image;
 }

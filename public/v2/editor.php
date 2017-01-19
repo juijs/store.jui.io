@@ -40,17 +40,17 @@ $type_image = get_svg_image($type_list[$type]['img']);
 <meta charset="UTF-8">
 <!-- <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"> -->
 <title>JENNIFER UI: Store</title>
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="<?php echo URL_ROOT ?>/favicon.ico" type="image/x-icon">
+<link rel="icon" href="<?php echo URL_ROOT ?>/favicon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-<script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo URL_ROOT ?>/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
-<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="<?php echo V2_URL ?>/js/main.js"></script>
 <?php echo $meta ?>
-<link href="css/flat.css" rel="stylesheet" />
-<link href="css/flat-responsive.css" rel="stylesheet" />
-<link href="css/edit.css" rel="stylesheet" />
-<link href="css/edit-responsive.css" rel="stylesheet" />
+<link href="<?php echo V2_URL ?>/css/flat.css" rel="stylesheet" />
+<link href="<?php echo V2_URL ?>/css/flat-responsive.css" rel="stylesheet" />
+<link href="<?php echo V2_URL ?>/css/edit.css" rel="stylesheet" />
+<link href="<?php echo V2_URL ?>/css/edit-responsive.css" rel="stylesheet" />
 <link href="<?php echo V2_PLUGIN_URL ?>/<?php echo $type ?>/resource/editor.css" rel="stylesheet" />
 <style type="text/css">
 .CodeMirror {

@@ -1,7 +1,7 @@
 <header>
 	<div  class="nav-wrap">
 		<span class="logo-link">
-				<a class="logo" href="/v2/"><img src="images/storeJUI-logo.svg" width="52px" height="52px" align="absmiddle"></a>
+				<a class="logo" href="/v2/"><img src="<?php echo V2_URL ?>/images/storeJUI-logo.svg" width="52px" height="52px" align="absmiddle"></a>
 		</span>
 
 		<span class="gallery">store</span>

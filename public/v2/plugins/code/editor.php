@@ -3,7 +3,7 @@
 		<div class="file-container">
 			<div class="file-toolbar">
 				<?php if ($isMy && !$is_viewer) { ?>
-		        <span class='branch-title'>Branch :</span><div class="branches select"></div>		
+		        <span class='branch-title' title="click if you need to update remote git">Branch :</span><div class="branches select"></div>		
 				<div class="buttons">
 					<a class="add-directory-btn" title="add folder"  ><i class="icon-add-dir"></i> FOLDER</a>
 					&nbsp;&nbsp;&nbsp;

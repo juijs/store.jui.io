@@ -116,7 +116,7 @@ if ($result['ok']) {
 		$v2_path = "v2/";
 	}
 
-	$thumbnail_url = "http://{$_SERVER['HTTP_HOST']}/{$v2_path}embed.php?id={$id}&only=true";
+	$thumbnail_url = "https://{$_SERVER['HTTP_HOST']}/{$v2_path}embed.php?id={$id}&only=true";
 	$thumbnail_path = "{$root}/thumbnail/{$id}.png";
 
 	// auto created sample image 

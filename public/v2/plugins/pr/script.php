@@ -136,7 +136,7 @@ $(function() {
 			{ type : 'checkbox', title : 'Mouse Wheel', key : 'mouseWheel' , value : false, description : 'Enable slide navigation via mouse wheel' },
 			{ type : 'checkbox', title : 'Hide Address Bar', key : 'hideAddressBar' , value : true, description : '' },
 			{ type : 'checkbox', title : 'Preview Links', key : 'previewLinks' , value : false, description : '' },
-			{ type : 'select', title : 'Transition style', key : 'transition' , value : 'default', items : ['default', 'none', 'fade', 'slide', 'convex', 'concave', 'zoom' ] },
+			{ type : 'select', title : 'Transition style', key : 'transition' , value : 'default', items : ['default', 'none', 'fade', 'slide', 'convex', 'concave', 'zoom', 'fade-in slide-out', 'slide-in fade-out' ] },
 			{ type : 'select', title : 'Transition Speed', key : 'transitionSpeed' , value : 'default', items : ['default', 'fast', 'slow' ] },
 			{ type : 'select', title : 'Background Transition', key : 'backgroundTransition' , value : 'default', description : 'Transition style for full page slide backgrounds',  items : ['default', 'none', 'fade', 'slide', 'convex', 'concave', 'zoom' ] },
 			{ type : 'number', title : 'View Distance', key : 'viewDistance' , value : 3, description : 'Number of slides away from the current that are visible' },
@@ -170,7 +170,7 @@ $(function() {
 			{ title : 'Background Iframe', key : 'background-iframe', value : '', description : 'Embeds a web page as a background. Note that since the iframe is in the background layer, behind your slides, it is not possible to interact with the embedded page.' },
 			{ type : 'select', title : 'Background Transition', key : 'background-transition' , value : 'default', description : 'Transition style for full page slide backgrounds',  items : ['default', 'none', 'fade', 'slide', 'convex', 'concave', 'zoom' ] },
 			{ type : 'group', title : 'Transition' }, 
-			{ title : 'Transition Type', key : 'transition', value : 'slide-in fade-out', description : 'The global presentation transition is set using the transition config value. You can override the global transition for a specific slide by using the data-transition attribute:' },
+			{ type : 'select', title : 'Transition style', key : 'transition' , value : 'default', items : ['default', 'none', 'fade', 'slide', 'convex', 'concave', 'zoom', 'fade-in slide-out', 'slide-in fade-out'] , description : 'You can override the global transition for a specific slide' },
 			{ type : 'select', title : 'Transition Speed', key : 'transition-speed', value: 'fast', description : 'Choose from three transition speeds: default, fast or slow!', items : [ 'default', 'fast', 'slow' ] }
 		],
 		event : {
@@ -428,7 +428,7 @@ $(function() {
 
 			if (res.result)
 			{
-				location.href = '?id=' + res.id; 	
+				//location.href = '?id=' + res.id; 	
 			} else {
 				alert(res.message ? res.message : 'Failed to save');
 			}

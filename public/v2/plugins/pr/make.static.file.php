@@ -18,22 +18,22 @@ $metaList[] =<<<EOD
 	<!-- Facebook -->
 	<meta property="og:title" content="{$title}"/>
 	<meta property="og:type" content="article"/>
-	<meta property="og:url" content="//store.jui.io/view.php?id={$id}"/>
+	<meta property="og:url" content="https://store.jui.io/view.php?id={$id}"/>
 	<meta property="og:description" content="{$description}"/>
-	<meta property="og:image" content="//store.jui.io/thumbnail.php?id={$id}"/>
+	<meta property="og:image" content="https://store.jui.io/thumbnail.php?id={$id}"/>
 
 	<!-- Twitter -->
 	<meta name="twitter:card"           content="summary_large_image">
 	<meta name="twitter:title"          content="{$title}">
 	<meta name="twitter:site"           content="@easylogic">
 	<meta name="twitter:creator"        content="@{$username}">
-	<meta name="twitter:image"          content="//store.jui.io/thumbnail.php?id={$id}">
+	<meta name="twitter:image"          content="https://store.jui.io/thumbnail.php?id={$id}">
 	<meta name="twitter:description"    content="{$description}">
 	 
 	<!-- Google -->
 	<meta itemprop="name" content="{$title}">
 	<meta itemprop="description" content="{$description}">
-	<meta itemprop="image" content="//store.jui.io/thumbnail.php?id={$id}">
+	<meta itemprop="image" content="https://store.jui.io/thumbnail.php?id={$id}">
 EOD;
 
 $meta = implode(PHP_EOL, $metaList);
@@ -45,9 +45,9 @@ $meta = implode(PHP_EOL, $metaList);
 	<meta charset="utf-8" />
 	<title><?php echo $data['title'] ?></title>
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
-	<link rel="stylesheet" href="//store.jui.io/bower_components/reveal.js/css/reveal.css" />
-	<link rel="stylesheet" href="//store.jui.io/bower_components/reveal.js/css/theme/<?php echo $pr_obj->theme ?>.css" />
-	<script src="//store.jui.io/bower_components/reveal.js/js/reveal.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="https://store.jui.io/bower_components/reveal.js/css/reveal.css" />
+	<link rel="stylesheet" href="https://store.jui.io/bower_components/reveal.js/css/theme/<?php echo $pr_obj->theme ?>.css" />
+	<script src="https://store.jui.io/bower_components/reveal.js/js/reveal.js" type="text/javascript"></script>
 	<?php echo $meta ?>	
 </head>
 <body>

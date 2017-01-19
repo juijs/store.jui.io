@@ -57,6 +57,7 @@
 		$share_text = urlencode($description)." #store #jui #js" ;
 		$share_url = urlencode($url_root."/v2/view.php?id=".$id);
 		$embed_url = $url_root."/v2/viewer.php?id=".$id;
+		$only_view_url = $url_root."/v2/embed.php?id=".$id;
 		$thumbnail_url = $url_root."/v2/thumbnail.php?id=".$id;
 ?>
 
@@ -78,13 +79,22 @@
 						<div style="margin-top:5px"><input type='text' value='<?php echo urldecode($share_url) ?>' readonly /> </div>
 					</div>
 					<div class="embed-link">
-						<label>Embed Link</label>
+						<label>Preview Link</label>
+						<div style='margin-top:5px;'><input type='text' value='<?php echo $only_view_url ?>' readonly/> </div>
+					</div>
+					<div class="embed-link">
+						<label>Preview Frame</label>
+						<div style='margin-top:5px;'><textarea readonly><iframe src="<?php echo $only_view_url ?>" style="border:1px solid #ececec;width:100%;height:400px;" allowfullscreen="true"></iframe></textarea> </div>
+					</div>
+					<div class="embed-link">
+						<label>Code + Preview Link</label>
 						<div style='margin-top:5px;'><input type='text' value='<?php echo $embed_url ?>' readonly/> </div>
 					</div>
 					<div class="embed-link">
-						<label>Embed Frame</label>
+						<label>Code + Preview Frame</label>
 						<div style='margin-top:5px;'><textarea readonly><iframe src="<?php echo $embed_url ?>" style="border:1px solid #ececec;width:100%;height:400px;" allowfullscreen="true"></iframe></textarea> </div>
 					</div>
+
 				</div>
 
 

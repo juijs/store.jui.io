@@ -41,7 +41,7 @@ if (($row['access'] == 'private') && !$isMy) {
 }
 
 if ($row == null) {
-	echo "<script>alert('This page is not exists.'); location.href = '/v2/'; </script>";
+	//echo "<script>alert('This page is not exists.'); location.href = '/v2/'; </script>";
 	exit;
 }
 
@@ -115,16 +115,16 @@ if ($data) {
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
 <title>JENNIFER UI: Store</title>
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" href="<?php echo URL_ROOT ?>/favicon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-<script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo URL_ROOT ?>/bower_components/jquery/dist/jquery.min.js"></script>
 
 <?php echo $meta ?>
 
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
-<script type="text/javascript" src="js/main.js"></script>
-<link href="/v2/css/<?php echo $theme ?>.css" rel="stylesheet" />
-<link href="/v2/css/<?php echo $theme ?>-responsive.css" rel="stylesheet" />
+<script type="text/javascript" src="<?php echo V2_URL ?>/js/main.js"></script>
+<link href="<?php echo V2_URL ?>/css/<?php echo $theme ?>.css" rel="stylesheet" />
+<link href="<?php echo V2_URL ?>/css/<?php echo $theme ?>-responsive.css" rel="stylesheet" />
 
 </head>
 <body class="jui flat">
@@ -145,7 +145,7 @@ if ($data) {
 				$embed_url = "embed.php?id=".$id."&only=result";
 
 										// generate static file 
-				$static_file = "/static/".$id."/embed.html";
+				$static_file = URL_ROOT."/static/".$id."/embed.html";
 
 				if (file_exists(ABSPATH.$static_file)) {
 					//$embed_url = $static_file;

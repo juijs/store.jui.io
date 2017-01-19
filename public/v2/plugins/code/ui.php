@@ -1063,6 +1063,7 @@ jui.defineUI("ui.imageeditor", [], function () {
 	padding-left: 40px;
 	padding-bottom:20px;
 	margin-bottom:15px;
+    position: relative;
 }
 
 .commit-list:before {

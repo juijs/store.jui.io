@@ -114,6 +114,15 @@ $(function() {
 		}
 	}
 
+    window.update_branch = function update_branch() {
+
+		show_loading("Updating codes...");
+        $.post('<?php echo V2_PLUGIN_URL ?>/code/update_branch.php', { id : '<?php echo $_GET['id'] ?>' }, function (res) {
+            alert('Updated codes');
+            location.reload();
+        });
+    }
+
     window.change_branch = function change_branch(branch_name) {
         $.post('<?php echo V2_PLUGIN_URL ?>/code/change_branch.php', { id : '<?php echo $_GET['id'] ?>', branch_name : branch_name }, function (res) {
             if (res.result) {
@@ -201,6 +210,7 @@ $(function() {
 			$(".image-editor-menu").show();
 			$(".editor-area.view-only").addClass('no-preview');
 			baseCode.file = file;
+            baseCode.relativePath = relativePath;
 			imageeditor.setImage('/v2/code' + file);
 			imageeditor.render();
 
@@ -217,34 +227,21 @@ $(function() {
 			$(".code-content .text-editor").show();
 			$(".editor-area.view-only").removeClass('no-preview');
 
-
-            if (file.indexOf('.ipynb') > -1) {
-
+            $.post('<?php echo V2_PLUGIN_URL ?>/code/fileRead.php', { file : file } , function (res) {
                 baseCode.file = file;
+                baseCode.relativePath = relativePath;
+                baseCode.setValue(res.replace(/http\:\/\//g, '//'));
+                baseCode.refresh();
+                baseCode.focus();
+
                 load_type_tools();
                 update_file_name(relativePath);
 
-               //change_edit_mode();
-               preview_code();
-               fileSplitter.setHide(1);
-
-            } else {
-
-                $.post('<?php echo V2_PLUGIN_URL ?>/code/fileRead.php', { file : file } , function (res) {
-                    baseCode.file = file;
-                    baseCode.setValue(res.replace(/http\:\/\//g, '//'));
-                    baseCode.refresh();
-                    baseCode.focus();
-
-                    load_type_tools();
-                    update_file_name(relativePath);
-
-                    change_edit_mode();
-                    preview_code();
-                });
-                fileSplitter.setShow(1);
-                previewSplitter.setShow(1);
-            }
+                change_edit_mode();
+                preview_code();
+            });
+            fileSplitter.setShow(1);
+            previewSplitter.setShow(1);
 		}
 
 	}
@@ -263,7 +260,12 @@ $(function() {
 
 			if (item == 'sample') {
 				temp.push($("<a class='sample-download'><i class='icon-download download-sample'></i> Sample Code</a>")[0]);
-			}
+			} else if (item == 'gist') { 
+				temp.push($("<a class='store-gist'><i class='icon-link'></i></a>")[0]);
+				temp.push($("<input type='text' class='gist-input' value='<script src=\"http://store.jui.io/v2/gist"+baseCode.file+"\" > <\/script>'>").hide()[0]);
+			} else if (item == 'startpage') {
+                temp.push($("<a class='startpage'><i class='icon-checkbox'></i> Start Page</a>")[0]);
+            }
 		}
 
 		return temp;
@@ -274,18 +276,28 @@ $(function() {
 
 		var ext = baseCode.file.split(".").pop();
 
+		var list = ['gist', 'startpage'];
+
 		switch(ext) {
 		//	case 'ts': return ['sample'];  
 		}
 
-		return []
+		return list
 	}
 
-	$(".file-type-tools").on("click", "a", function () {
+	$(".file-type-tools").on("click", "a", function (e) {
+
+		e.preventDefault();
+
 		var $it = $(this);
 
 		if ($it.hasClass('sample-download')) {
 			sample_download();
+		} else if ($it.hasClass('store-gist')) {
+			store_gist();
+        } else if ($it.hasClass('startpage')) {
+            set_start_page();
+    
 		}
 	});
 
@@ -296,6 +308,14 @@ $(function() {
 			console.log(list);
 		});
 	}
+
+	window.store_gist = function () {
+        $(".gist-input").toggle();
+	}
+
+    window.set_start_page = function () {
+        savecode(baseCode.relativePath);
+    }
 
 	/*
 	window.loadFile = function loadFile(file) {
@@ -337,8 +357,12 @@ $(function() {
 	};
 
 <?php if ($isMy && !$is_viewer) { ?>
-	window.savecode = function savecode() {
 
+    $('.branch-title').on('click', function () {
+        update_branch();
+    });
+
+	window.savecode = function savecode(start_page) {
 		show_loading("Saving...");
 		
 		var data = {
@@ -348,7 +372,8 @@ $(function() {
 			title : $("#title").val(),
 			name : $.trim($("#name").val()),
 			description : $("#description").val(),
-			license : $("#license").val()
+			license : $("#license").val(),
+            start_page : start_page || ''
 		}
 
 		$.post("/v2/save.php", data, function(res) {
@@ -356,7 +381,7 @@ $(function() {
 
 			if (res.result)
 			{
-				location.href = '?id=' + res.id; 	
+				//location.href = '?id=' + res.id; 	
 			} else {
 				alert(res.message ? res.message : 'Failed to save');
 			}
@@ -371,8 +396,8 @@ $(function() {
 			if (res.result)
 			{
 				// 커밋하면 새로고침한다. 
-				location.reload();
-				//close_commit_modal();
+				//location.reload();
+				close_commit_modal();
 			} else {
 				alert(res.message);
 			}

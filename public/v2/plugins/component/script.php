@@ -55,7 +55,7 @@ $(function() {
 			$parent.addClass('active');
 
 			localStorage.setItem("module_convert", value);
-
+            $('.gist-input').val('<script src="https://store.jui.io/v2/gist/<?php echo $_GET['id'] ?>/'+value+'"><\/script>');
 			for (var i = 0, len = editor_list.length; i < len ; i++ )
 			{
 				var editor = editor_list[i];
