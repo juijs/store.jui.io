@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.23.0/codemirror.css" />
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.23.0/codemirror.js" ></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.23.0/mode/css/css.js" ></script>
+    <link rel="stylesheet" href="../addon/colorpicker/colorpicker.css" />    
+    <script type="text/javascript" src="../addon/colorpicker/colorview.js" ></script>
+    <script type="text/javascript" src="../addon/colorpicker/colorpicker.js" ></script>
+
+</head>
+<body>
+
+
+<script type="text/javascript">
+    var cm = CodeMirror(document.body, {
+        lineNumbers: true, 
+        mode : "css",
+        colorpicker : {
+            mode : 'edit'
+        }
+    });
+
+    cm.setValue('#aaa');
+</script>
+</body>
+
+</html>

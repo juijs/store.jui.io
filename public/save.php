@@ -120,9 +120,9 @@ if ($result['ok']) {
 	$thumbnail_path = "{$root}/thumbnail/{$id}.png";
 
 	// auto created sample image 
-	$root = getcwd();
+/*	$root = getcwd();
 	shell_exec(escapeshellcmd("webshot --window-size=800/600 {$thumbnail_url} {$thumbnail_path}"));
-
+*/
 	echo json_encode(array('id' => $id, 'result' => true));
 	// create static file 
 	$data = $document;

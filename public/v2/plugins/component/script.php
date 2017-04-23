@@ -55,7 +55,7 @@ $(function() {
 			$parent.addClass('active');
 
 			localStorage.setItem("module_convert", value);
-            $('.gist-input').val('<script src="https://store.jui.io/v2/gist/<?php echo $_GET['id'] ?>/'+value+'"><\/script>');
+            $('.gist-input').val('<script src="<?php echo V2_URL ?>/gist/<?php echo $_GET['id'] ?>/'+value+'"><\/script>');
 			for (var i = 0, len = editor_list.length; i < len ; i++ )
 			{
 				var editor = editor_list[i];
@@ -170,8 +170,13 @@ $(function() {
 
                 if (res.result)
                 {
-                    //location.href = '?id=' + res.id; 	
-                    coderun();
+					if (location.href.indexOf('id=') > -1)
+					{
+		                coderun();
+					} else {
+	                    location.href = '?id=' + res.id; 	
+					}
+
                 } else {
                     alert(res.message ? res.message : 'Failed to save');
                 }
@@ -192,7 +197,14 @@ $(function() {
 			});
 		}
 	}
+<?php } else { ?>
+	window.savecode = function savecode() {
+
+		coderun();
+	}
 <?php } ?>
+
+
 	window.setSampleImage = function setSampleImage(img) {
 		$("#sample").val(img)
 	}
@@ -211,6 +223,12 @@ $(function() {
 				sampleCode.setValue(data.sample_code || "");
 				htmlCode.setValue(data.html_code || "");
 				cssCode.setValue(data.css_code || "");
+
+				componentCode.clearHistory();
+				sampleCode.clearHistory();
+				htmlCode.clearHistory();
+				cssCode.clearHistory();
+
 				setResourceList(data.resources);
 				setPreProcessorList(data.preprocessor);
 				coderun();

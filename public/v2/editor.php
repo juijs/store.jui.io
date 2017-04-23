@@ -47,6 +47,7 @@ $type_image = get_svg_image($type_list[$type]['img']);
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script type="text/javascript" src="<?php echo V2_URL ?>/js/main.js"></script>
 <?php echo $meta ?>
+<script type="text/javascript" src="<?php echo V2_URL ?>/js/editor.js"></script>
 <link href="<?php echo V2_URL ?>/css/flat.css" rel="stylesheet" />
 <link href="<?php echo V2_URL ?>/css/flat-responsive.css" rel="stylesheet" />
 <link href="<?php echo V2_URL ?>/css/edit.css" rel="stylesheet" />

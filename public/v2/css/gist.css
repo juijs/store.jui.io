@@ -1,0 +1,7 @@
+.store-code {  border:1px solid #ececec;border-radius:5px;margin-bottom:10px; }
+.store-code > .content { padding: 0.5em; }
+.store-code > pre.code { margin:0px;  } 
+.store-code > pre.code > code {   background-color:transparent; font-family:Menlo, Monaco, Consolas, monospace; line-height:1.5; font-size:12px; }
+.store-code > img { max-width: 100%; }
+.store-code > .store-meta {  padding:10px; color:#767676;background-color:#f7f7f7;border-top:1px solid #ececec;  overflow: hidden;    font-size: 12px; font-family: Monaco, Consolas, monospace, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; }
+.store-code > .store-meta a {      font-weight: bold;  color: #666;  text-decoration: none; border: 0; } 

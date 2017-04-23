@@ -1,12 +1,12 @@
 <?php 
 include_once '../../bootstrap.php';
 
+use Cz\Git\GitRepository;
+
 $share_view_enable = true;
 
 include_once 'common.php';
-// connect
-//
-//
+
 $m = new MongoClient();
 
 // select a rowbase
@@ -160,6 +160,13 @@ if ($data) {
 
 				<div class="line"></div>
 				<div class="type-text"><?php echo $first ?></div>
+				<?php if (strpos($row['name'], ".git") !== false) { 
+						$dir = REPOSITORY.'/'.$id. '/';
+						$repo = new GitRepository($dir);
+						$current_branch = $repo->getCurrentBranchName();
+				?>
+				<div class="code-reference">┕ <a href="<?php echo $row['name'] ?>" target="code-reference" ><?php echo ($row['name']) ?></a> - <span class='branch-title'><?php echo $current_branch ?></span> - <span class='start-page'><?php echo $row['start_page'] ?></span></div>
+				<?php } ?>
 				<div class="title"> <?php echo $row['title'] ? $row['title'] : '&nbsp;' ?></div>
 				<div class="info">
 					<img class="avatar" src="<?php echo $row['avatar'] ?>" width="40px" height="40px" align="middle" />
@@ -234,6 +241,19 @@ if ($data) {
 	
 
 	$(function () {
+
+		 window.update_branch = function update_branch() {
+
+			show_loading("Updating codes...");
+			$.post('<?php echo V2_PLUGIN_URL ?>/code/update_branch.php', { id : '<?php echo $_GET['id'] ?>' }, function (res) {
+				alert('Updated codes');
+				location.reload();
+			});
+		}
+
+		$(".branch-title").on('click', function () {
+			update_branch();
+		});
 
 		$(".view-share-btn").click(function() {
 			show_share_modal();

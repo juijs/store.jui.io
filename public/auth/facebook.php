@@ -24,7 +24,7 @@ if (!empty($_GET['code'])) {
     // This was a callback request from facebook, get the token
     $token = $facebookService->requestAccessToken($_GET['code']);
     // Send a request with it
-    $result = json_decode($facebookService->request('/me'), true);
+    $result = json_decode($facebookService->request('/v2.5/me'), true);
     // Show some of the resultant data
     //echo 'Your unique facebook user id is: ' . $result['id'];
 	//var_dump($result['id']);

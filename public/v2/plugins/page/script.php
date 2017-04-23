@@ -140,7 +140,12 @@ $(function() {
 
 			if (res.result)
 			{
-				location.href = '?id=' + res.id; 	
+					if (location.href.indexOf('id=') > -1)
+					{
+		                coderun();
+					} else {
+	                    location.href = '?id=' + res.id; 	
+					}
 			} else {
 				alert(res.message ? res.message : 'Failed to save');
 			}
@@ -158,7 +163,13 @@ $(function() {
 			});
 		}
 	}
+<?php } else { ?>
+	window.savecode = function savecode() {
+
+		coderun();
+	}
 <?php } ?>
+
 	window.setSampleImage = function setSampleImage(img) {
 		$("#sample").val(img)
 	}
@@ -186,6 +197,11 @@ $(function() {
 				sampleCode.setValue(data.sample_code || "");
 				htmlCode.setValue(data.html_code || "");
 				cssCode.setValue(data.css_code || "");
+
+				sampleCode.clearHistory();
+				htmlCode.clearHistory();
+				cssCode.clearHistory();
+
 				setResourceList(data.resources);
 				setPreProcessorList(data.preprocessor);
 				coderun();

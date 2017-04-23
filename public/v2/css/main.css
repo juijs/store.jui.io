@@ -841,3 +841,7 @@ a[data-view] {
 	border:0px;
 	box-shadow:none;
 }
+
+.branch-title {
+	cursor: pointer;
+}

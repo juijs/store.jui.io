@@ -1,0 +1,23 @@
+{
+  "name": "codemirror-colorpicker",
+  "version": "1.0.3",
+  "description": "colorpicker for codemirror",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/easylogic/codemirror-colorpicker.git"
+  },
+  "keywords": [
+    "codemirror",
+    "colorpicker"
+  ],
+  "author": "easylogic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/easylogic/codemirror-colorpicker/issues"
+  },
+  "homepage": "https://github.com/easylogic/codemirror-colorpicker#readme"
+}

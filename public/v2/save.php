@@ -129,8 +129,11 @@ if ($result['ok']) {
 */
 
 	// auto created sample image 
+	/*
 	$root = getcwd();
-	shell_exec(escapeshellcmd("webshot --window-size=800/600 --render-delay=2000 --timeout=5000 --p:ignore-ssl-errors=true {$thumbnail_url} {$thumbnail_path}"));
+	shell_exec(escapeshellcmd("webshot --window-size=800/600 --render-delay=3000 --timeout=10000 --p:ignore-ssl-errors=true {$thumbnail_url} {$thumbnail_path}"));
+	*/
+
 	echo json_encode(array('id' => $id, 'result' => true));
 	// create static file 
 	$data = $document;

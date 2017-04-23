@@ -105,6 +105,7 @@ $(function() {
 				baseCode.setValue(xhr.responseText);
 				baseCode.refresh();
 				baseCode.focus();
+				baseCode.clearHistory();
 
 				load_type_tools();
 				update_file_name(relativePath);

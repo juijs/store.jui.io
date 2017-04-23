@@ -30,9 +30,14 @@ $thumbnail_url = V2_URL."/thumbnail.php?id=".$id;
 			<div class="content">
 				<div class="info">
 					<span class="type-name"><?php echo strtoupper($first) ?></span> 
-					<span class="view-link">				
-						<?php if ($data['access'] == 'public') { ?>
-						<span class="good_btn" href="javascript:void(good('<?php echo $id?>'))"><?php //echo get_svg_image('loveit') ?></span><span id="good_count_<?php echo $id?>" class="good-icon"><span class="good" ><?php echo get_svg_image('loveit-2') ?></span> <?php echo $data['good'] ? $data['good'] : 0 ?></span>
+					<span class="view-link">		
+						<?php if ($isMy) { ?>
+							<span class='delete-btn' onclick='deletecode("<?php echo $id ?>")' style='vertical-align:middle;cursor:pointer;'><i class='icon-exit'></i></span><?php 
+						} 
+						
+						if ($data['access'] == 'public') { 
+						?>
+						<span id="good_count_<?php echo $id?>" class="good-icon"><span class="good" ><?php echo get_svg_image('loveit-2') ?></span> <?php echo $data['good'] ? $data['good'] : 0 ?></span>
 						<?php } ?>
 						
 					</span>
@@ -45,4 +50,4 @@ $thumbnail_url = V2_URL."/thumbnail.php?id=".$id;
 		<span class="user-link"><img src="<?php echo $avatar ?>" width="16" height="16" class='avatar' align='absmiddle'/>&nbsp;<?php echo $data['username'] ?></span>
 	</div>
 </a>
-<?php if ($isMy) { ?> <div class='delete-btn' onclick='deletecode("<?php echo $id ?>")' style='vertical-align:middle;cursor:pointer;'><i class='icon-exit'></i></div><?php } ?>
+

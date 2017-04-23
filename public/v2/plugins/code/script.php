@@ -58,7 +58,10 @@ if (sizeof ($branch_list) == 0) {
 $(function() {
 
 	var baseCode = window.baseCode = CodeMirror.fromTextArea($("#base_code")[0], {
-	  lineNumbers : true
+	  lineNumbers : true,
+	  colorpicker : {
+		mode : 'edit'
+	  }
 	});
 
     baseCode.on('keyup', function () {
@@ -88,8 +91,6 @@ $(function() {
 			val = val.replace('.color', '.css');
 		} else if (val.indexOf('.tex') > -1) {
             val = val.replace('.tex', '.stex');
-        } else if (val.indexOf('.ipynb') > -1) {
-            val = val.replace('.ipynb', '.json');
         }
 
 		if (m = /.+\.([^.]+)$/.exec(val)) {
@@ -157,6 +158,10 @@ $(function() {
 	window.save_current_code = function save_current_code( content, callback ) {
 		var file = baseCode.file;
 
+		if (!file)
+		{
+			return;
+		}
         
         if (file.indexOf('.ipynb') > -1) {
             return;
@@ -233,6 +238,7 @@ $(function() {
                 baseCode.setValue(res.replace(/http\:\/\//g, '//'));
                 baseCode.refresh();
                 baseCode.focus();
+				baseCode.clearHistory();		// 로드 이후에  history 를 없애야 마지막 시점(공백)으로 돌아가지 않는다. 
 
                 load_type_tools();
                 update_file_name(relativePath);
@@ -387,6 +393,18 @@ $(function() {
 			}
 		});
 
+	}
+
+	window.deletecode = function deletecode () {
+		if (confirm("Delete this code project?\r\ngood count is also deleted.")) {
+			$.post("/v2/delete.php", { id : '<?php echo $_GET['id'] ?>' }, function(res) {
+				if (res.result) {
+					location.href = '/v2/dashboard.php'; 	
+				} else {
+					alert(res.message ? res.message : 'Failed to delete');
+				}
+			});
+		}
 	}
 
 	window.commit_code = function commit_code(commit_message) {

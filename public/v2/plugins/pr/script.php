@@ -12,14 +12,20 @@ $(function() {
 	  extraKeys: {
 		  "Ctrl-S":  function () {  savecode(); },
 		  "Ctrl-R":  function () {  coderun(); }
+	  },
+	  colorpicker : {
+		mode : 'edit'
 	  }
 	});
-	var slideStyle = window.slideCode = CodeMirror.fromTextArea($("#slide_style")[0], {
+	var slideStyle = window.slideStyle = CodeMirror.fromTextArea($("#slide_style")[0], {
 	  mode:  "css",
 	  lineNumbers : true,
 	  extraKeys: {
 		  "Ctrl-S":  function () {  savecode(); },
 		  "Ctrl-R":  function () {  coderun(); }
+	  },
+	  colorpicker : {
+		mode : 'edit'
 	  }
 	});
 
@@ -70,7 +76,7 @@ $(function() {
 
 	slideStyle.on('change', function () {
 		get_item().data('style', slideStyle.getValue());
-		if (!window.isSelectedSlide) coderun();
+		/*if (!window.isSelectedSlide)*/ coderun();
 	})
 
 	// paste event settings 
@@ -84,7 +90,7 @@ $(function() {
 		if (!window.isSelectedSlide) coderun();
 	})
 
-	slideStyle.on('paste', function () {
+	slideStyle.getWrapperElement().addEventListener('paste', function () {
 		get_item().data('style', slideStyle.getValue());
 		if (!window.isSelectedSlide) coderun();
 	})
@@ -269,7 +275,12 @@ $(function() {
 	});
 
 	window.view_slide_item = function ($li) {
-		$("iframe[name=chart_frame]")[0].contentWindow.setSelectedNum(get_slide_index($li));
+		var win = $("iframe[name=chart_frame]")[0].contentWindow;
+		
+		if (typeof win.setSelectedNum == 'function' )
+		{
+			win.setSelectedNum(get_slide_index($li));
+		}
 	}
 
 	// 슬라이드 드래그 이후 실행 
@@ -327,6 +338,15 @@ $(function() {
 		slideNote.setValue($selected.data('note') || "");
 		slideStyle.setValue($selected.data('style') ||  "");
 
+		slideCode.refresh();
+		slideNote.refresh();
+		slideStyle.refresh();
+
+		slideCode.clearHistory();
+		slideNote.clearHistory();
+		slideStyle.clearHistory();
+
+
         var settings = $selected.data('settings');
 		sliderSettings.initValue(settings);
         
@@ -340,7 +360,6 @@ $(function() {
 		}
 
 		slide_coderun_timer = setTimeout(function () { 
-
 			update_slide_number();
 
 			$("#chart_form").attr('action', '<?php echo V2_PLUGIN_URL ?>/pr/generate.php');

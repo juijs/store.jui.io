@@ -39,11 +39,16 @@ if (trim($data['resources']) != "") {
 
 if ($page_id == 'editor') {
 
-	$metaList[] = 	'<link href="/bower_components/codemirror/lib/codemirror.css" rel="stylesheet" />';
-	$metaList[] = 	'<script type="text/javascript" src="/bower_components/codemirror/lib/codemirror.js"></script>';
-	$metaList[] = 	'<script src="/bower_components/codemirror/mode/markdown/markdown.js"></script>';
-	$metaList[] = 	'<script src="/bower_components/codemirror/mode/css/css.js"></script>';
-	$metaList[] = 	'	<script src="/bower_components/html.sortable/dist/html.sortable.js"></script>';
+	$metaList[] = 	'<link href="//store.jui.io/bower_components/codemirror/lib/codemirror.css" rel="stylesheet" />';
+	$metaList[] = 	'<script type="text/javascript" src="//store.jui.io/bower_components/codemirror/lib/codemirror.js"></script>';
+	$metaList[] = 	'<link href="'.$url_root.'/bower_components/codemirror-colorpicker/addon/colorpicker/colorpicker.css" rel="stylesheet" />';
+	$metaList[] = 	'<script type="text/javascript" src="'.$url_root.'/bower_components/codemirror-colorpicker/addon/colorpicker/colorview.js"></script>';
+	$metaList[] = 	'<script type="text/javascript" src="'.$url_root.'/bower_components/codemirror-colorpicker/addon/colorpicker/colorpicker.js"></script>';
+
+
+	$metaList[] = 	'<script src="//store.jui.io/bower_components/codemirror/mode/markdown/markdown.js"></script>';
+	$metaList[] = 	'<script src="//store.jui.io/bower_components/codemirror/mode/css/css.js"></script>';
+	$metaList[] = 	'<script src="//store.jui.io/bower_components/html.sortable/dist/html.sortable.js"></script>';
 
 }
 ?>

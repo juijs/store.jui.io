@@ -16,6 +16,10 @@ A repository contains all the files for your project, including the revision his
 			<div class="help">Great repository names are short and memorable. Need inspiration? How about literate-broccoli.</div>
 		</div>
 		<div class="form-group">
+			<label>Title <small>(optional)</small></label>
+			<input type="text" style="width:100%" name="title"/>
+		</div>
+		<div class="form-group">
 			<label>Description <small>(optional)</small></label>
 			<input type="text" style="width:100%" name="description"/>
 		</div>
@@ -40,13 +44,6 @@ A repository contains all the files for your project, including the revision his
 			</div>
 
 		</div>
-		<div class="form-group">
-			<div class="item">
-				<label ><input type="checkbox" name="support_notebook" value="notebook"/> Support NoteBook</label>
-			</div>
-
-		</div>
-
 		<hr />
 		<div class="form-group">
 			<a class="button active button-regular create-btn">Create repository</a>
@@ -61,6 +58,7 @@ $(function() {
 		var data = {
 			name : $("input[name=repository-name]").val(),
 			access :  $("input[name=access]:checked").val(),
+			title :  $("input[name=title]").val(),
 			description : $("input[name=description]").val(),
 			init : $("input[name=init]").prop('checked')
 		}

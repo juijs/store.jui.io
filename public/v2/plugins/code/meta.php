@@ -49,6 +49,9 @@ if ($page_id == 'editor') {
 
 	$metaList[] = 	'<link href="'.$url_root.'/bower_components/codemirror/lib/codemirror.css" rel="stylesheet" />';
 	$metaList[] = 	'<script type="text/javascript" src="'.$url_root.'/bower_components/codemirror/lib/codemirror.js"></script>';
+	$metaList[] = 	'<link href="'.$url_root.'/bower_components/codemirror-colorpicker/addon/colorpicker/colorpicker.css" rel="stylesheet" />';
+	$metaList[] = 	'<script type="text/javascript" src="'.$url_root.'/bower_components/codemirror-colorpicker/addon/colorpicker/colorview.js"></script>';
+	$metaList[] = 	'<script type="text/javascript" src="'.$url_root.'/bower_components/codemirror-colorpicker/addon/colorpicker/colorpicker.js"></script>';
 
 	$metaList[] = 	'<script src="'.$url_root.'/bower_components/codemirror/addon/mode/loadmode.js"></script>';
 	$metaList[] = 	'<script src="'.$url_root.'/bower_components/codemirror/mode/meta.js"></script>';
